@@ -1,5 +1,15 @@
 # Chrome Extension Idea: [Title]
 
+start a new project -- choose # of hours per day
+
+* if the hours are not fulfilled - then it starves (deplete health)
+  
+* if hours are fulfilled - it grows (tama has stages) ONLY GROWS IF HEALTH IS FULL
+  
+no project = static
+
+**rate of growth???
+
 ## Authors
 
 [Include your names here]

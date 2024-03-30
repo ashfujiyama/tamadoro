@@ -47,6 +47,7 @@ Tamatimer is a time management chrome extension which enhances user productivity
 14. As an educator, I would like for the mechanics to be child-friendly and fun so that I can introduce time-management to my younger students.
 15. As a student, I would like to be notified when I can take a break so that I am not constantly checking the timer when it is done.
 16. As a busy student, I would like to schedule study sessions in advance for certain tasks, and get notifications for when that time comes.
+17. As a user, I would like switch between the sidebar and timer badge to minimize distractions while working. 
 
 
 ## Notes

@@ -44,14 +44,7 @@ _[List user stories that describe the main features of your Chrome Extension. Us
 
 ## Notes
 
-_[Add any additional notes or considerations for your Chrome Extension idea. This could include potential challenges, alternative approaches, or specific features you want to highlight.]_
-Features: 
-* notification at end of timer telling you time is over (wait for user to start next timer)
-* pomodoro and timer (in settings)
-* get one egg but can change it in the settings
-* 
-
+* Will potentially use the pokemon concept instead of Tamagachi to have more sprite options.
 
 ## References & Inspiration
 
-_[Include any references or sources that inspired your Chrome Extension idea. This could be articles, existing products, or other resources that informed your concept. Just paste any links you found during research.]_

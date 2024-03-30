@@ -1,4 +1,4 @@
-# Chrome Extension Idea: [Title]
+# Chrome Extension Idea: Tamatimer
 
 start a new project -- choose # of hours per day
 
@@ -17,6 +17,7 @@ no project = static
 ## Problem Statement
 
 [Describe the problem that your Chrome Extension will solve. What are the pain points that users experience? How does your extension address these pain points?]
+There are a lot of productivity tools online, but not many target extrinsic motivation to incentvize users to continue using the app to increase their productivity. More specifically, people tend to use pomodoro timers with a high likelihood of taking unnecessary breaks, dropping the habit of using it, etc. Tamatimer gamifies focus time to prevent these things from happening by providing a visual progress tracker while motivating them to develop the habit of using the app to keep their Tamagotchi inspired pet alive.
 
 ## Target Audience
 

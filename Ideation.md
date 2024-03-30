@@ -1,13 +1,12 @@
 # Chrome Extension Idea: Tamatimer
 
-
 ## Authors
 
 Sydney Simon, Amanda Lee, Ash Fujiyama, Gabby Gu
 
 ## Problem Statement
 
-There are a lot of productivity tools online, but not many target extrinsic motivation to incentvize users to continue using the app to increase their productivity. More specifically, people tend to use pomodoro timers with a high likelihood of taking unnecessary breaks, dropping the habit of using it, etc. Tamatimer gamifies focus time to prevent these things from happening by providing a visual progress tracker while motivating them to develop the habit of using the app to keep their Tamagotchi inspired pet alive.
+There are a lot of productivity tools online, but not many target extrinsic motivation to incentvize users to continue using the app to increase their productivity. More specifically, people tend to use pomodoro timers with a high likelihood of taking unnecessary breaks, dropping the habit of using it, etc. Tamatimer gamifies focus time to prevent these things from happening by providing a visual progress tracker while motivating them to develop the habit of using the app to keep their Tamagotchi-inspired pet alive.
 
 ## Target Audience
 
@@ -47,12 +46,18 @@ Tamatimer is a time management chrome extension which enhances user productivity
 14. As an educator, I would like for the mechanics to be child-friendly and fun so that I can introduce time-management to my younger students.
 15. As a student, I would like to be notified when I can take a break so that I am not constantly checking the timer when it is done.
 16. As a busy student, I would like to schedule study sessions in advance for certain tasks, and get notifications for when that time comes.
-17. As a user, I would like switch between the sidebar and timer badge to minimize distractions while working. 
+17. As a user, I would like switch between the sidebar and timer badge to minimize distractions while working.
+18. As a student who has trouble focusing while doing homework, I want to set a daily time goal for me to do homework.
+19. As a student who has an exam coming up, I want the extension to keep me on track the day before. 
 
 
 ## Notes
 
-* Will potentially use the pokemon concept instead of Tamagachi to have more sprite options.
+* Will potentially use the Pokémon concept instead of Tamagachi to have more sprite options.  Will be careful of not breaking copyright laws, where [fair media usage is outlined here](https://press.pokemon.com/en/Assets-Use-Terms).
 
 ## References & Inspiration
 
+1. [Tamagochi](https://tamagotchi.com/)
+2. [Habitica](https://habitica.com/)
+3. [pomofocus](https://pomofocus.io/app)
+4. [forest app](https://forestapp.cc/)

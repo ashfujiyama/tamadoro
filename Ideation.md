@@ -12,7 +12,7 @@ no project = static
 
 ## Authors
 
-[Include your names here]
+Sydney Simon, Amanda Lee, Ash Fujiyama, Gabby Gu
 
 ## Problem Statement
 
@@ -22,6 +22,12 @@ There are a lot of productivity tools online, but not many target extrinsic moti
 ## Target Audience
 
 [Identify the target audience for your Chrome Extension. Who will benefit from using your extension? What are the main characteristics of your target audience?]
+* Those who need help focussing 
+* People working under a time crunch 
+* People working on a schedule 
+* Students studying for exams 
+* Millennial and early Gen-Z who used to play with Tomagochi 
+
 
 ## Description
 

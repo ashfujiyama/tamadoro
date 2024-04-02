@@ -64,16 +64,14 @@ Tamatimer is a time management chrome extension which enhances user productivity
 ## Technical Details
 
 ### User Interface
+When users open the Chrome Extension, a side bar will appear which specifies the user projects, their current pet, and the timer they will use for productivity. There will also be an option to switch from a side bar so the extension takes up less screen space. The popup sonsists of the timer and actions to modify the timer. 
 
-_[Describe the user interface of your Chrome Extension: What will users see when they interact with your extension? How will they interact with the extension? You can include rough sketches or wireframes to illustrate your design, but name your files `<project id>-ui-1.png`, `<project id>-ui-2.png`, etc.]_
-
-_[Describe which Chrome UI/UX elements you will use in your extension, such as pop-ups, context menus, browser actions, omnibox, sidebar, etc.]_
 
 ### API, Libraries, and Frameworks
-
-_[- List any APIs, libraries, or frameworks that you plan to use in your Chrome Extension.]_
-_[- Include links to the documentation or other relevant resources.]_
-_[- Explain very briefly how you will use these tools in your project, one sentence per item.]_
+* React
+* HTML
+* CSS
+* JavaScript 
 
 ### Data Storage
 
@@ -82,19 +80,13 @@ Game mechanics (health of the pet) will be stored in a JSON file.
 ## Project Management
 
 ### Collaboration and Task Allocation
-
-_[Select a Leader, who will make final decisions on the vision of the project; and a Manager, who will oversee the project management and ensure all team members have everything they need to contribute effectively. List the remaining team members and their roles.]_
-
 - **Leader:** Amanda Lee
 - **Manager:** Ash Fujiyama
 - **Remaining Team Members:** Sydney Simon (software developer), Gabby Gu (designer)
 
-_[Provide a brief overview of what each team member will work on. How will you collaborate on this project? What tools or platforms will you use to communicate and share code?]_
 
 Collaboration mode: Slack, in person conversation
 Gabby will design the Tamagochi sprites and work on UI/UX elements of the extension.
-
-
 
 ### Risks and Mitigation
 
@@ -104,7 +96,7 @@ The amount of features is a risk, as well as the difficulty integrating them int
 
 _[You have about four weeks to work on this project. During the project management, you will use an Agile methodology to manage your tasks. For now, provide your best estimate of the work done each week, from Week 1 to Week 4.]_
 
-* Week 1: Task 1, Task 2, Task 3
-* Week 2: Task 4, Task 5, Task 6
-* Week 3: Task 7, Task 8, Task 9
-* Week 4: Task 10, Task 11, Task 12
+* Week 1: Finalize components, identify game mechanics, build mockup
+* Week 2: Pet drafts, skeletons code for popup and sidebar
+* Week 3: Implementent timer, feeding pet(JSON file), Project manager implementation
+* Week 4: Implement notifications, polishing UI, Testing

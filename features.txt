@@ -1,15 +1,19 @@
 Notifications go off when
 - pomodoro ends (if applicable) 
 - break ends (if applicable)
+- optional: reminder to do a project if it hasn't been focused on today
 
 Tasks listed in a sidebar.  each task "component" would have
 - project name
 - selection (if it is chosen to be currently focused on)
+- later: how much time you want to spend on the project per day 
+  - need to store the amount of time you have spent on the project TODAY (reset at midnight)
 - time spent working on it (optional, would require more components in Timer)
 - * rating (in difficulty?  urgency?  importance?)
   - how would rating work?  1-3 scale? 1-5?
 
 Timer
+- if in pomodoro mode: if timer for focus runs out, switch automatically to break timer (and vice versa)
 - left and right arrow buttons: adjust how much time to spend focusing or on break
   - these buttons are not shown if in stopwatch mode
   - 5 min increments
@@ -22,17 +26,51 @@ Timer
 
 Pet
 - location in sidebar
+- name
 - multiple sprites
 - health bar
-- is food a tangible object, or is pet automatically fed at conclusion of focus session?
-  - optional: inventory
+- exp bar
+- current level
+- inventory of food 
 - optional: click or hover interactions with pet (change expressions?)
 - optional: health bar state will affect appearance of pet
-- optional: name your pet 
+
+Food Inventory ideas:
+- carrot:  20-49 minutes
+- slice of cake: 50-89 minutes
+- a whole cake (necessary): 90+ minutes
 
 Other
 - stopwatch versus pomodoro method (location on timer)
 - set length of break timer (optional)
 - set length of focus timer (optional)
 - reset your game (button in sidebar)
+- change your pet (button in sidebar)
 - optional: setting to change where timer is located (popup versus sidebar)
+
+Game Mechanics:
+- at 4 am, amount of time spent on each project for the day resets
+- at 4 am, if amount of time spent does not meet requirement, health is deducted from pet.
+- at completion of a pomodoro session (or when stopwatch resets), appropriate amount of food is added to either inventory
+- food is used to feed pet. different food items have different food points.
+  - mechanic to feed pet: drag and drop? button?
+  - can food be given to pet if pet is already at full health?
+    - exp mechanic: exp is gained when pet is fed while pet health is full.
+- health goes down if focus session is skipped
+- what happens if health reaches zero?
+  - pet loses 5 levels (or level is set to zero if current level < 5)
+- change pet: 
+  - pet object deleted
+  - new pet instance created
+  - food inventory and project list is untouched.
+- reset triggered:
+  - pet object is deleted
+  - new pet (egg?) is created
+  - food inventory is cleared
+  - project list cleared
+- max value assignment: TODO later
+  - pet health:
+  - pet exp: 
+  - carrot: how much health/exp it give? is health/exp values the same, or are they diff?
+    - same with cake and cake slice
+  - level in which pet levels up

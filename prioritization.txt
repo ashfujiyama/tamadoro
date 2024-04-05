@@ -1,0 +1,37 @@
+Most Essential Tasks (minimum viable product)
+- sprite exists and is displayed
+- pomodoro: focus + break mode 
+- essential timer functions: adjust current pomodoro duration before running, start/pause button, reset button
+
+
+Important Tasks (satisfactory product)
+- switch between timer and stopwatch
+- finish timer functionality: automatically switch from focus to break at conclusion of timer
+- tasks can be added to sidebar with some functionality
+- health 
+- food and inventory implementation + food interaction with pet without exp
+- option to switch betweeen stopwatch and pomodoro
+- both notifications
+
+
+Later Tasks
+- complete task functionality (listed below)
+- 4 am reset and deducting health points
+- ability to allocate goals to projects (hours/day)
+- ability to choose a task to work on
+- task reward/punishment scaling by difficulty, urgency, or importance
+- ability for time spent working on a project to be added to a tracking accumulator so that goal could be met for the day
+- correct food is added to inventory after successful pomodoro or stopwatch completion
+- exp bar and leveling up versus leveling down
+- evolution
+- reset 
+- switch pet
+- add more pet options at start of game, add element of choice
+
+Optional Tasks
+- store total time spent working on a project for tracking purposes
+- pet interactions with click and hover
+- reminder to do a project if you haven't focused on it yet
+- display name of project you are currently focused on in the timer
+- have health of pet affect appearance of pet
+- change default time of break and focus timers in settings

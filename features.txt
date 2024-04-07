@@ -37,9 +37,10 @@ Pet
 - optional: health bar state will affect appearance of pet
 
 Food Inventory ideas:
-- carrot:  20-49 minutes
+- tomato:  20-49 minutes
 - slice of cake: 50-89 minutes
 - a whole cake (necessary): 90+ minutes
+- mystery item: finished a project
 
 Other
 - stopwatch versus pomodoro method (location on timer)

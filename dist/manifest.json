@@ -6,6 +6,10 @@
         "default_popup": "js/index.html",
         "default_title": "Tamadoro"
     }, 
+    "background": {
+        "service_worker": "js/service-worker.js",
+        "type": "module"
+    },
     "icons": {
 
     },
@@ -14,6 +18,10 @@
       },
       "permissions": [
         "sidePanel"
-      ]
+      ],
+      "sidebar_action": {
+        "default_title": "Click to open panel"
+      }
+    
 
 }

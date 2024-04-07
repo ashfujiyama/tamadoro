@@ -8,6 +8,7 @@ Important Tasks (satisfactory product)
 - switch between timer and stopwatch
 - finish timer functionality: automatically switch from focus to break at conclusion of timer
 - tasks can be added to sidebar with some functionality
+- tasks can be "completed" and that instance would be removed (no reward implemented yet)
 - health 
 - food and inventory implementation + food interaction with pet without exp
 - option to switch betweeen stopwatch and pomodoro
@@ -16,6 +17,7 @@ Important Tasks (satisfactory product)
 
 Later Tasks
 - complete task functionality (listed below)
+- completing a project results in a reward deposited into the player's inventory
 - 4 am reset and deducting health points
 - ability to allocate goals to projects (hours/day)
 - ability to choose a task to work on

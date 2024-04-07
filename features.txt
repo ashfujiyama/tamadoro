@@ -11,6 +11,7 @@ Tasks listed in a sidebar.  each task "component" would have
 - time spent working on it (optional, would require more components in Timer)
 - * rating (in difficulty?  urgency?  importance?)
   - how would rating work?  1-3 scale? 1-5?
+- checkbox to indicate the project is completed.
 
 Timer
 - if in pomodoro mode: if timer for focus runs out, switch automatically to break timer (and vice versa)
@@ -52,6 +53,7 @@ Game Mechanics:
 - at 4 am, amount of time spent on each project for the day resets
 - at 4 am, if amount of time spent does not meet requirement, health is deducted from pet.
 - at completion of a pomodoro session (or when stopwatch resets), appropriate amount of food is added to either inventory
+- at completion of a project, that project component disappears and a reward is deposited to the player's inventory
 - food is used to feed pet. different food items have different food points.
   - mechanic to feed pet: drag and drop? button?
   - can food be given to pet if pet is already at full health?

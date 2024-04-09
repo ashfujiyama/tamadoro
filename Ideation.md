@@ -1,4 +1,4 @@
-# Chrome Extension Idea: Tamatimer
+# Chrome Extension Idea: Tamadoro
 
 ## Authors
 
@@ -52,7 +52,7 @@ Tamatimer is a time management chrome extension which enhances user productivity
 
 ## Notes
 
-* Will potentially use the Pokémon concept instead of Tamagachi to have more sprite options.  Will be careful of not breaking copyright laws, where [fair media usage is outlined here](https://press.pokemon.com/en/Assets-Use-Terms).
+Considering implementing a pop up that consists of the timer and actions to modify the timer if we have enough time but have decided to prioritize the sidebar since it contains all of the essential features of the extension.
 
 ## References & Inspiration
 
@@ -64,7 +64,7 @@ Tamatimer is a time management chrome extension which enhances user productivity
 ## Technical Details
 
 ### User Interface
-When users open the Chrome Extension, a side bar will appear which specifies the user projects, their current pet, and the timer they will use for productivity. There will also be an option to switch from a side bar so the extension takes up less screen space. The popup sonsists of the timer and actions to modify the timer. 
+When users open the Chrome Extension, a side bar will appear which specifies the user tasks, their current pet, and the timer they will use for productivity. There will also be an option to switch from a side bar so the extension takes up less screen space.
 
 
 ### API, Libraries, and Frameworks
@@ -75,7 +75,7 @@ When users open the Chrome Extension, a side bar will appear which specifies the
 
 ### Data Storage
 
-Game mechanics (health of the pet) will be stored in a JSON file.
+Game mechanics (health of the pet and task organization) will be stored in local storage of user's browser.
 
 ## Project Management
 
@@ -97,6 +97,6 @@ The amount of features is a risk, as well as the difficulty integrating them int
 _[You have about four weeks to work on this project. During the project management, you will use an Agile methodology to manage your tasks. For now, provide your best estimate of the work done each week, from Week 1 to Week 4.]_
 
 * Week 1: Finalize components, identify game mechanics, build mockup
-* Week 2: Pet drafts, skeletons code for popup and sidebar
-* Week 3: Implementent timer, feeding pet(JSON file), Project manager implementation
+* Week 2: Pet drafts, skeletons code for popup and sidebar, implement timer
+* Week 3: Implement feeding pet mechanism and task manager/organizer
 * Week 4: Implement notifications, polishing UI, Testing

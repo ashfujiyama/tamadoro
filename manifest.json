@@ -14,14 +14,9 @@
 
     },
     "side_panel": {
-        "default_path": "js/sidebar.html"
+        "default_path": "js/index.html"
       },
       "permissions": [
         "sidePanel"
-      ],
-      "sidebar_action": {
-        "default_title": "Click to open panel"
-      }
-    
-
+      ]
 }

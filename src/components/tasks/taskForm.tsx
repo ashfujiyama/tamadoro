@@ -1,6 +1,8 @@
+// add task needs to modify local storage
+
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Task from "../types";
+// import Task from "../types";
 
 interface IFormInput {
   taskName: string;

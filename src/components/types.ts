@@ -5,4 +5,16 @@ interface Task {
   complete: boolean;
 }
 
-export default Task;
+interface Pet {
+  name: string;
+  health: number;
+  level: number;
+}
+
+interface Food {
+  name: string;
+  points: number;
+  count: number;
+}
+
+export type { Task, Pet, Food };

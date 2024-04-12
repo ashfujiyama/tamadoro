@@ -11,7 +11,6 @@ interface IFormInput {
 
 const TaskForm = () => {
   const { register, handleSubmit, reset } = useForm<IFormInput>(); // Specify the type for useForm
-  const [data, setData] = useState("");
 
   const onSubmit: SubmitHandler<IFormInput> = (formData) => {
     console.log(formData);
@@ -20,9 +19,18 @@ const TaskForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("taskName")} placeholder="Task Name" />
-      <input {...register("dailyGoal")} placeholder="Daily Goal" />
-      <p>{data}</p>
+      <input
+        {...(register("taskName"), { required: true, maxLength: 20 })}
+        placeholder="Task Name"
+      />
+      <div className="input-with-label">
+        <input
+          type="number"
+          {...register("dailyGoal", { min: 1, max: 24 })}
+          placeholder="Daily Goal"
+        />
+        <span>hours</span>
+      </div>
       <input type="submit" />
     </form>
   );

@@ -11,11 +11,13 @@ const Timer = () => {
     const Ref = useRef<NodeJS.Timeout | null>(null);
 
     const [second, setSeconds] = useState(10);
-    const [hour, setMinutes] = useState(0);
-    const [minute, setHours] = useState(0);
+    const [minute, setMinutes] = useState(25);
+    const [hour, setHours] = useState(0);
+    const[isPaused, setIsPaused] = useState(false);
+    const [pausedTime, setPausedTime] =  useState<number | null>(null);
  
     // The state for our timer
-    const [timer, setTimer] = useState("00:00:00");
+    const [timer, setTimer] = useState("01:25:00");
  
     // calculate time remaining in the timer by subtracting the current date/time from the deadline time
     const getTimeRemaining = (e: string) => {
@@ -62,6 +64,20 @@ const Timer = () => {
         const id = setInterval(() => setTime(e), 1000);
         Ref.current = id;
     };
+
+    // resumes the timer by getting the time when it was stopped, subtracting from the previous deadline
+    // creating a new deadline to start the timer again
+    const onClickResume = () => {
+        if (pausedTime != null) {
+            const remainingTime = getDeadTime().getTime() - pausedTime;
+            const newDeadline = new Date(Date.now() + remainingTime);
+
+            startTimer(newDeadline)
+            setIsPaused(false)
+            setPausedTime(null)
+        }
+        
+    };
  
     //sets the deadline for the timer (what the timer is counting down to)
     const getDeadTime = () => {
@@ -80,9 +96,9 @@ const Timer = () => {
         setTime(getDeadTime()) //reloading the timer display
     };
 
-
     const onClickInc = () => {
         increaseTime(getDeadTime())
+        setTime(getDeadTime()) //reloading the timer display
     };
 
     //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
@@ -100,14 +116,30 @@ const Timer = () => {
     const onClickStart = () => {
         startTimer(getDeadTime());
     };
+
+    const onClickPause = () => {
+        if (Ref.current) {
+            clearInterval(Ref.current);
+            setPausedTime(Date.now());
+            setIsPaused(true);
+        }
+    };
+
  
     return (
         <div style={{ textAlign: "center", margin: "auto" }}>
             <h2>{timer}</h2>
-            <button onClick={onClickStart}>Start</button>
+            {!isPaused ? (
+                <button onClick={onClickStart}>Start</button>
+            ) : (
+                <button onClick={onClickResume}>Resume</button>
+            )}
             <button className="reset" onClick={onClickReset}>Reset</button>
             <button className="up" onClick={onClickInc}>inc</button>
             <button className="down" onClick={onClickDec}>dec</button>
+            {!isPaused && (
+                <button className="pause" onClick={onClickPause}>Pause</button>
+            )}
             {/* <button className='VoteButton' onClick={onClickStart}><ArrowUpward /> </button>
             <button className='VoteButton'onClick={onClickStart}><ArrowDownward /></button> */}
         </div>

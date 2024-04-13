@@ -72,6 +72,7 @@ const Timer = () => {
         if (pausedTime != null && deadline != null) {
             const remainingTime = deadline.getTime() - pausedTime;
             const newDeadline = new Date(Date.now() + remainingTime);
+            setDeadline(newDeadline)
             const s = Math.floor((remainingTime / 1000) % 60);
             
             setTime(newDeadline)

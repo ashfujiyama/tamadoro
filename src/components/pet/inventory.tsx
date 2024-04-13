@@ -18,6 +18,7 @@ const Inventory = () => {
     setInventory((prevInventory) => {
       const updatedInventory = { ...prevInventory };
       updatedInventory[type].count++;
+      console.log(updatedInventory);
       return updatedInventory;
     });
   };

@@ -3,8 +3,10 @@
 import React from 'react';
 import { useState , useRef, useEffect} from 'react';
 import "./timerStyle.css";
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-
+import { IconButton } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import '@mui/material/styles';
 
  
 const Timer = () => {
@@ -141,13 +143,12 @@ const Timer = () => {
                 <button onClick={onClickResume}>Resume</button>
             )}
             <button className="reset" onClick={onClickReset}>Reset</button>
-            <button className="up" onClick={onClickInc}>inc</button>
-            <button className="down" onClick={onClickDec}>dec</button>
+            <IconButton className="up" onClick={onClickInc}> <ArrowUpwardIcon /> </IconButton>
+            <IconButton className="down" onClick={onClickDec}> <ArrowDownwardIcon /> </IconButton>
             {!isPaused && (
                 <button className="pause" onClick={onClickPause}>Pause</button>
             )}
-            {/* <button className='VoteButton' onClick={onClickStart}><ArrowUpward /> </button>
-            <button className='VoteButton'onClick={onClickStart}><ArrowDownward /></button> */}
+           
         </div>
     );
 };

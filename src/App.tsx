@@ -3,18 +3,16 @@
 // will have exit (close the chrome extension), and expand (convert to sidebar) options
 
 import "./App.css";
-import Inventory from "./components/pet/inventory";
 import TaskList from "./components/tasks/taskList";
-import Timer from "./components/timer/timer";
-import Title from "./components/title/title"
+import Title from "./components/title/title";
+import Tamadoro from "./components/tamadoro/tamadoro";
 
 function App() {
   return (
     <div className="App">
       <Title />
-      <Timer />
+      <Tamadoro />
       <TaskList />
-      <Inventory />
     </div>
   );
 }

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import "./taskStyle.css";
+
 // import Task from "../types";
 
 interface IFormInput {
@@ -19,18 +21,25 @@ const TaskForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
+    <form className = "taskForm" onSubmit={handleSubmit(onSubmit)}>
+      <input className = "projectTitleInput"
         {...(register("taskName"), { required: true, maxLength: 20 })}
-        placeholder="Task Name"
+        placeholder="Project Title"
       />
       <div className="input-with-label">
         <input
           type="number"
+          className="time-input"
           {...register("dailyGoal", { min: 1, max: 24 })}
-          placeholder="Daily Goal"
+          placeholder="HH"
         />
-        <span>hours</span>
+        <span>:</span>
+        <input
+          type="number"
+          className="time-input"
+          {...register("dailyGoal", { min: 0, max: 59 })}
+          placeholder="MM"
+        />
       </div>
       <input type="submit" />
     </form>

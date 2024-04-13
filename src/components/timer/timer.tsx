@@ -15,6 +15,7 @@ const Timer = () => {
     const [hour, setHours] = useState(0);
     const[isPaused, setIsPaused] = useState(false);
     const [pausedTime, setPausedTime] =  useState<number | null>(null);
+    const[deadline, setDeadline] = useState<Date | null>(null);
  
     // The state for our timer
     const [timer, setTimer] = useState("00:00:00");
@@ -68,10 +69,12 @@ const Timer = () => {
     // resumes the timer by getting the time when it was stopped, subtracting from the previous deadline
     // creating a new deadline to start the timer again
     const onClickResume = () => {
-        if (pausedTime != null) {
-            const remainingTime = getDeadTime().getTime() - pausedTime;
+        if (pausedTime != null && deadline != null) {
+            const remainingTime = deadline.getTime() - pausedTime;
             const newDeadline = new Date(Date.now() + remainingTime);
-
+            const s = Math.floor((remainingTime / 1000) % 60);
+            
+            setTime(newDeadline)
             startTimer(newDeadline)
             setIsPaused(false)
             setPausedTime(null)
@@ -86,6 +89,8 @@ const Timer = () => {
         // This is where you specify how many minute, hours you want in your timer
         deadline.setSeconds(deadline.getSeconds() + second);
         deadline.setMinutes(deadline.getMinutes() + minute);
+        setDeadline(deadline)
+
         return deadline;
     };
 

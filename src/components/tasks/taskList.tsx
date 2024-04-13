@@ -9,6 +9,7 @@ import TaskForm from "./taskForm";
 const TaskList = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
 
+  // turns off and on form visinility
   const toggleFormVisibility = () => {
     setIsFormVisible((prevState) => !prevState);
   };

@@ -10,14 +10,3 @@ export interface Pet {
   health: number;
   level: number;
 }
-
-export enum FoodType {
-  Tomato = 5,
-  CakeSlice = 15,
-  Cake = 100
-}
-
-export interface Food {
-  type: FoodType;
-  count: number;
-}

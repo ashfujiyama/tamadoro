@@ -9,6 +9,7 @@ interface IFormInput {
   dailyGoal: number;
 }
 
+// form to keep track of and submit new tasks entered
 const TaskForm = () => {
   const { register, handleSubmit, reset } = useForm<IFormInput>(); // Specify the type for useForm
 

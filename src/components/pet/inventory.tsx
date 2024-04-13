@@ -1,41 +1,39 @@
-// needs to add food based on timer
+// Inventory.tsx
 
-import { useState } from "react";
-import { Food, FoodType } from "../types";
+import React, { useState } from "react";
+import { FoodType, increaseFoodCount } from "../types/foodType";
+import Food from "./food";
 
 const Inventory = () => {
-  const resetInventory = () => {
-    return {
-      tomatoes: { type: FoodType.Tomato, count: 0 },
-      cakeSlices: { type: FoodType.CakeSlice, count: 0 },
-      cakes: { type: FoodType.Cake, count: 0 },
-    };
-  };
+  const [tomatoes, setTomatoes] = useState({
+    type: FoodType.Tomato,
+    points: 5,
+    count: 0,
+    image: "",
+  });
+  const [cakeSlices, setCakeSlices] = useState({
+    type: FoodType.CakeSlice,
+    points: 5,
+    count: 0,
+    image: "",
+  });
+  const [cake, setCake] = useState({
+    type: FoodType.Cake,
+    points: 5,
+    count: 0,
+    image: "public/images/cake.png",
+  });
 
-  const [inventory, setInventory] = useState(resetInventory());
-
-  const increaseFoodCount = (type: keyof typeof inventory) => {
-    setInventory((prevInventory) => {
-      const updatedInventory = { ...prevInventory };
-      updatedInventory[type].count++;
-      console.log(updatedInventory);
-      return updatedInventory;
-    });
+  // Function to handle increasing food count
+  const handleIncreaseFoodCount = () => {
+    setTomatoes((prevTomatoes) => increaseFoodCount(prevTomatoes));
   };
 
   return (
     <div>
-      {/* add food icons and change count display */}
-      <p>tomatoes: {inventory.tomatoes.count}</p>
-      <button onClick={() => increaseFoodCount("tomatoes")}>
-        Add Tomato
-      </button>{" "}
-      <p>cakeSlices: {inventory.cakeSlices.count}</p>
-      <button onClick={() => increaseFoodCount("cakeSlices")}>
-        Add Cake Slice
-      </button>{" "}
-      <p>cakes: {inventory.cakes.count}</p>
-      <button onClick={() => increaseFoodCount("cakes")}>Add Cake</button>{" "}
+      <Food food={tomatoes} onIncrease={handleIncreaseFoodCount} />
+      <Food food={cakeSlices} onIncrease={handleIncreaseFoodCount} />
+      <Food food={cake} onIncrease={handleIncreaseFoodCount} />
     </div>
   );
 };

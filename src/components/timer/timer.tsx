@@ -134,7 +134,7 @@ const Timer = () => {
  
     return (
         <div style={{ textAlign: "center", margin: "auto" }}>
-            <h2>{timer}</h2>
+            <h2 className = "timeLeft">{timer}</h2>
             {!isPaused ? (
                 <button onClick={onClickStart}>Start</button>
             ) : (

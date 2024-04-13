@@ -1,0 +1,11 @@
+.screen {
+    margin-right: 1.5rem;
+    margin-left: 1.5em;
+    margin-top: 0rem;
+    background-color:#C0C8BB;
+    border-radius: 20px; 
+    padding: 1rem;
+    border: 5px solid #A2DBFF; 
+    background-clip: padding-box;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.27); /* Inner drop shadow */
+}

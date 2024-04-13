@@ -10,8 +10,8 @@ import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 const Timer = () => {
     const Ref = useRef<NodeJS.Timeout | null>(null);
 
-    const [second, setSeconds] = useState(10);
-    const [minute, setMinutes] = useState(25);
+    const [second, setSeconds] = useState(0);
+    const [minute, setMinutes] = useState(0);
     const [hour, setHours] = useState(0);
     const[isPaused, setIsPaused] = useState(false);
     const [pausedTime, setPausedTime] =  useState<number | null>(null);

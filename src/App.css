@@ -1,8 +1,15 @@
 .App {
-    color: white;
+    color: black;
     text-align: center;
+    font-family: '8bit';
+}
+
+@font-face {
+    font-family: "8bit";
+    src: local("8bit16"),
+    url("./fonts/8bit16.ttf") format("truetype");
 }
 
 .container {
-    background-color: rgb(246, 160, 160);
+    background-color: #ffe3e7;
 }

@@ -90,6 +90,7 @@ const Timer = () => {
         // This is where you specify how many minute, hours you want in your timer
         deadline.setSeconds(deadline.getSeconds() + second);
         deadline.setMinutes(deadline.getMinutes() + minute);
+        deadline.setMinutes(deadline.getHours() + hour);
         setDeadline(deadline)
 
         return deadline;

@@ -1,20 +1,23 @@
-interface Task {
+export interface Task {
   name: string;
   dailyProgress: number;
   dailyGoal: number;
   complete: boolean;
 }
 
-interface Pet {
+export interface Pet {
   name: string;
   health: number;
   level: number;
 }
 
-interface Food {
-  name: string;
-  points: number;
-  count: number;
+export enum FoodType {
+  Tomato = 5,
+  CakeSlice = 15,
+  Cake = 100
 }
 
-export type { Task, Pet, Food };
+export interface Food {
+  type: FoodType;
+  count: number;
+}

@@ -17,12 +17,6 @@ body {
     url("./fonts/8bit16.ttf") format("truetype");
 }
 
-@font-face {
-    font-family: "muro";
-    src: local("muro"),
-    url("./fonts/Muro.otf") format("truetype");
-}
-
 .container {
     padding: 0px;
     margin: 0px;

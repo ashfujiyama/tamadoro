@@ -135,21 +135,25 @@ const Timer = () => {
 
 
     return (
-        <div style={{ textAlign: "center", margin: "auto" }}>
-            <h2 className="timeLeft">{timer}</h2>
-            <div className="arrowContainer">
-                <IconButton style = {{fontSize: 100}} className="up" onClick={onClickInc}><ArrowDropUpIcon /></IconButton>
-                <IconButton className="down" onClick={onClickDec}><ArrowDropDownIcon /></IconButton>
+        <div style={{ textAlign: "center"}}>
+   
+                <h2 className="timeLeft">{timer}</h2>
+                <div className="arrowContainer">
+                    <IconButton style={{margin:'0px',color: 'black', backgroundColor: 'transparent' }} onClick={onClickInc}><ArrowDropUpIcon /></IconButton>
+                    <IconButton style={{margin:'0px',fontSize: '10px', color: 'black', backgroundColor: 'transparent' }} onClick={onClickDec}><ArrowDropDownIcon /></IconButton>
+                </div>
+        
+            <div>
+                {!isPaused ? (
+                    <button onClick={onClickStart}>Start</button>
+                ) : (
+                    <button onClick={onClickResume}>Resume</button>
+                )}
+                <button className="reset" onClick={onClickReset}>Reset</button>
+                {!isPaused && (
+                    <button className="pause" onClick={onClickPause}>Pause</button>
+                )}
             </div>
-            {!isPaused ? (
-                <button onClick={onClickStart}>Start</button>
-            ) : (
-                <button onClick={onClickResume}>Resume</button>
-            )}
-            <button className="reset" onClick={onClickReset}>Reset</button>
-            {!isPaused && (
-                <button className="pause" onClick={onClickPause}>Pause</button>
-            )}
         </div>
 
     );

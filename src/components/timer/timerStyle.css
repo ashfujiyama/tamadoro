@@ -1,3 +1,20 @@
 .timeLeft {
     font-size: 24pt;
 }
+.arrowContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.up, .down {
+  padding: 0; 
+  background-color: transparent; 
+}
+
+.up:hover, .down:hover {
+  background-color: transparent;
+}
+
+.up .MuiIconButton-label, .down .MuiIconButton-label {
+  font-size: 10px; 
+}

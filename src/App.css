@@ -1,7 +1,8 @@
 body {
     background-color: #ffe3e7;
     margin: 0;
-    padding: 0;
+    padding-right: 1rem;
+    padding-left: 1rem;
 }
 
 .App {
@@ -14,12 +15,6 @@ body {
     font-family: "8bit";
     src: local("8bit16"),
     url("./fonts/8bit16.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "muro";
-    src: local("muro"),
-    url("./fonts/Muro.otf") format("truetype");
 }
 
 .container {

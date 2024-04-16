@@ -1,6 +1,6 @@
 const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin")
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -17,17 +17,25 @@ module.exports = {
                         options: {
                             compilerOptions: { noEmit: false },
                         }
-                    }],
+                    }
+                ],
                 exclude: /node_modules/,
             },
             {
-                exclude: /node_modules/,
-                test: /\.css$/i,
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"],
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
                 use: [
-                    "style-loader",
-                    "css-loader"
-                ]
-
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[name].[ext]",
+                            outputPath: "images/",
+                        },
+                    },
+                ],
             },
         ],
     },

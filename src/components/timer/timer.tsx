@@ -1,25 +1,27 @@
 // timer countdown with timer controller buttoms (start, stop, restart, skip)
 // keep track of time elapsed and add to progress if complete
 import React from 'react';
-import { useState , useRef, useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import "./timerStyle.css";
-import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import '@mui/material/styles';
 
 
- 
 const Timer = () => {
     const Ref = useRef<NodeJS.Timeout | null>(null);
 
     const [second, setSeconds] = useState(10);
     const [minute, setMinutes] = useState(0);
     const [hour, setHours] = useState(0);
-    const[isPaused, setIsPaused] = useState(false);
-    const [pausedTime, setPausedTime] =  useState<number | null>(null);
-    const[deadline, setDeadline] = useState<Date | null>(null);
- 
+    const [isPaused, setIsPaused] = useState(false);
+    const [pausedTime, setPausedTime] = useState<number | null>(null);
+    const [deadline, setDeadline] = useState<Date | null>(null);
+
     // The state for our timer
     const [timer, setTimer] = useState("00:00:00");
- 
+
     // calculate time remaining in the timer by subtracting the current date/time from the deadline time
     const getTimeRemaining = (e: string) => {
         const total =
@@ -38,8 +40,8 @@ const Timer = () => {
             seconds,
         };
     };
-    
- 
+
+
     //takes in a current deadline and sets the timer variable to display the time
     const setTime = (e: Date) => {
         let { total, hours, minutes, seconds } =
@@ -48,8 +50,8 @@ const Timer = () => {
             // check if less than 10 then we need to add '0' at the beginning of the variable
             setTimer(
                 (hours > 9 ? hours : "0" + hours) +
-                ":" + (minutes > 9 ? minutes: "0" + minutes) +
-                ":" +( seconds > 9 ? seconds : "0" + seconds)
+                ":" + (minutes > 9 ? minutes : "0" + minutes) +
+                ":" + (seconds > 9 ? seconds : "0" + seconds)
             );
         }
     };
@@ -74,19 +76,19 @@ const Timer = () => {
             const newDeadline = new Date(Date.now() + remainingTime);
             setDeadline(newDeadline)
             const s = Math.floor((remainingTime / 1000) % 60);
-            
+
             setTime(newDeadline)
             startTimer(newDeadline)
             setIsPaused(false)
             setPausedTime(null)
         }
-        
+
     };
- 
+
     //sets the deadline for the timer (what the timer is counting down to)
     const getDeadTime = () => {
         let deadline = new Date();
- 
+
         // This is where you specify how many minute, hours you want in your timer
         deadline.setSeconds(deadline.getSeconds() + second);
         deadline.setMinutes(deadline.getMinutes() + minute);
@@ -99,7 +101,7 @@ const Timer = () => {
     //increase the timer by 5 minutes (5 seconds for testing purposes rn)
     const increaseTime = (e: Date) => {
         //increasing the set time by 5 seconds  
-        setSeconds(second + 5); 
+        setSeconds(second + 5);
         setTime(getDeadTime()) //reloading the timer display
     };
 
@@ -111,7 +113,7 @@ const Timer = () => {
     //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
     const decreaseTime = (e: Date) => {
         //increasing the set time by 5 seconds  
-        setSeconds(second - 5); 
+        setSeconds(second - 5);
         setTime(getDeadTime()) //reloading the timer display
     };
 
@@ -132,24 +134,29 @@ const Timer = () => {
         }
     };
 
- 
+
     return (
-        <div style={{ textAlign: "center", margin: "auto" }}>
-            <h2>{timer}</h2>
-            {!isPaused ? (
-                <button onClick={onClickStart}>Start</button>
-            ) : (
-                <button onClick={onClickResume}>Resume</button>
-            )}
-            <button className="reset" onClick={onClickReset}>Reset</button>
-            <button className="up" onClick={onClickInc}>inc</button>
-            <button className="down" onClick={onClickDec}>dec</button>
-            {!isPaused && (
-                <button className="pause" onClick={onClickPause}>Pause</button>
-            )}
-            {/* <button className='VoteButton' onClick={onClickStart}><ArrowUpward /> </button>
-            <button className='VoteButton'onClick={onClickStart}><ArrowDownward /></button> */}
+        <div style={{ textAlign: "center"}}>
+   
+                <h2 className="timeLeft">{timer}</h2>
+                <div className="arrowContainer">
+                    <IconButton style={{margin:'0px',color: 'black', backgroundColor: 'transparent' }} onClick={onClickInc}><ArrowDropUpIcon /></IconButton>
+                    <IconButton style={{margin:'0px',fontSize: '10px', color: 'black', backgroundColor: 'transparent' }} onClick={onClickDec}><ArrowDropDownIcon /></IconButton>
+                </div>
+        
+            <div>
+                {!isPaused ? (
+                    <button onClick={onClickStart}>Start</button>
+                ) : (
+                    <button onClick={onClickResume}>Resume</button>
+                )}
+                <button className="reset" onClick={onClickReset}>Reset</button>
+                {!isPaused && (
+                    <button className="pause" onClick={onClickPause}>Pause</button>
+                )}
+            </div>
         </div>
+
     );
 };
 

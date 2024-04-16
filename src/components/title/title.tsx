@@ -5,7 +5,7 @@ function TitleComponent() {
   const title = "TAMADORO";
   return (
     <>
-    <img src = "https://i.ibb.co/z8RXFxD/title-logo.png"  style={{ width: '100%' }}/>
+      <img style={{ marginTop: '1rem', width: '100%' }} src="https://i.ibb.co/sWLZdg7/title-logo.png" />
     </>
   );
 }

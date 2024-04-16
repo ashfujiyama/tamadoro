@@ -1,0 +1,36 @@
+.taskForm {
+    background-color: #A2DBFF;
+    font-family: '8bit';
+    padding: 1.5rem;
+    text-align: left;
+    color: #002D71;
+}
+  
+.taskForm input {
+    font-family: '8bit';
+    background-color: #ffffffa2;
+    border: black 1pt;
+}
+
+.projectTitleInput {
+    font-size: 18px;
+    width: 100%;
+    padding: .5rem;
+    margin-right: .5rem;
+    margin-bottom: .5rem;
+}
+
+.time-input-container {
+    display: flex;
+    align-items: center;
+}
+  
+.time-input {
+    margin-right: 5px;
+    width: 40px;
+    padding: .5rem;
+}
+
+span {
+    margin: 0 5px; /* Adjust spacing as needed */
+  }

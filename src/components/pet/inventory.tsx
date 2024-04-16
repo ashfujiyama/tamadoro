@@ -1,8 +1,13 @@
 // Inventory.tsx
 
 import React, { useState } from "react";
-import { FoodType, increaseFoodCount } from "../types/foodType";
+import {
+  FoodType,
+  decreaseFoodCount,
+  increaseFoodCount,
+} from "../types/foodType";
 import Food from "./food";
+import FoodComponent from "./food";
 
 const Inventory = () => {
   const [tomatoes, setTomatoes] = useState({
@@ -13,28 +18,57 @@ const Inventory = () => {
   });
   const [cakeSlices, setCakeSlices] = useState({
     type: FoodType.CakeSlice,
-    points: 5,
+    points: 15,
     count: 0,
     image: "",
   });
   const [cake, setCake] = useState({
     type: FoodType.Cake,
-    points: 5,
+    points: 100,
     count: 0,
     image: "public/images/cake.png",
   });
+  const [chooseFood, setChooseFood] = useState(tomatoes);
 
-  // Function to handle increasing food count
-  const handleIncreaseFoodCount = () => {
+  // handle tomato count
+  const increaseTomatoes = () => {
     setTomatoes((prevTomatoes) => increaseFoodCount(prevTomatoes));
+  };
+  const decreaseTomatoes = () => {
+    setTomatoes((prevTomatoes) => decreaseFoodCount(prevTomatoes));
+  };
+
+  // handle cake slice count
+  const increaseCakeSlice = () => {
+    setCakeSlices((prevCakeSlice) => increaseFoodCount(prevCakeSlice));
+  };
+  const decreaseCakeSlice = () => {
+    setCakeSlices((prevCakeSlice) => decreaseFoodCount(prevCakeSlice));
+  };
+
+  // handle cake count
+  const increaseCake = () => {
+    setCake((prevCakeSlice) => increaseFoodCount(prevCakeSlice));
+  };
+  const decreaseCake = () => {
+    setCake((prevCake) => decreaseFoodCount(prevCake));
+  };
+
+  const feed = (chooseFood: FoodType) => {
+    if (chooseFood === "Tomato") {
+      increaseTomatoes;
+    }
   };
 
   return (
-    <div>
-      <Food food={tomatoes} onIncrease={handleIncreaseFoodCount} />
-      <Food food={cakeSlices} onIncrease={handleIncreaseFoodCount} />
-      <Food food={cake} onIncrease={handleIncreaseFoodCount} />
-    </div>
+    <>
+      <div>
+        <Food food={tomatoes} selected={chooseFood} />
+        <Food food={cakeSlices} selected={chooseFood} />
+        <Food food={cake} selected={chooseFood} />
+      </div>
+      <div>{/* <button onClick={feed}>Feed!</button> */}</div>
+    </>
   );
 };
 

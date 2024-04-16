@@ -53,11 +53,15 @@ const Timer = () => {
                 ":" + (minutes > 9 ? minutes : "0" + minutes) +
                 ":" + (seconds > 9 ? seconds : "0" + seconds)
             );
-        }
+        }         
     };
 
     //resets the timer with the previous deadline
     const onClickReset = () => {
+        if (Ref.current) {
+            clearInterval(Ref.current);
+            setIsPaused(false)
+        }
         setTime(getDeadTime())
     }
 
@@ -92,7 +96,7 @@ const Timer = () => {
         // This is where you specify how many minute, hours you want in your timer
         deadline.setSeconds(deadline.getSeconds() + second);
         deadline.setMinutes(deadline.getMinutes() + minute);
-        deadline.setMinutes(deadline.getHours() + hour);
+        deadline.setHours(deadline.getHours() + hour);
         setDeadline(deadline)
 
         return deadline;
@@ -101,24 +105,27 @@ const Timer = () => {
     //increase the timer by 5 minutes (5 seconds for testing purposes rn)
     const increaseTime = (e: Date) => {
         //increasing the set time by 5 seconds  
-        setSeconds(second + 5);
+        setMinutes(minute + 5);
         setTime(getDeadTime()) //reloading the timer display
     };
 
     const onClickInc = () => {
-        increaseTime(getDeadTime())
-        setTime(getDeadTime()) //reloading the timer display
+        if(minute < 90){
+            increaseTime(getDeadTime())
+        }
     };
 
     //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
     const decreaseTime = (e: Date) => {
         //increasing the set time by 5 seconds  
-        setSeconds(second - 5);
+        setMinutes(minute - 5);
         setTime(getDeadTime()) //reloading the timer display
     };
 
     const onClickDec = () => {
-        decreaseTime(getDeadTime())
+        if (minute > 0) {
+            decreaseTime(getDeadTime())
+        }
     };
 
     //starts the timer

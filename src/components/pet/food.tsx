@@ -3,18 +3,27 @@ import { Food } from "../types/foodType";
 
 interface FoodProps {
   food: Food;
-  onIncrease: () => void;
+  // onIncrease: () => void;
+  // onDecrease: () => void;
+  selected: Food;
 }
 
-const Food: React.FC<FoodProps> = ({ food, onIncrease }) => {
+const FoodComponent: React.FC<FoodProps> = ({
+  food,
+  // onIncrease,
+  // onDecrease,
+  selected,
+}) => {
   return (
     <div>
       <p>
         <img src={food.image} alt={food.type} />: {food.count}
       </p>
-      <button onClick={onIncrease}>Add {food.type}</button>
+      {/* <button onClick={onIncrease}>Reward {food.type}</button>
+      <button onClick={onDecrease}>Feed {food.type}</button> */}
+      {food.type === selected.type && <p>this one is chosen</p>}
     </div>
   );
 };
 
-export default Food;
+export default FoodComponent;

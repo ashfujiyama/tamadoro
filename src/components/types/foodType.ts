@@ -17,3 +17,10 @@ export const increaseFoodCount = (food: Food): Food => {
     count: food.count + 1
   };
 };
+
+export const decreaseFoodCount = (food: Food): Food => {
+  return {
+    ...food,
+    count: food.count - 1
+  };
+};

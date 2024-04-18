@@ -19,8 +19,11 @@ export const increaseFoodCount = (food: Food): Food => {
 };
 
 export const decreaseFoodCount = (food: Food): Food => {
-  return {
-    ...food,
-    count: food.count - 1
-  };
+  if (food.count > 0) { // only decrease if food count > 0
+    return {
+      ...food,
+      count: food.count - 1
+    };
+  }
+  return food;
 };

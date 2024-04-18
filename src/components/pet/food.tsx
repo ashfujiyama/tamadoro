@@ -3,25 +3,17 @@ import { Food } from "../types/foodType";
 
 interface FoodProps {
   food: Food;
-  // onIncrease: () => void;
-  // onDecrease: () => void;
   selected: Food;
 }
 
-const FoodComponent: React.FC<FoodProps> = ({
-  food,
-  // onIncrease,
-  // onDecrease,
-  selected,
-}) => {
+const FoodComponent: React.FC<FoodProps> = ({ food, selected }) => {
   return (
     <div>
       <p>
-        <img src={food.image} alt={food.type} />: {food.count}
+        <img src={food.image} alt={food.type} width="30px" height="30px" />:{" "}
+        {food.count}
       </p>
-      {/* <button onClick={onIncrease}>Reward {food.type}</button>
-      <button onClick={onDecrease}>Feed {food.type}</button> */}
-      {food.type === selected.type && <p>this one is chosen</p>}
+      {food.type === selected.type && <p>{selected.type}</p>}
     </div>
   );
 };

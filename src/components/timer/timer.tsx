@@ -24,16 +24,16 @@ const Timer = () => {
   const [timer, setTimer] = useState("00:00:00");
 
   // calculate time remaining in the timer by subtracting the current date/time from the deadline time
-    const getTimeRemaining = (e: string) => {
+  const getTimeRemaining = (e: string) => {
     const total = Date.parse(e) - Date.parse(new Date().toString());
     const seconds = Math.floor((total / 1000) % 60);
     const minutes = Math.floor((total / 1000 / 60) % 60);
     const hours = Math.floor((total / 1000 / 60 / 60) % 24);
     return {
-        total,
-        hours,
-        minutes,
-        seconds,
+      total,
+      hours,
+      minutes,
+      seconds,
     };
   };
 
@@ -101,17 +101,14 @@ const Timer = () => {
     //increasing the set time by 5 seconds
     setMinutes(minute + 5);
     setTime(getDeadTime()); //reloading the timer display
-<<<<<<< HEAD
 
     console.log(minute);
-=======
   };
 
   //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
   const decreaseTime = (e: Date) => {
     //increasing the set time by 5 seconds
     setMinutes(minute - 5);
->>>>>>> c7308a07ae82924037c858e1a8752c80adbdac7f
   };
 
   const onClickInc = () => {

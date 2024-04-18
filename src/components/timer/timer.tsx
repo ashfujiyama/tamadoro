@@ -100,13 +100,15 @@ const Timer = () => {
   const increaseTime = (e: Date) => {
     //increasing the set time by 5 seconds
     setMinutes(minute + 5);
+    setTime(getDeadTime()); //reloading the timer display
+
+    console.log(minute);
   };
 
   const onClickInc = () => {
-    if (minute < 90) {
+    if (minute < 90 && !isPaused) {
       increaseTime(getDeadTime());
     }
-    setTime(getDeadTime()); //reloading the timer display
   };
 
   //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
@@ -117,7 +119,7 @@ const Timer = () => {
   };
 
   const onClickDec = () => {
-    if (minute > 0) {
+    if (minute > 0 && !isPaused) {
       decreaseTime(getDeadTime());
     }
   };

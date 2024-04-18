@@ -1,7 +1,7 @@
 // needs to take task type as input
 
 import { SetStateAction, useState } from "react";
-import { Task } from "../types";
+import type { Task } from "../types";
 
 // one task: task name, current daily progress, checked if daily goal is complete, button to edit by opening task form
 

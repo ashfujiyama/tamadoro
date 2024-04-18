@@ -42,6 +42,8 @@ const Timer = () => {
     };
 
 
+
+
     //takes in a current deadline and sets the timer variable to display the time
     const setTime = (e: Date) => {
         let { total, hours, minutes, seconds } =
@@ -60,9 +62,9 @@ const Timer = () => {
     const onClickReset = () => {
         if (Ref.current) {
             clearInterval(Ref.current);
-            setIsPaused(false)
+            setIsPaused(false);
         }
-        setTime(getDeadTime())
+        setTime(getDeadTime());
     }
 
     //starts the timer
@@ -78,13 +80,13 @@ const Timer = () => {
         if (pausedTime != null && deadline != null) {
             const remainingTime = deadline.getTime() - pausedTime;
             const newDeadline = new Date(Date.now() + remainingTime);
-            setDeadline(newDeadline)
+            setDeadline(newDeadline);
             const s = Math.floor((remainingTime / 1000) % 60);
 
-            setTime(newDeadline)
-            startTimer(newDeadline)
-            setIsPaused(false)
-            setPausedTime(null)
+            setTime(newDeadline);
+            startTimer(newDeadline);
+            setIsPaused(false);
+            setPausedTime(null);
         }
 
     };
@@ -97,7 +99,7 @@ const Timer = () => {
         deadline.setSeconds(deadline.getSeconds() + second);
         deadline.setMinutes(deadline.getMinutes() + minute);
         deadline.setHours(deadline.getHours() + hour);
-        setDeadline(deadline)
+        setDeadline(deadline);
 
         return deadline;
     };
@@ -106,25 +108,25 @@ const Timer = () => {
     const increaseTime = (e: Date) => {
         //increasing the set time by 5 seconds  
         setMinutes(minute + 5);
-        setTime(getDeadTime()) //reloading the timer display
-    };
-
-    const onClickInc = () => {
-        if(minute < 90){
-            increaseTime(getDeadTime())
-        }
+        setTime(getDeadTime()); //reloading the timer display
     };
 
     //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
     const decreaseTime = (e: Date) => {
         //increasing the set time by 5 seconds  
         setMinutes(minute - 5);
-        setTime(getDeadTime()) //reloading the timer display
+        setTime(getDeadTime()); //reloading the timer display
+    };
+
+    const onClickInc = () => {
+        if(minute < 90 && !isPaused){
+            increaseTime(getDeadTime())
+        }
     };
 
     const onClickDec = () => {
-        if (minute > 0) {
-            decreaseTime(getDeadTime())
+        if (minute > 0 && !isPaused) {
+            decreaseTime(getDeadTime());
         }
     };
 

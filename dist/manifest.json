@@ -19,6 +19,7 @@
       "permissions": [
         "sidePanel",
         "storage",
-        "notifications"
+        "notifications",
+        "alarms"
       ]
 }

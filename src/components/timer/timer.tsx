@@ -8,6 +8,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "@mui/material/styles";
 import { RuleFolderSharp } from "@mui/icons-material";
+import * as timerUtils from "./timerUtils"
 // import notification from '../src/notifications'
 
 const Timer = () => {
@@ -30,10 +31,10 @@ const Timer = () => {
     const minutes = Math.floor((total / 1000 / 60) % 60);
     const hours = Math.floor((total / 1000 / 60 / 60) % 24);
     return {
-        total,
-        hours,
-        minutes,
-        seconds,
+      total,
+      hours,
+      minutes,
+      seconds,
     };
   };
 

@@ -3,6 +3,7 @@ import Timer from '../timer/timer';
 import Inventory from '../pet/inventory';
 import LevelBar from '../pet/levelBar';
 import PetDisplay from '../pet/petDisplay';
+import ModeDisplay from '../timer/modeDisplay';
 
 import "./tamadoro.css";
 
@@ -15,6 +16,7 @@ const Tamadoro: React.FC = () => {
           alt="TamaPet"
         />
         <Timer />
+        <ModeDisplay isFocus={false} />
         <LevelBar />
         <Inventory />
       </div>

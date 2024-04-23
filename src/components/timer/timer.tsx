@@ -25,7 +25,7 @@ const Timer = () => {
   const [timer, setTimer] = useState("00:00:00");
 
   // calculate time remaining in the timer by subtracting the current date/time from the deadline time
-    const getTimeRemaining = (e: string) => {
+  const getTimeRemaining = (e: string) => {
     const total = Date.parse(e) - Date.parse(new Date().toString());
     const seconds = Math.floor((total / 1000) % 60);
     const minutes = Math.floor((total / 1000 / 60) % 60);
@@ -102,6 +102,8 @@ const Timer = () => {
     //increasing the set time by 5 seconds
     setMinutes(minute + 5);
     setTime(getDeadTime()); //reloading the timer display
+
+    console.log(minute);
   };
 
   //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
@@ -111,14 +113,13 @@ const Timer = () => {
   };
 
   const onClickInc = () => {
-    if (minute < 90) {
+    if (minute < 90 && !isPaused) {
       increaseTime(getDeadTime());
     }
-    setTime(getDeadTime()); //reloading the timer display
   };
 
   const onClickDec = () => {
-    if (minute > 0) {
+    if (minute > 0 && !isPaused) {
       decreaseTime(getDeadTime());
     }
     setTime(getDeadTime()); //reloading the timer display

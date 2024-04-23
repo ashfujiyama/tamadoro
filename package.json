@@ -30,6 +30,7 @@
     "test": "react-scripts test --watchAll"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.266",
     "file-loader": "^6.2.0",
     "ts-loader": "^9.4.2",
     "webpack": "^5.75.0",

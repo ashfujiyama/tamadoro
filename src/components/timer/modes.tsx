@@ -1,10 +1,9 @@
 // import React from "react";
 // import { useState, useRef, useEffect } from "react";
 // import "./timerStyle.css";
-// import getTimeRemaining from "./timer"
+// import {getTimeRemaining} from "./timer"
 // import { IconButton } from "@mui/material";
 // import "@mui/material/styles";
-// import getDeadTime from "./timer"
 
 // const [isFocused, setFocusMode]  = useState(true);
 // const [isBreak, setBreakMode]  = useState(false);
@@ -19,5 +18,4 @@
 
 // export default Switch;
 
-
-export{};
+export {};

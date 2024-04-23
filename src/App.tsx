@@ -6,7 +6,7 @@ import "./App.css";
 import TaskList from "./components/tasks/taskList";
 import Title from "./components/title/title";
 import Tamadoro from "./components/tamadoro/tamadoro";
-import { createNotification } from "./notifications";
+// import { createNotification } from "./notifications";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <Title />
       <Tamadoro />
       <TaskList />
-      <button onClick={() => createNotification()}>Show Notification</button>
+      {/* <button onClick={() => createNotification()}>Show Notification</button> */}
     </div>
   );
 }

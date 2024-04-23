@@ -4,6 +4,7 @@ import Inventory from '../pet/inventory';
 import LevelBar from '../pet/levelBar';
 import PetDisplay from '../pet/petDisplay';
 import ModeDisplay from '../timer/modeDisplay';
+import HealthDisplay from '../pet/healthDisplay';
 
 import "./tamadoro.css";
 
@@ -17,7 +18,8 @@ const Tamadoro: React.FC = () => {
         />
         <Timer />
         <ModeDisplay isFocus={false} />
-        <LevelBar />
+        <HealthDisplay health={3} />
+        <LevelBar hp={30} maxHp={100} /> 
         <Inventory />
       </div>
     </div>

@@ -1,6 +1,6 @@
 // to dos: feed function needs to increase hp, change feed to decrcease
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Food,
   FoodType,
@@ -30,140 +30,144 @@ const Inventory = () => {
     image: "../images/cake.png",
   });
 
+  // uncomment to clear things for testing
+
+  // chrome.storage.local.clear(function() {
+  //   var error = chrome.runtime.lastError;
+  //   if (error) {
+  //       console.error(error);
+  //   }
+  //   // do something more
+  // });
+  // chrome.storage.sync.clear();
+
+  // TOMATOES: retrieve stored value at init + track changes/update chrome storage
+
+  useEffect(() => {
+    chrome.storage.sync.get("iTomato", (result) => {
+      if (result.iTomato == null) {
+        chrome.storage.sync.set({"iTomato": 0}, () => {
+          console.log("made new tomato counter");
+        });
+      } else {
+        setTomatoes({...tomatoes,
+          count: parseInt(result.iTomato)})
+      }
+    });
+  }, [])
+
+  useEffect(() => {
+    chrome.storage.sync.set({"iTomato": tomatoes.count}, () => {
+              console.log('Updated tomato count: ' + tomatoes.count);
+            })
+  })
+
+  // SLICES: retrieve stored value at init + track changes/update chrome storage
+
+  useEffect(() => {
+    chrome.storage.sync.get("iSlice", (result) => {
+      if (result.iSlice == null) {
+        chrome.storage.sync.set({"iSlice": 0}, () => {
+          console.log("made new slice counter");
+        });
+      } else {
+        setCakeSlices({...cakeSlices,
+          count: parseInt(result.iSlice)})
+      }
+    });
+  }, [])
+
+  useEffect(() => {
+    chrome.storage.sync.set({"iSlice": cakeSlices.count}, () => {
+              console.log('Updated slice count: ' + cakeSlices.count);
+            })
+  })
+
+  // CAKE: retrieve stored value at init + track changes/update chrome storage
+
+  useEffect(() => {
+    chrome.storage.sync.get("iCake", (result) => {
+      if (result.iCake == null) {
+        chrome.storage.sync.set({"iCake": 0}, () => {
+          console.log("made new cake counter");
+        });
+      } else {
+        setCake({...cake,
+          count: parseInt(result.iCake)})
+      }
+    });
+  }, [])
+
+  useEffect(() => {
+    chrome.storage.sync.set({"iCake": cake.count}, () => {
+              console.log('Updated cake count: ' + cake.count);
+            })
+  })
+
   // make state for current chosen food
   const [chooseFood, setChooseFood] = useState(tomatoes);
 
   // handle tomato count
   const increaseTomatoes = () => {
-    chrome.storage.sync.get("iTomato", (result) => {
-      if (result === null) {
-
-        const key = 'iTomato';
-        const value = { count: 1 };
-
-        chrome.storage.sync.set({[key]: value}, () => {
-          console.log("made new tomato counter");
-        });
-      } else {
-        console.log('Retrieved count: ' + result.iTomato.count);
-        const newCount = result.iTomato.count + 1;
-        chrome.storage.sync.set({"iTomato": {count: [newCount]}}, () => {
-          console.log('Updated tomato count: ' + newCount);
-        })
-      }
-    }); 
-    setTomatoes((prevTomatoes) => increaseFoodCount(prevTomatoes));
+    setTomatoes({
+      ...tomatoes,
+      count: tomatoes.count + 1
+    });
   };
   const decreaseTomatoes = () => {
-    chrome.storage.sync.get("iTomato", (result) => {
-      if (result === null) {
-        console.log("tried to get negative tomato");
-      } else {
-        console.log('Retrieved count: ' + result.iTomato.count);
-        const newCount = result.iTomato.count - 1;
-        if (newCount < 0) {
-          console.log("tried to get negative tomato");
-        } else {
-          chrome.storage.sync.set({"iTomato": {count: [newCount]}}, () => {
-            console.log('Updated tomato count: ' + newCount);
-          });
-        }
-      }
-    });
-    setTomatoes((prevTomatoes) => decreaseFoodCount(prevTomatoes));
+    if (tomatoes.count != 0) {
+      setTomatoes({
+        ...tomatoes,
+        count: tomatoes.count - 1
+      });
+    }
   };
 
   // handle cake slice count
   const increaseCakeSlice = () => {
-    chrome.storage.sync.get("iSlice", (result) => {
-      if (result === null) {
-
-        const key = 'iSlice';
-        const value = { count: 1 };
-
-        chrome.storage.sync.set({[key]: value}, () => {
-          console.log("made new cake slice counter");
-        });
-      } else {
-        console.log('Retrieved count: ' + result.iSlice.count);
-        const newCount = result.iSlice.count + 1;
-        chrome.storage.sync.set({"iSlice": {count: [newCount]}}, () => {
-          console.log('Updated cake slice count: ' + newCount);
-        })
-      }
+    setCakeSlices({
+      ...cakeSlices,
+      count: cakeSlices.count + 1
     });
-    
-    setCakeSlices((prevCakeSlice) => increaseFoodCount(prevCakeSlice));
   };
   const decreaseCakeSlice = () => {
-    chrome.storage.sync.get("iSlice", (result) => {
-      if (result === null) {
-        console.log("tried to get negative cake slice");
-      } else {
-        console.log('Retrieved count: ' + result.iSlice.count);
-        const newCount = result.iSlice.count - 1;
-        if (newCount < 0) {
-          console.log("tried to get negative cake slice");
-        } else {
-          chrome.storage.sync.set({"iSlice": {count: [newCount]}}, () => {
-            console.log('Updated cake slice count: ' + newCount);
-          });
-        }
-      }
-    });
-    setCakeSlices((prevCakeSlice) => decreaseFoodCount(prevCakeSlice));
+    if (cakeSlices.count != 0) {
+      setCakeSlices({
+        ...cakeSlices,
+        count: cakeSlices.count - 1
+      });
+    }
   };
 
   // handle cake count
   const increaseCake = () => {
-    chrome.storage.sync.get("iCake", (result) => {
-      if (result === null) {
-
-        const key = 'iCake';
-        const value = { count: 1 };
-
-        chrome.storage.sync.set({[key]: value}, () => {
-          console.log("made new cake counter");
-        });
-      } else {
-        console.log('Retrieved count: ' + result.iCake.count);
-        const newCount = result.iCake.count + 1;
-        chrome.storage.sync.set({"iCake": {count: [newCount]}}, () => {
-          console.log('Updated cake count: ' + newCount);
-        })
-      }
+    setCake({
+      ...cake,
+      count: cake.count + 1
     });
-    setCake((prevCakeSlice) => increaseFoodCount(prevCakeSlice));
   };
   const decreaseCake = () => {
-    chrome.storage.sync.get("iCake", (result) => {
-      if (result === null) {
-        console.log("tried to get negative cake");
-      } else {
-        console.log('Retrieved count: ' + result.iCake.count);
-        const newCount = result.iCake.count - 1;
-        if (newCount < 0) {
-          console.log("tried to get negative cake");
-        } else {
-          chrome.storage.sync.set({"iCake": {count: [newCount]}}, () => {
-            console.log('Updated cake count: ' + newCount);
-          });
-        }
-      }
-    });
-    setCake((prevCake) => decreaseFoodCount(prevCake));
+    if (cake.count != 0) {
+      setCake({
+        ...cake,
+        count: cake.count - 1
+      });
+    }
   };
 
   // decrease count of current chosen food
   const feed = () => {
     switch (chooseFood.type) {
       case "Tomato":
+        // increaseTomatoes();
         decreaseTomatoes();
         break;
       case "Cake Slice":
+        // increaseCakeSlice();
         decreaseCakeSlice();
         break;
       case "Cake":
+        // increaseCake();
         decreaseCake();
         break;
       default:

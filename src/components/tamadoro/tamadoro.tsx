@@ -12,6 +12,7 @@ const Tamadoro: React.FC = () => {
       <div>
         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
         <Timer />
+        <Inventory />
         <LevelBar />
       </div>
     </div>

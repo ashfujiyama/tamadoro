@@ -28,6 +28,7 @@ const Tamadoro: React.FC = () => {
         {initDeadline != null && (
            <Timer initialDeadline={initDeadline} duration={initDuration} paused={null} /> 
         )}
+        <Inventory />
         <LevelBar />
       </div>
     </div>

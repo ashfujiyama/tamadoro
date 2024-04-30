@@ -8,8 +8,7 @@
     }, 
     "background": {
         "service_worker": "js/service-worker.js",
-        "scripts": "background.ts",
-        "type": "module"
+        "mode": "module"
     },
     "icons": {
 

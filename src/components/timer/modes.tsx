@@ -1,21 +1,26 @@
-// import React from "react";
-// import { useState, useRef, useEffect } from "react";
-// import "./timerStyle.css";
-// import {getTimeRemaining} from "./timer"
-// import { IconButton } from "@mui/material";
-// import "@mui/material/styles";
+import React from "react";
+import { useState, useRef, useEffect } from "react";
+import "./timerStyle.css";
+import { IconButton } from "@mui/material";
+import "@mui/material/styles";
 
-// const [isFocused, setFocusMode]  = useState(true);
-// const [isBreak, setBreakMode]  = useState(false);
-// const [isLongBreak, setLongBreakMode]  = useState(false);
 
-// const [iterations, setIterations] = useState(1)
+const [isFocused, setFocusMode]  = useState(true);
+const [isBreak, setBreakMode]  = useState(false);
+const [isLongBreak, setLongBreakMode]  = useState(false);
 
-// const Switch = () => {
-//     let { total, hours, minutes, seconds } = getTimeRemaining(getDeadTime().toString());
+// store the current amount of pomodoros completed and focus/break modes
 
-// };
 
-// export default Switch;
+const [iterations, setIterations] = useState(1)
 
-export {};
+// useEffect to call every second , and setInterval
+
+const Switch = ({getTimeRemaining}:any) => {
+    let { total, hours, minutes, seconds } = getTimeRemaining();
+    
+    return (<div></div>)
+
+};
+
+export default Switch;

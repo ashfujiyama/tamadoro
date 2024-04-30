@@ -17,8 +17,8 @@ const Tamadoro: React.FC = () => {
 
   useEffect(() => {
     // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
-    setInitDeadline(new Date(Date.now() + 10));
-    setDuration(10);
+    setInitDeadline(new Date(Date.now() + 10 * 1000));
+    setDuration(10 * 1000);
   }, []); // Need this to run once on component mount
 
   return (

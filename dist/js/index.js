@@ -12773,22 +12773,22 @@ var timer_assign = (undefined && undefined.__assign) || function () {
 
 
 
-// get propositions passed in from tomodoro to keep track of what to set the timer to. InitDeadline is the dealdine it is counting down to 
-// duraiton is how long we are setting the timer to (its 10 seconds right now)
 var Timer = function (_a) {
-    var initialDeadline = _a.initialDeadline, duration = _a.duration;
+    var initialDeadline = _a.initialDeadline, duration = _a.duration, paused = _a.paused;
     var Ref = (0,react.useRef)(null);
-    var _b = (0,react.useState)(10), second = _b[0], setSeconds = _b[1];
-    var _c = (0,react.useState)(0), minute = _c[0], setMinutes = _c[1];
-    var _d = (0,react.useState)(0), hour = _d[0], setHours = _d[1];
-    var _e = (0,react.useState)(false), isPaused = _e[0], setIsPaused = _e[1];
-    var _f = (0,react.useState)(null), pausedTime = _f[0], setPausedTime = _f[1];
-    var _g = (0,react.useState)(null), deadline = _g[0], setDeadline = _g[1];
+    // actual state of the timer
+    var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
+    var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
+    console.log(deadline);
     // The state for our timer
-    var _h = (0,react.useState)("00:00:00"), timer = _h[0], setTimer = _h[1];
+    var _d = (0,react.useState)("00:00:00"), timerDisplay = _d[0], setTimerDisplay = _d[1];
+    // additional accessors
+    var isPaused = function () {
+        return pausedTime != null;
+    };
     // calculate time remaining in the timer by subtracting the current date/time from the deadline time
     var getTimeRemaining = function (e) {
-        var total = Date.parse(e) - Date.parse(new Date().toString());
+        var total = Date.parse(e.toString()) - Date.parse(new Date().toString());
         var seconds = Math.floor((total / 1000) % 60);
         var minutes = Math.floor((total / 1000 / 60) % 60);
         var hours = Math.floor((total / 1000 / 60 / 60) % 24);
@@ -12800,90 +12800,102 @@ var Timer = function (_a) {
         };
     };
     //takes in a current deadline and sets the timer variable to display the time
-    var setTime = function (e) {
-        var _a = getTimeRemaining(e.toString()), total = _a.total, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds; // update the timer
+    var setTimerDisplayFromDate = function (e) {
+        var _a = getTimeRemaining(e), total = _a.total, hours = _a.hours, minutes = _a.minutes, seconds = _a.seconds; // update the timer
         if (total >= 0) {
             // check if less than 10 then we need to add '0' at the beginning of the variable
-            setTimer((hours > 9 ? hours : "0" + hours) +
+            setTimerDisplay((hours > 9 ? hours : "0" + hours) +
                 ":" +
                 (minutes > 9 ? minutes : "0" + minutes) +
                 ":" +
                 (seconds > 9 ? seconds : "0" + seconds));
         }
+        console.log(minutes);
+    };
+    var updateTimerDisplay = function () {
+        if (deadline != null)
+            setTimerDisplayFromDate(deadline);
     };
     //resets the timer with the previous deadline
     var onClickReset = function () {
         if (Ref.current) {
             clearInterval(Ref.current);
         }
-        setTime(getDeadTime());
+        setDeadline(new Date(Date.now() + duration));
+        updateTimerDisplay();
     };
     //starts the timer
     var startTimer = function (e) {
         if (Ref.current)
             clearInterval(Ref.current);
-        var id = setInterval(function () { return setTime(e); }, 1000);
+        setDeadline(new Date(Date.now() + duration));
+        var id = setInterval(function () { return setTimerDisplayFromDate(e); }, 1000);
         Ref.current = id;
     };
     // resumes the timer by getting the time when it was stopped, subtracting from the previous deadline
     // creating a new deadline to start the timer again
     var onClickResume = function () {
         if (pausedTime != null && deadline != null) {
-            var remainingTime = deadline.getTime() - pausedTime;
+            var remainingTime = deadline.getTime() - pausedTime.getTime();
+            console.log("remaining" + remainingTime);
+            console.log("deadline" + deadline);
+            console.log("paused" + pausedTime);
             var newDeadline = new Date(Date.now() + remainingTime);
             setDeadline(newDeadline);
-            var s = Math.floor((remainingTime / 1000) % 60);
-            setTime(newDeadline);
+            var s = Math.floor((remainingTime / 1000));
+            console.log("new" + newDeadline);
+            setTimerDisplayFromDate(newDeadline);
             startTimer(newDeadline);
-            setIsPaused(false);
             setPausedTime(null);
         }
     };
-    //sets the deadline for the timer (what the timer is counting down to)
-    var getDeadTime = function () {
-        var deadline = new Date();
-        // This is where you specify how many minute, hours you want in your timer
-        deadline.setSeconds(deadline.getSeconds() + duration);
-        // deadline.setMinutes(deadline.getMinutes() + minute);
-        // deadline.setHours(deadline.getHours() + hour);
-        setDeadline(deadline);
-        return deadline;
+    var increaseTimeGeneral = function (d, hoursDelta, minutesDelta, secondsDelta) {
+        var newDate = new Date();
+        newDate.setSeconds(d.getSeconds() + secondsDelta);
+        newDate.setMinutes(d.getMinutes() + minutesDelta);
+        newDate.setHours(d.getHours() + hoursDelta);
+        return newDate;
+    };
+    var increaseDeadline = function (hoursDelta, minutesDelta, secondsDelta) {
+        if (deadline != null)
+            setDeadline(increaseTimeGeneral(deadline, hoursDelta, minutesDelta, secondsDelta));
     };
     //increase the timer by 5 minutes (5 seconds for testing purposes rn)
     var increaseTime = function (e) {
         //increasing the set time by 5 seconds
-        setMinutes(minute + 5);
-        setTime(getDeadTime()); //reloading the timer display
-        console.log(minute);
+        increaseDeadline(0, 5, 0);
+        updateTimerDisplay(); //reloading the timer display
     };
     //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
     var decreaseTime = function (e) {
         //increasing the set time by 5 seconds
-        setMinutes(minute - 5);
+        increaseDeadline(0, -5, 0);
+        updateTimerDisplay(); //reloading the timer display
     };
     var onClickInc = function () {
-        if (minute < 90 && !isPaused) {
-            increaseTime(getDeadTime());
+        if (deadline != null && (deadline.getHours() - (new Date).getHours()) < 2 && !isPaused()) {
+            increaseTime(deadline);
+            updateTimerDisplay(); //reloading the timer display
         }
     };
     var onClickDec = function () {
-        if (minute > 0 && !isPaused) {
-            decreaseTime(getDeadTime());
+        if (deadline != null && deadline == new Date && !isPaused()) {
+            decreaseTime(deadline);
+            updateTimerDisplay(); //reloading the timer display
         }
-        setTime(getDeadTime()); //reloading the timer display
     };
     //starts the timer
     var onClickStart = function () {
-        startTimer(getDeadTime());
+        if (deadline != null)
+            startTimer(deadline);
     };
     var onClickPause = function () {
         if (Ref.current) {
             clearInterval(Ref.current);
-            setPausedTime(Date.now());
-            setIsPaused(true);
+            setPausedTime(new Date(Date.now()));
         }
     };
-    return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timer })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
+    return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
                             margin: "0px",
                             color: "black",
                             backgroundColor: "transparent",
@@ -12892,9 +12904,197 @@ var Timer = function (_a) {
                             fontSize: "10px",
                             color: "black",
                             backgroundColor: "transparent",
-                        }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] })] })));
+                        }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused() ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused() && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] })] })));
 };
 /* harmony default export */ const timer = (Timer);
+
+;// CONCATENATED MODULE: ./src/components/types/foodType.ts
+var foodType_assign = (undefined && undefined.__assign) || function () {
+    foodType_assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return foodType_assign.apply(this, arguments);
+};
+var FoodType;
+(function (FoodType) {
+    FoodType["Tomato"] = "Tomato";
+    FoodType["CakeSlice"] = "Cake Slice";
+    FoodType["Cake"] = "Cake";
+})(FoodType || (FoodType = {}));
+var increaseFoodCount = function (food) {
+    return foodType_assign(foodType_assign({}, food), { count: food.count + 1 });
+};
+var decreaseFoodCount = function (food) {
+    if (food.count > 0) { // only decrease if food count > 0
+        return foodType_assign(foodType_assign({}, food), { count: food.count - 1 });
+    }
+    return food;
+};
+
+;// CONCATENATED MODULE: ./src/components/pet/food.tsx
+
+var FoodComponent = function (_a) {
+    var food = _a.food, selected = _a.selected;
+    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsxs)("p", { children: [(0,jsx_runtime.jsx)("img", { src: food.image, alt: food.type, width: "30px", height: "30px" }), ":", " ", food.count] }), food.type === selected.type && (0,jsx_runtime.jsx)("p", { children: selected.type })] }));
+};
+/* harmony default export */ const food = (FoodComponent);
+
+;// CONCATENATED MODULE: ./src/components/pet/inventory.tsx
+var inventory_assign = (undefined && undefined.__assign) || function () {
+    inventory_assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return inventory_assign.apply(this, arguments);
+};
+
+// to dos: feed function needs to increase hp, change feed to decrcease
+
+
+
+var Inventory = function () {
+    // create 3 states for each food
+    var _a = (0,react.useState)({
+        type: FoodType.Tomato,
+        points: 5,
+        count: 0,
+        image: "../images/cake.png",
+    }), tomatoes = _a[0], setTomatoes = _a[1];
+    var _b = (0,react.useState)({
+        type: FoodType.CakeSlice,
+        points: 15,
+        count: 0,
+        image: "../images/cake.png",
+    }), cakeSlices = _b[0], setCakeSlices = _b[1];
+    var _c = (0,react.useState)({
+        type: FoodType.Cake,
+        points: 100,
+        count: 0,
+        image: "../images/cake.png",
+    }), cake = _c[0], setCake = _c[1];
+    // uncomment to clear things for testing
+    // chrome.storage.local.clear(function() {
+    //   var error = chrome.runtime.lastError;
+    //   if (error) {
+    //       console.error(error);
+    //   }
+    //   // do something more
+    // });
+    // chrome.storage.sync.clear();
+    // TOMATOES: retrieve stored value at init + track changes/update chrome storage
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("iTomato", function (result) {
+            if (result.iTomato == null) {
+                chrome.storage.sync.set({ "iTomato": 0 }, function () {
+                    console.log("made new tomato counter");
+                });
+            }
+            else {
+                setTomatoes(inventory_assign(inventory_assign({}, tomatoes), { count: parseInt(result.iTomato) }));
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ "iTomato": tomatoes.count }, function () {
+            console.log('Updated tomato count: ' + tomatoes.count);
+        });
+    });
+    // SLICES: retrieve stored value at init + track changes/update chrome storage
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("iSlice", function (result) {
+            if (result.iSlice == null) {
+                chrome.storage.sync.set({ "iSlice": 0 }, function () {
+                    console.log("made new slice counter");
+                });
+            }
+            else {
+                setCakeSlices(inventory_assign(inventory_assign({}, cakeSlices), { count: parseInt(result.iSlice) }));
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ "iSlice": cakeSlices.count }, function () {
+            console.log('Updated slice count: ' + cakeSlices.count);
+        });
+    });
+    // CAKE: retrieve stored value at init + track changes/update chrome storage
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("iCake", function (result) {
+            if (result.iCake == null) {
+                chrome.storage.sync.set({ "iCake": 0 }, function () {
+                    console.log("made new cake counter");
+                });
+            }
+            else {
+                setCake(inventory_assign(inventory_assign({}, cake), { count: parseInt(result.iCake) }));
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ "iCake": cake.count }, function () {
+            console.log('Updated cake count: ' + cake.count);
+        });
+    });
+    // make state for current chosen food
+    var _d = (0,react.useState)(tomatoes), chooseFood = _d[0], setChooseFood = _d[1];
+    // handle tomato count
+    var increaseTomatoes = function () {
+        setTomatoes(inventory_assign(inventory_assign({}, tomatoes), { count: tomatoes.count + 1 }));
+    };
+    var decreaseTomatoes = function () {
+        if (tomatoes.count != 0) {
+            setTomatoes(inventory_assign(inventory_assign({}, tomatoes), { count: tomatoes.count - 1 }));
+        }
+    };
+    // handle cake slice count
+    var increaseCakeSlice = function () {
+        setCakeSlices(inventory_assign(inventory_assign({}, cakeSlices), { count: cakeSlices.count + 1 }));
+    };
+    var decreaseCakeSlice = function () {
+        if (cakeSlices.count != 0) {
+            setCakeSlices(inventory_assign(inventory_assign({}, cakeSlices), { count: cakeSlices.count - 1 }));
+        }
+    };
+    // handle cake count
+    var increaseCake = function () {
+        setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count + 1 }));
+    };
+    var decreaseCake = function () {
+        if (cake.count != 0) {
+            setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count - 1 }));
+        }
+    };
+    // decrease count of current chosen food
+    var feed = function () {
+        switch (chooseFood.type) {
+            case "Tomato":
+                // increaseTomatoes();
+                decreaseTomatoes();
+                break;
+            case "Cake Slice":
+                // increaseCakeSlice();
+                decreaseCakeSlice();
+                break;
+            case "Cake":
+                // increaseCake();
+                decreaseCake();
+                break;
+            default:
+                break;
+        }
+    };
+    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(tomatoes); } }, { children: (0,jsx_runtime.jsx)(food, { food: tomatoes, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(cakeSlices); } }, { children: (0,jsx_runtime.jsx)(food, { food: cakeSlices, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(cake); } }, { children: (0,jsx_runtime.jsx)(food, { food: cake, selected: chooseFood }) }))] }), (0,jsx_runtime.jsx)("div", { children: (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return feed(); } }, { children: "Feed!" })) })] }));
+};
+/* harmony default export */ const inventory = (Inventory);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/levelBar.css
 var levelBar = __webpack_require__(492);
@@ -13058,6 +13258,7 @@ var tamadoro_assign = (undefined && undefined.__assign) || function () {
 
 
 
+
 var Tamadoro = function () {
     // the initial deadline and duration of timer to pass to the Timer component 
     // InitPaused is the time when the user hit the paused button
@@ -13068,10 +13269,10 @@ var Tamadoro = function () {
     var _c = (0,react.useState)(null), initPaused = _c[0], setInitPaused = _c[1];
     (0,react.useEffect)(function () {
         // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
-        setInitDeadline(new Date(Date.now() + 10));
-        setDuration(10);
+        setInitDeadline(new Date(Date.now() + 10 * 1000));
+        setDuration(10 * 1000);
     }, []); // Need this to run once on component mount
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, duration: initDuration, paused: null })), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, duration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

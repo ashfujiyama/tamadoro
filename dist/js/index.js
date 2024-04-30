@@ -12884,6 +12884,12 @@ var Timer = function (_a) {
             updateTimerDisplay(); //reloading the timer display
         }
     };
+    (0,react.useEffect)(function () {
+        if (initialDeadline != null) {
+            updateTimerDisplay();
+            startTimer(initialDeadline);
+        }
+    }, []); // Need this to run once on component mount
     //starts the timer
     var onClickStart = function () {
         if (deadline != null)

@@ -145,6 +145,14 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
     }
   };
 
+  useEffect(() => {
+    if (initialDeadline != null){
+        updateTimerDisplay();
+        startTimer(initialDeadline);
+    }
+    
+  }, []); // Need this to run once on component mount
+
   //starts the timer
   const onClickStart = () => {
     if (deadline != null) startTimer(deadline);

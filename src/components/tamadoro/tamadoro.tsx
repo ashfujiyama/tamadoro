@@ -26,7 +26,7 @@ const Tamadoro: React.FC = () => {
       <div>
         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
         {initDeadline != null && (
-           <Timer initialDeadline={initDeadline} duration={initDuration} paused={null} /> 
+           <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} /> 
         )}
         <Inventory />
         <LevelBar />

@@ -14,16 +14,17 @@ import Switch from "./modes"
 
 interface TimerProps {
     initialDeadline: Date | null;
-    duration: number | 0;
+    initDuration: number | 0;
     paused: Date | null;
   }
   
-const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
+const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) => {
   const Ref = useRef<NodeJS.Timeout | null>(null);
 
   // actual state of the timer
   const [pausedTime, setPausedTime] = useState<Date | null>(null);
   const [deadline, setDeadline] = useState<Date | null>(initialDeadline);
+  const [duration, setDuration] = useState(initDuration);
   console.log(deadline)
 
   // The state for our timer
@@ -75,7 +76,6 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
           (seconds > 9 ? seconds : "0" + seconds)
       );
     }
-    console.log(minutes)
   };
 
   const updateTimerDisplay = () => {
@@ -117,7 +117,7 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
     newDate.setSeconds(d.getSeconds() + secondsDelta);
     newDate.setMinutes(d.getMinutes() + minutesDelta);
     newDate.setHours(d.getHours() + hoursDelta);
-    duration += minutesDelta;
+    console.log(duration)
     return newDate;
   }
 
@@ -128,26 +128,29 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
   //increase the timer by 5 minutes (5 seconds for testing purposes rn)
   const increaseTime = (e: Date) => {
     //increasing the set time by 5 seconds
-    increaseDeadline(0, 5, 0);
+    setDuration(duration + 5);
+    // increaseDeadline(0, 5, 0);
     updateTimerDisplay(); //reloading the timer display
   };
 
   //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
   const decreaseTime = (e: Date) => {
     //increasing the set time by 5 seconds
-    increaseDeadline(0, -5, 0);
+    // increaseDeadline(0, -5, 0);
+    setDuration(duration - 5);
+    console.log(duration);
     updateTimerDisplay(); //reloading the timer display
   };
 
   const onClickInc = () => {
-    if (deadline != null && (deadline.getHours() - (new Date).getHours() )< 2 && !isPaused()) {
+    if (deadline != null && (deadline.getHours() - (new Date).getHours() ) < 2 && !isPaused()) {
       increaseTime(deadline);
       updateTimerDisplay(); //reloading the timer display
     }
   };
 
   const onClickDec = () => {
-    if (deadline != null && deadline == new Date && !isPaused()) {
+    if (deadline != null && deadline != new Date && !isPaused()) {
       decreaseTime(deadline);
       updateTimerDisplay(); //reloading the timer display
     }

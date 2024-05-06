@@ -12774,14 +12774,15 @@ var timer_assign = (undefined && undefined.__assign) || function () {
 
 
 var Timer = function (_a) {
-    var initialDeadline = _a.initialDeadline, duration = _a.duration, paused = _a.paused;
+    var initialDeadline = _a.initialDeadline, initDuration = _a.initDuration, paused = _a.paused;
     var Ref = (0,react.useRef)(null);
     // actual state of the timer
     var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
     var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
+    var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
     console.log(deadline);
     // The state for our timer
-    var _d = (0,react.useState)("00:00:00"), timerDisplay = _d[0], setTimerDisplay = _d[1];
+    var _e = (0,react.useState)("00:00:00"), timerDisplay = _e[0], setTimerDisplay = _e[1];
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
@@ -12820,7 +12821,6 @@ var Timer = function (_a) {
                 ":" +
                 (seconds > 9 ? seconds : "0" + seconds));
         }
-        console.log(minutes);
     };
     var updateTimerDisplay = function () {
         if (deadline != null)
@@ -12858,7 +12858,7 @@ var Timer = function (_a) {
         newDate.setSeconds(d.getSeconds() + secondsDelta);
         newDate.setMinutes(d.getMinutes() + minutesDelta);
         newDate.setHours(d.getHours() + hoursDelta);
-        duration += minutesDelta;
+        console.log(duration);
         return newDate;
     };
     var increaseDeadline = function (hoursDelta, minutesDelta, secondsDelta) {
@@ -12868,13 +12868,16 @@ var Timer = function (_a) {
     //increase the timer by 5 minutes (5 seconds for testing purposes rn)
     var increaseTime = function (e) {
         //increasing the set time by 5 seconds
-        increaseDeadline(0, 5, 0);
+        setDuration(duration + 5);
+        // increaseDeadline(0, 5, 0);
         updateTimerDisplay(); //reloading the timer display
     };
     //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
     var decreaseTime = function (e) {
         //increasing the set time by 5 seconds
-        increaseDeadline(0, -5, 0);
+        // increaseDeadline(0, -5, 0);
+        setDuration(duration - 5);
+        console.log(duration);
         updateTimerDisplay(); //reloading the timer display
     };
     var onClickInc = function () {
@@ -12884,7 +12887,7 @@ var Timer = function (_a) {
         }
     };
     var onClickDec = function () {
-        if (deadline != null && deadline == new Date && !isPaused()) {
+        if (deadline != null && deadline != new Date && !isPaused()) {
             decreaseTime(deadline);
             updateTimerDisplay(); //reloading the timer display
         }
@@ -13285,7 +13288,7 @@ var Tamadoro = function () {
         setInitDeadline(new Date(Date.now() + 10));
         setDuration(10);
     }, []); // Need this to run once on component mount
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, duration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

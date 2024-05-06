@@ -12782,6 +12782,16 @@ var Timer = function (_a) {
     console.log(deadline);
     // The state for our timer
     var _d = (0,react.useState)("00:00:00"), timerDisplay = _d[0], setTimerDisplay = _d[1];
+    //sets the deadline for the timer (what the timer is counting down to)
+    var getDeadTime = function () {
+        var deadline = new Date();
+        // This is where you specify how many minute, hours you want in your timer
+        deadline.setSeconds(deadline.getSeconds() + duration);
+        // deadline.setMinutes(deadline.getMinutes() + minute);
+        // deadline.setHours(deadline.getHours() + hour);
+        setDeadline(deadline);
+        return deadline;
+    };
     // additional accessors
     var isPaused = function () {
         return pausedTime != null;
@@ -12814,21 +12824,19 @@ var Timer = function (_a) {
     };
     var updateTimerDisplay = function () {
         if (deadline != null)
-            setTimerDisplayFromDate(deadline);
+            setTimerDisplayFromDate(getDeadTime());
     };
     //resets the timer with the previous deadline
     var onClickReset = function () {
         if (Ref.current) {
             clearInterval(Ref.current);
         }
-        setDeadline(new Date(Date.now() + duration));
         updateTimerDisplay();
     };
     //starts the timer
     var startTimer = function (e) {
         if (Ref.current)
             clearInterval(Ref.current);
-        setDeadline(new Date(Date.now() + duration));
         var id = setInterval(function () { return setTimerDisplayFromDate(e); }, 1000);
         Ref.current = id;
     };
@@ -12837,13 +12845,9 @@ var Timer = function (_a) {
     var onClickResume = function () {
         if (pausedTime != null && deadline != null) {
             var remainingTime = deadline.getTime() - pausedTime.getTime();
-            console.log("remaining" + remainingTime);
-            console.log("deadline" + deadline);
-            console.log("paused" + pausedTime);
             var newDeadline = new Date(Date.now() + remainingTime);
             setDeadline(newDeadline);
             var s = Math.floor((remainingTime / 1000));
-            console.log("new" + newDeadline);
             setTimerDisplayFromDate(newDeadline);
             startTimer(newDeadline);
             setPausedTime(null);
@@ -12854,6 +12858,7 @@ var Timer = function (_a) {
         newDate.setSeconds(d.getSeconds() + secondsDelta);
         newDate.setMinutes(d.getMinutes() + minutesDelta);
         newDate.setHours(d.getHours() + hoursDelta);
+        duration += minutesDelta;
         return newDate;
     };
     var increaseDeadline = function (hoursDelta, minutesDelta, secondsDelta) {
@@ -12887,13 +12892,15 @@ var Timer = function (_a) {
     (0,react.useEffect)(function () {
         if (initialDeadline != null) {
             updateTimerDisplay();
-            startTimer(initialDeadline);
         }
     }, []); // Need this to run once on component mount
     //starts the timer
     var onClickStart = function () {
-        if (deadline != null)
-            startTimer(deadline);
+        // const newDeadline = new Date(Date.now() + duration);
+        // setDeadline(newDeadline);
+        // console.log(deadline);
+        // if (deadline != null) startTimer(deadline);
+        startTimer(getDeadTime());
     };
     var onClickPause = function () {
         if (Ref.current) {
@@ -13275,8 +13282,8 @@ var Tamadoro = function () {
     var _c = (0,react.useState)(null), initPaused = _c[0], setInitPaused = _c[1];
     (0,react.useEffect)(function () {
         // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
-        setInitDeadline(new Date(Date.now() + 10 * 1000));
-        setDuration(10 * 1000);
+        setInitDeadline(new Date(Date.now() + 10));
+        setDuration(10);
     }, []); // Need this to run once on component mount
     return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, duration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
 };

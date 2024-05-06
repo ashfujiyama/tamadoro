@@ -29,6 +29,19 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
   // The state for our timer
   const [timerDisplay, setTimerDisplay] = useState("00:00:00");
 
+    //sets the deadline for the timer (what the timer is counting down to)
+  const getDeadTime = () => {
+    let deadline = new Date();
+
+    // This is where you specify how many minute, hours you want in your timer
+    deadline.setSeconds(deadline.getSeconds() + duration);
+    // deadline.setMinutes(deadline.getMinutes() + minute);
+    // deadline.setHours(deadline.getHours() + hour);
+    setDeadline(deadline);
+
+    return deadline;
+  };
+
 
   // additional accessors
   const isPaused = () => {
@@ -66,7 +79,7 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
   };
 
   const updateTimerDisplay = () => {
-    if (deadline != null) setTimerDisplayFromDate(deadline);
+    if (deadline != null) setTimerDisplayFromDate(getDeadTime());
    }
 
   //resets the timer with the previous deadline
@@ -74,14 +87,12 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
     if (Ref.current) {
       clearInterval(Ref.current);
     }
-    setDeadline(new Date(Date.now() + duration))
     updateTimerDisplay();
   };
 
   //starts the timer
   const startTimer = (e: Date) => {
     if (Ref.current) clearInterval(Ref.current);
-    setDeadline(new Date(Date.now() + duration))
     const id = setInterval(() => setTimerDisplayFromDate(e), 1000);
     Ref.current = id;
   };
@@ -91,13 +102,9 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
   const onClickResume = () => {
     if (pausedTime != null && deadline != null) {
       const remainingTime = deadline.getTime() - pausedTime.getTime();
-      console.log("remaining" + remainingTime);
-      console.log("deadline" + deadline);
-      console.log("paused" + pausedTime);
       const newDeadline = new Date(Date.now() + remainingTime);
       setDeadline(newDeadline);
       const s = Math.floor((remainingTime / 1000));
-      console.log("new" + newDeadline);
 
       setTimerDisplayFromDate(newDeadline);
       startTimer(newDeadline);
@@ -110,6 +117,7 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
     newDate.setSeconds(d.getSeconds() + secondsDelta);
     newDate.setMinutes(d.getMinutes() + minutesDelta);
     newDate.setHours(d.getHours() + hoursDelta);
+    duration += minutesDelta;
     return newDate;
   }
 
@@ -148,14 +156,17 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, duration, paused }) => {
   useEffect(() => {
     if (initialDeadline != null){
         updateTimerDisplay();
-        startTimer(initialDeadline);
     }
     
   }, []); // Need this to run once on component mount
 
   //starts the timer
   const onClickStart = () => {
-    if (deadline != null) startTimer(deadline);
+    // const newDeadline = new Date(Date.now() + duration);
+    // setDeadline(newDeadline);
+    // console.log(deadline);
+    // if (deadline != null) startTimer(deadline);
+    startTimer(getDeadTime());
   };
 
   const onClickPause = () => {

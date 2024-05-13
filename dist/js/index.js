@@ -12816,14 +12816,57 @@ var timer_assign = (undefined && undefined.__assign) || function () {
 
 
 var Timer = function (_a) {
-    var initialDeadline = _a.initialDeadline, duration = _a.duration, paused = _a.paused;
+    var initialDeadline = _a.initialDeadline, initDuration = _a.initDuration, paused = _a.paused;
     var Ref = (0,react.useRef)(null);
     // actual state of the timer
     var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
     var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
+    var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
+    var _e = (0,react.useState)(initialDeadline), pausedDeadline = _e[0], setPausedDeadline = _e[1];
     console.log(deadline);
     // The state for our timer
-    var _d = (0,react.useState)("00:00:00"), timerDisplay = _d[0], setTimerDisplay = _d[1];
+    var _f = (0,react.useState)("00:00:00"), timerDisplay = _f[0], setTimerDisplay = _f[1];
+    // initialize pausedTime with chrome storage and update when pausedTime changes
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("pausedTime", function (result) {
+            var storedPausedTime = result.pausedTime;
+            if (storedPausedTime === null) {
+                chrome.storage.sync.set({ "pausedTime": null }, function () {
+                    console.log("made new pausedTime tracker");
+                    console.log('deadline', deadline);
+                });
+            }
+            else {
+                setPausedTime(storedPausedTime);
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ pausedTime: pausedTime }, function () {
+            console.log('Paused at time saved:', pausedTime);
+            console.log('deadline', deadline);
+        });
+    }, [pausedTime]);
+    // initialize deadline with chrome storage and update when deadline changes
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("pausedDeadline", function (result) {
+            var storedPausedDeadlineTime = result.pausedDeadline;
+            if (deadline === null) {
+                chrome.storage.sync.set({ "deadline": null }, function () {
+                    console.log("made new deadline tracker");
+                    console.log('deadline', pausedDeadline);
+                });
+            }
+            else {
+                setPausedDeadline(pausedDeadline);
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ pausedDeadline: pausedDeadline }, function () {
+            console.log('deadline at time saved:', pausedDeadline);
+        });
+    }, [pausedDeadline]);
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
@@ -12862,7 +12905,6 @@ var Timer = function (_a) {
                 ":" +
                 (seconds > 9 ? seconds : "0" + seconds));
         }
-        console.log(minutes);
     };
     var updateTimerDisplay = function () {
         if (deadline != null)
@@ -12874,6 +12916,7 @@ var Timer = function (_a) {
             clearInterval(Ref.current);
         }
         updateTimerDisplay();
+        setPausedTime(null);
     };
     //starts the timer
     var startTimer = function (e) {
@@ -12886,7 +12929,7 @@ var Timer = function (_a) {
     // creating a new deadline to start the timer again
     var onClickResume = function () {
         if (pausedTime != null && deadline != null) {
-            var remainingTime = deadline.getTime() - pausedTime.getTime();
+            var remainingTime = deadline.getTime() - new Date(pausedTime).getTime();
             var newDeadline = new Date(Date.now() + remainingTime);
             setDeadline(newDeadline);
             var s = Math.floor((remainingTime / 1000));
@@ -12900,7 +12943,7 @@ var Timer = function (_a) {
         newDate.setSeconds(d.getSeconds() + secondsDelta);
         newDate.setMinutes(d.getMinutes() + minutesDelta);
         newDate.setHours(d.getHours() + hoursDelta);
-        duration += minutesDelta;
+        console.log(duration);
         return newDate;
     };
     var increaseDeadline = function (hoursDelta, minutesDelta, secondsDelta) {
@@ -12910,13 +12953,16 @@ var Timer = function (_a) {
     //increase the timer by 5 minutes (5 seconds for testing purposes rn)
     var increaseTime = function (e) {
         //increasing the set time by 5 seconds
-        increaseDeadline(0, 5, 0);
+        setDuration(duration + 5);
+        // increaseDeadline(0, 5, 0);
         updateTimerDisplay(); //reloading the timer display
     };
     //decrease the timer by 5 minutes (5 seconds for testing purposes rn)
     var decreaseTime = function (e) {
         //increasing the set time by 5 seconds
-        increaseDeadline(0, -5, 0);
+        // increaseDeadline(0, -5, 0);
+        setDuration(duration - 5);
+        console.log(duration);
         updateTimerDisplay(); //reloading the timer display
     };
     var onClickInc = function () {
@@ -12926,16 +12972,29 @@ var Timer = function (_a) {
         }
     };
     var onClickDec = function () {
-        if (deadline != null && deadline == new Date && !isPaused()) {
+        if (deadline != null && deadline != new Date && !isPaused()) {
             decreaseTime(deadline);
             updateTimerDisplay(); //reloading the timer display
         }
     };
+    // display current deadline time when open chrome
     (0,react.useEffect)(function () {
-        if (initialDeadline != null) {
+        if (initialDeadline != null && pausedTime == null) {
             updateTimerDisplay();
         }
+        else {
+            if (pausedDeadline != null) {
+                setTimerDisplayFromDate(pausedDeadline);
+            }
+        }
     }, []); // Need this to run once on component mount
+    // if application was paused when closed, automatically starts countdown when reopen
+    (0,react.useEffect)(function () {
+        if (pausedTime != null) {
+            onClickResume();
+            console.log("here");
+        }
+    }, []);
     //starts the timer
     var onClickStart = function () {
         // const newDeadline = new Date(Date.now() + duration);
@@ -12947,7 +13006,7 @@ var Timer = function (_a) {
     var onClickPause = function () {
         if (Ref.current) {
             clearInterval(Ref.current);
-            setPausedTime(new Date(Date.now()));
+            setPausedTime(new Date(Date.now()).toString());
         }
     };
     return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
@@ -13327,7 +13386,7 @@ var Tamadoro = function () {
         setInitDeadline(new Date(Date.now() + 10));
         setDuration(10);
     }, []); // Need this to run once on component mount
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, duration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

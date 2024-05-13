@@ -7,26 +7,47 @@ const TaskList = () => {
   const [taskList, setTaskList] = useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  // turns off and on form visibility
-  const toggleFormVisibility = () => {
-    setIsFormVisible((prevState) => !prevState);
-  };
-
-  // displays the task list stored in chrome
-  useEffect(() => {
+  // Function to update task list state
+  const updateTaskListState = () => {
     chrome.storage.sync.get("taskList", (result) => {
       if (result.taskList !== null) {
         setTaskList(result.taskList);
       }
     });
-  }, []); // Empty dependency array to run the effect once
+  };
 
-  // chooses current task to complete
+  // Turns off and on form visibility
+  const toggleFormVisibility = () => {
+    setIsFormVisible((prevState) => !prevState);
+  };
+
+  // Displays the task list stored in Chrome
+  useEffect(() => {
+    updateTaskListState(); // Load initial task list
+
+    // Add event listener for changes in Chrome storage
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (changes["taskList"]) {
+        updateTaskListState(); // Update task list state when taskList changes
+      }
+    });
+
+    // Clean up event listener when component unmounts
+    return () => {
+      chrome.storage.onChanged.removeListener((changes, namespace) => {
+        if (changes["taskList"]) {
+          updateTaskListState(); // Update task list state when taskList changes
+        }
+      });
+    };
+  }, []);
+
+  // Chooses current task to complete
   const onClickTask = (task: Task) => {
     setSelectedTask(task);
   };
 
-  // removes task
+  // Removes task
   const removeTask = (taskName: string) => {
     const updatedTaskList = taskList.filter((task) => task.name !== taskName);
     setTaskList(updatedTaskList);
@@ -39,7 +60,6 @@ const TaskList = () => {
       {taskList.map((task, index) => (
         <div key={task.name}>
           {" "}
-          {/* Added key prop */}
           <p>{task.name}</p>
           {selectedTask === task && <p>this task is selected</p>}
           <p>

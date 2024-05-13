@@ -19,11 +19,12 @@ const TaskForm = () => {
   const { register, handleSubmit, reset } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (formData) => {
+    const time = formData.hours * 60;
     const newTask: Task = {
       name: formData.name,
-      dailyProgress: 0, // Assumes starting at 0
-      dailyGoal: formData.hours * 60 + formData.minutes,
-      complete: false, // Default new tasks to incomplete
+      dailyProgress: 0,
+      dailyGoal: time + +formData.minutes,
+      complete: false,
     };
     console.log(newTask);
     chrome.storage.sync.get(["taskList"], (result) => {

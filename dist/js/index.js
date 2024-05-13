@@ -11485,11 +11485,12 @@ var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from
 var TaskForm = function () {
     var _a = useForm(), register = _a.register, handleSubmit = _a.handleSubmit, reset = _a.reset;
     var onSubmit = function (formData) {
+        var time = formData.hours * 60;
         var newTask = {
             name: formData.name,
             dailyProgress: 0,
-            dailyGoal: formData.hours * 60 + formData.minutes,
-            complete: false, // Default new tasks to incomplete
+            dailyGoal: time + +formData.minutes,
+            complete: false,
         };
         console.log(newTask);
         chrome.storage.sync.get(["taskList"], function (result) {
@@ -11525,23 +11526,41 @@ var TaskList = function () {
     var _a = (0,react.useState)(false), isFormVisible = _a[0], setIsFormVisible = _a[1];
     var _b = (0,react.useState)([]), taskList = _b[0], setTaskList = _b[1];
     var _c = (0,react.useState)(null), selectedTask = _c[0], setSelectedTask = _c[1];
-    // turns off and on form visibility
-    var toggleFormVisibility = function () {
-        setIsFormVisible(function (prevState) { return !prevState; });
-    };
-    // displays the task list stored in chrome
-    (0,react.useEffect)(function () {
+    // Function to update task list state
+    var updateTaskListState = function () {
         chrome.storage.sync.get("taskList", function (result) {
             if (result.taskList !== null) {
                 setTaskList(result.taskList);
             }
         });
-    }, []); // Empty dependency array to run the effect once
-    // chooses current task to complete
+    };
+    // Turns off and on form visibility
+    var toggleFormVisibility = function () {
+        setIsFormVisible(function (prevState) { return !prevState; });
+    };
+    // Displays the task list stored in Chrome
+    (0,react.useEffect)(function () {
+        updateTaskListState(); // Load initial task list
+        // Add event listener for changes in Chrome storage
+        chrome.storage.onChanged.addListener(function (changes, namespace) {
+            if (changes["taskList"]) {
+                updateTaskListState(); // Update task list state when taskList changes
+            }
+        });
+        // Clean up event listener when component unmounts
+        return function () {
+            chrome.storage.onChanged.removeListener(function (changes, namespace) {
+                if (changes["taskList"]) {
+                    updateTaskListState(); // Update task list state when taskList changes
+                }
+            });
+        };
+    }, []);
+    // Chooses current task to complete
     var onClickTask = function (task) {
         setSelectedTask(task);
     };
-    // removes task
+    // Removes task
     var removeTask = function (taskName) {
         var updatedTaskList = taskList.filter(function (task) { return task.name !== taskName; });
         setTaskList(updatedTaskList);

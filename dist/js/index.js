@@ -12780,9 +12780,51 @@ var Timer = function (_a) {
     var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
     var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
     var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
+    var _e = (0,react.useState)(initialDeadline), pausedDeadline = _e[0], setPausedDeadline = _e[1];
     console.log(deadline);
     // The state for our timer
-    var _e = (0,react.useState)("00:00:00"), timerDisplay = _e[0], setTimerDisplay = _e[1];
+    var _f = (0,react.useState)("00:00:00"), timerDisplay = _f[0], setTimerDisplay = _f[1];
+    // initialize pausedTime with chrome storage and update when pausedTime changes
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("pausedTime", function (result) {
+            var storedPausedTime = result.pausedTime;
+            if (storedPausedTime === null) {
+                chrome.storage.sync.set({ "pausedTime": null }, function () {
+                    console.log("made new pausedTime tracker");
+                    console.log('deadline', deadline);
+                });
+            }
+            else {
+                setPausedTime(storedPausedTime);
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ pausedTime: pausedTime }, function () {
+            console.log('Paused at time saved:', pausedTime);
+            console.log('deadline', deadline);
+        });
+    }, [pausedTime]);
+    // initialize deadline with chrome storage and update when deadline changes
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("pausedDeadline", function (result) {
+            var storedPausedDeadlineTime = result.pausedDeadline;
+            if (deadline === null) {
+                chrome.storage.sync.set({ "deadline": null }, function () {
+                    console.log("made new deadline tracker");
+                    console.log('deadline', pausedDeadline);
+                });
+            }
+            else {
+                setPausedDeadline(pausedDeadline);
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ pausedDeadline: pausedDeadline }, function () {
+            console.log('deadline at time saved:', pausedDeadline);
+        });
+    }, [pausedDeadline]);
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
@@ -12845,7 +12887,7 @@ var Timer = function (_a) {
     // creating a new deadline to start the timer again
     var onClickResume = function () {
         if (pausedTime != null && deadline != null) {
-            var remainingTime = deadline.getTime() - pausedTime.getTime();
+            var remainingTime = deadline.getTime() - new Date(pausedTime).getTime();
             var newDeadline = new Date(Date.now() + remainingTime);
             setDeadline(newDeadline);
             var s = Math.floor((remainingTime / 1000));
@@ -12893,11 +12935,24 @@ var Timer = function (_a) {
             updateTimerDisplay(); //reloading the timer display
         }
     };
+    // display current deadline time when open chrome
     (0,react.useEffect)(function () {
-        if (initialDeadline != null) {
+        if (initialDeadline != null && pausedTime == null) {
             updateTimerDisplay();
         }
+        else {
+            if (pausedDeadline != null) {
+                setTimerDisplayFromDate(pausedDeadline);
+            }
+        }
     }, []); // Need this to run once on component mount
+    // if application was paused when closed, automatically starts countdown when reopen
+    (0,react.useEffect)(function () {
+        if (pausedTime != null) {
+            onClickResume();
+            console.log("here");
+        }
+    }, []);
     //starts the timer
     var onClickStart = function () {
         // const newDeadline = new Date(Date.now() + duration);
@@ -12909,7 +12964,7 @@ var Timer = function (_a) {
     var onClickPause = function () {
         if (Ref.current) {
             clearInterval(Ref.current);
-            setPausedTime(new Date(Date.now()));
+            setPausedTime(new Date(Date.now()).toString());
         }
     };
     return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {

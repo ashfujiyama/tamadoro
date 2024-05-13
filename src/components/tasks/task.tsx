@@ -5,8 +5,8 @@ import type { Task } from "../types";
 
 // one task: task name, current daily progress, checked if daily goal is complete, button to edit by opening task form
 
-// const Task = (task: Task) => {
-const Task = () => {
+const Task = (task: Task) => {
+  // const Task = () => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   // chooses current task to complete

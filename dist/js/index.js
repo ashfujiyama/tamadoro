@@ -8837,22 +8837,6 @@ var update = injectStylesIntoStyleTag_default()(App/* default */.Z, options);
 
        /* harmony default export */ const src_App = (App/* default */.Z && App/* default.locals */.Z.locals ? App/* default.locals */.Z.locals : undefined);
 
-;// CONCATENATED MODULE: ./src/components/tasks/task.tsx
-
-// needs to take task type as input
-
-// one task: task name, current daily progress, checked if daily goal is complete, button to edit by opening task form
-// const Task = (task: Task) => {
-var Task = function () {
-    var _a = (0,react.useState)(null), selectedTask = _a[0], setSelectedTask = _a[1];
-    // chooses current task to complete
-    var onClickTask = function (task) {
-        setSelectedTask(task);
-    };
-    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsxs)("p", { children: ["task: ", selectedTask === null || selectedTask === void 0 ? void 0 : selectedTask.name, " taskName"] }), (0,jsx_runtime.jsxs)("p", { children: ["today's progress: ", selectedTask === null || selectedTask === void 0 ? void 0 : selectedTask.dailyProgress, "0 /", selectedTask === null || selectedTask === void 0 ? void 0 : selectedTask.dailyGoal, " 10"] })] }));
-};
-/* harmony default export */ const task = (Task);
-
 ;// CONCATENATED MODULE: ./node_modules/react-hook-form/dist/index.esm.mjs
 
 
@@ -11486,17 +11470,39 @@ var __assign = (undefined && undefined.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 
 
 
-// form to keep track of and submit new tasks entered
 var TaskForm = function () {
-    var _a = useForm(), register = _a.register, handleSubmit = _a.handleSubmit, reset = _a.reset; // Specify the type for useForm
+    var _a = useForm(), register = _a.register, handleSubmit = _a.handleSubmit, reset = _a.reset;
     var onSubmit = function (formData) {
-        console.log(formData);
+        var newTask = {
+            name: formData.name,
+            dailyProgress: 0,
+            dailyGoal: formData.hours * 60 + formData.minutes,
+            complete: false, // Default new tasks to incomplete
+        };
+        console.log(newTask);
+        chrome.storage.sync.get(["taskList"], function (result) {
+            var _a;
+            var taskList = (_a = result.taskList) !== null && _a !== void 0 ? _a : [];
+            var updatedTaskList = __spreadArray(__spreadArray([], taskList, true), [newTask], false);
+            chrome.storage.sync.set({ taskList: updatedTaskList }, function () {
+                console.log("Task list updated:", updatedTaskList);
+            });
+        });
         reset();
     };
-    return ((0,jsx_runtime.jsxs)("form", __assign({ className: "taskForm", onSubmit: handleSubmit(onSubmit) }, { children: [(0,jsx_runtime.jsx)("input", __assign({ className: "projectTitleInput" }, (register("taskName"), { required: true, maxLength: 20 }), { placeholder: "Project Title" })), (0,jsx_runtime.jsxs)("div", __assign({ className: "input-with-label" }, { children: [(0,jsx_runtime.jsx)("input", __assign({ type: "number", className: "time-input" }, register("dailyGoal", { min: 1, max: 24 }), { placeholder: "HH" })), (0,jsx_runtime.jsx)("span", { children: ":" }), (0,jsx_runtime.jsx)("input", __assign({ type: "number", className: "time-input" }, register("dailyGoal", { min: 0, max: 59 }), { placeholder: "MM" }))] })), (0,jsx_runtime.jsx)("input", { type: "submit" })] })));
+    return ((0,jsx_runtime.jsxs)("form", __assign({ className: "taskForm", onSubmit: handleSubmit(onSubmit) }, { children: [(0,jsx_runtime.jsx)("input", __assign({ className: "projectTitleInput" }, register("name", { required: true, maxLength: 20 }), { placeholder: "Project Title" })), (0,jsx_runtime.jsxs)("div", __assign({ className: "input-with-label" }, { children: [(0,jsx_runtime.jsx)("input", __assign({ type: "number", className: "time-input" }, register("hours", { min: 0, max: 24 }), { placeholder: "HH" })), (0,jsx_runtime.jsx)("span", { children: ":" }), (0,jsx_runtime.jsx)("input", __assign({ type: "number", className: "time-input" }, register("minutes", { min: 0, max: 59 }), { placeholder: "MM" }))] })), (0,jsx_runtime.jsx)("input", { type: "submit" })] })));
 };
 /* harmony default export */ const taskForm = (TaskForm);
 
@@ -11513,18 +11519,35 @@ var taskList_assign = (undefined && undefined.__assign) || function () {
     return taskList_assign.apply(this, arguments);
 };
 
-// display container of tasks + collapsible task form for new ones
-// needs to get and iterate over task array from local storage with each task as in put for <Task>
-
 
 
 var TaskList = function () {
     var _a = (0,react.useState)(false), isFormVisible = _a[0], setIsFormVisible = _a[1];
-    // turns off and on form visinility
+    var _b = (0,react.useState)([]), taskList = _b[0], setTaskList = _b[1];
+    var _c = (0,react.useState)(null), selectedTask = _c[0], setSelectedTask = _c[1];
+    // turns off and on form visibility
     var toggleFormVisibility = function () {
         setIsFormVisible(function (prevState) { return !prevState; });
     };
-    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)(task, {}), (0,jsx_runtime.jsxs)("div", taskList_assign({ className: "collapsible-container" }, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ className: "collapsible-header", onClick: toggleFormVisibility }, { children: "Add Task" })), isFormVisible && ((0,jsx_runtime.jsx)("div", taskList_assign({ className: "collapsible-content" }, { children: (0,jsx_runtime.jsx)(taskForm, {}) })))] }))] }));
+    // displays the task list stored in chrome
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("taskList", function (result) {
+            if (result.taskList !== null) {
+                setTaskList(result.taskList);
+            }
+        });
+    }, []); // Empty dependency array to run the effect once
+    // chooses current task to complete
+    var onClickTask = function (task) {
+        setSelectedTask(task);
+    };
+    // removes task
+    var removeTask = function (taskName) {
+        var updatedTaskList = taskList.filter(function (task) { return task.name !== taskName; });
+        setTaskList(updatedTaskList);
+        chrome.storage.sync.set({ taskList: updatedTaskList });
+    };
+    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [taskList.map(function (task, index) { return ((0,jsx_runtime.jsxs)("div", { children: [" ", (0,jsx_runtime.jsx)("p", { children: task.name }), selectedTask === task && (0,jsx_runtime.jsx)("p", { children: "this task is selected" }), (0,jsx_runtime.jsxs)("p", { children: ["today's progress: ", task.dailyProgress, " / ", task.dailyGoal] }), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return onClickTask(task); } }, { children: "select" })), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return removeTask(task.name); } }, { children: "delete" }))] }, task.name)); }), (0,jsx_runtime.jsxs)("div", taskList_assign({ className: "collapsible-container" }, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ className: "collapsible-header", onClick: toggleFormVisibility }, { children: "Add Task" })), isFormVisible && ((0,jsx_runtime.jsx)("div", taskList_assign({ className: "collapsible-content" }, { children: (0,jsx_runtime.jsx)(taskForm, {}) })))] }))] }));
 };
 /* harmony default export */ const taskList = (TaskList);
 

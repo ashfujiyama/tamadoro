@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Task from "./task";
 import TaskForm from "./taskForm";
+import { Task } from "../types";
 
 const TaskList = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);

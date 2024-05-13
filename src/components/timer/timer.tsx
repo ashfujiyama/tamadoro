@@ -31,7 +31,7 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
   const [timerDisplay, setTimerDisplay] = useState("00:00:00");
 
     //sets the deadline for the timer (what the timer is counting down to)
-  const getDeadTime = () => {
+   const getDeadTime = () => {
     let deadline = new Date();
 
     // This is where you specify how many minute, hours you want in your timer
@@ -88,6 +88,7 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
       clearInterval(Ref.current);
     }
     updateTimerDisplay();
+    setPausedTime(null);
   };
 
   //starts the timer
@@ -227,6 +228,9 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
 };
 
 export default Timer;
+
+
+// *********** when the timer closes set paused time to reactivate when reopen
 
 // pause: need to store time remaining whe the user pauses. To restart need to set a new deadline time with the time left
 

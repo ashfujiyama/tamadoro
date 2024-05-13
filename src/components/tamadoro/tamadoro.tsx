@@ -15,6 +15,8 @@ const Tamadoro: React.FC = () => {
   const [initDuration, setDuration] = useState(0);
   const [initPaused, setInitPaused] = useState<number | null>(null);
 
+  
+
   useEffect(() => {
     // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
     setInitDeadline(new Date(Date.now() + 10));

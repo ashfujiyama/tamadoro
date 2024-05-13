@@ -12832,6 +12832,7 @@ var Timer = function (_a) {
             clearInterval(Ref.current);
         }
         updateTimerDisplay();
+        setPausedTime(null);
     };
     //starts the timer
     var startTimer = function (e) {

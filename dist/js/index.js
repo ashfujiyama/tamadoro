@@ -12967,15 +12967,29 @@ var timer_assign = (undefined && undefined.__assign) || function () {
 
 
 var Timer = function (_a) {
-    var initialDeadline = _a.initialDeadline, initDuration = _a.initDuration, paused = _a.paused;
+    var initialDeadline = _a.initialDeadline, initDuration = _a.initDuration, paused = _a.paused, initMode = _a.initMode;
     var Ref = (0,react.useRef)(null);
     // actual state of the timer
     var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
     var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
     var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
-    var _e = (0,react.useState)(null), currMode = _e[0], setCurrMode = _e[1];
+    var _e = (0,react.useState)(initMode), currMode = _e[0], setCurrMode = _e[1];
     var _f = (0,react.useState)(0), focusCounter = _f[0], setFocusCounter = _f[1];
     console.log(deadline);
+    //  // check val of currMode
+    //  useEffect(() => {
+    //   chrome.storage.sync.get("currMode", (result) => {
+    //       const storedCurrMode = result.currMode;
+    //       if (storedCurrMode === null) {
+    //           chrome.storage.sync.set({"pausedTime": null}, () => {
+    //               console.log("made new mode tracker 6");
+    //           });
+    //       } else {
+    //         setCurrMode(storedCurrMode);
+    //         console.log('in set mode', storedCurrMode);
+    //       }
+    //       });
+    //   }, [])
     // The state for our timer
     var _g = (0,react.useState)("00:00:00"), timerDisplay = _g[0], setTimerDisplay = _g[1];
     // initialize pausedTime with chrome storage and update when pausedTime changes
@@ -13744,7 +13758,7 @@ var Tamadoro = function () {
         setInitDeadline(new Date(Date.now() + initDuration));
         setCurrMode("Focus");
     }, []);
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)("h2", tamadoro_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", tamadoro_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: 100 }), (0,jsx_runtime.jsx)(components_pet_levelBar, { maxHp: 100, hp: 60 })] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

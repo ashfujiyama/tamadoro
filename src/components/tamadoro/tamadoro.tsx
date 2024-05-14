@@ -188,7 +188,7 @@ const Tamadoro: React.FC = () => {
       <div>
         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
         {initDeadline && (
-          <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} />
+          <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} initMode={currMode}/>
         )}
         <Inventory />
         <HealthDisplay health={100} />

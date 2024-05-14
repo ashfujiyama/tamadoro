@@ -12866,11 +12866,11 @@ var Timer = function (_a) {
             if (storedPausedTime === null) {
                 chrome.storage.sync.set({ "pausedTime": null }, function () {
                     console.log("made new pausedTime tracker");
-                    console.log('deadline', deadline);
                 });
             }
             else {
                 setPausedTime(storedPausedTime);
+                console.log('in set pausedTime', storedPausedTime);
             }
         });
     }, []);
@@ -12896,19 +12896,6 @@ var Timer = function (_a) {
             }
         });
     }, []);
-    //    useEffect(() => {
-    //     chrome.storage.sync.get("deadline", (result) => {
-    //         const storedPausedTime = result.pausedTime;
-    //         if (deadline === null) {
-    //             chrome.storage.sync.set({"deadline": null}, () => {
-    //                 console.log("made new deadline tracker");
-    //                 console.log('deadline', deadline);
-    //             });
-    //         } else {
-    //             setDeadline(deadline);
-    //         }
-    //     });
-    //   }, [])
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ deadline: deadline }, function () {
             console.log('deadline at time saved:', deadline);
@@ -12941,10 +12928,8 @@ var Timer = function (_a) {
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
-        // This is where you specify how many minute, hours you want in your timer
+        // This is where you specify how many minutes you want in your timer
         deadline.setMinutes(deadline.getMinutes() + duration);
-        // deadline.setMinutes(deadline.getMinutes() + minute);
-        // deadline.setHours(deadline.getHours() + hour);
         setDeadline(deadline);
         return deadline;
     };
@@ -12988,7 +12973,6 @@ var Timer = function (_a) {
         }
         updateTimerDisplay();
         setPausedTime(null);
-        console.log("in reset");
     };
     //starts the timer
     var startTimer = function (e) {
@@ -13070,10 +13054,6 @@ var Timer = function (_a) {
     }, []);
     //starts the timer
     var onClickStart = function () {
-        // const newDeadline = new Date(Date.now() + duration);
-        // setDeadline(newDeadline);
-        // console.log(deadline);
-        // if (deadline != null) startTimer(deadline);
         startTimer(getDeadTime());
     };
     var onClickPause = function () {
@@ -13227,7 +13207,7 @@ var Inventory = function () {
         chrome.storage.sync.get("iTomato", function (result) {
             if (result.iTomato == null) {
                 chrome.storage.sync.set({ "iTomato": 0 }, function () {
-                    console.log("made new tomato counter");
+                    // console.log("made new tomato counter");
                 });
             }
             else {
@@ -13237,7 +13217,7 @@ var Inventory = function () {
     }, []);
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ "iTomato": tomatoes.count }, function () {
-            console.log('Updated tomato count: ' + tomatoes.count);
+            // console.log('Updated tomato count: ' + tomatoes.count);
         });
     });
     // SLICES: retrieve stored value at init + track changes/update chrome storage
@@ -13245,7 +13225,7 @@ var Inventory = function () {
         chrome.storage.sync.get("iSlice", function (result) {
             if (result.iSlice == null) {
                 chrome.storage.sync.set({ "iSlice": 0 }, function () {
-                    console.log("made new slice counter");
+                    // console.log("made new slice counter");
                 });
             }
             else {
@@ -13255,7 +13235,7 @@ var Inventory = function () {
     }, []);
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ "iSlice": cakeSlices.count }, function () {
-            console.log('Updated slice count: ' + cakeSlices.count);
+            // console.log('Updated slice count: ' + cakeSlices.count);
         });
     });
     // CAKE: retrieve stored value at init + track changes/update chrome storage
@@ -13263,7 +13243,7 @@ var Inventory = function () {
         chrome.storage.sync.get("iCake", function (result) {
             if (result.iCake == null) {
                 chrome.storage.sync.set({ "iCake": 0 }, function () {
-                    console.log("made new cake counter");
+                    // console.log("made new cake counter");
                 });
             }
             else {
@@ -13273,7 +13253,7 @@ var Inventory = function () {
     }, []);
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ "iCake": cake.count }, function () {
-            console.log('Updated cake count: ' + cake.count);
+            // console.log('Updated cake count: ' + cake.count);
         });
     });
     // make state for current chosen food

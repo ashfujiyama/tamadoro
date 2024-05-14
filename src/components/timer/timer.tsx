@@ -38,10 +38,10 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
         if (storedPausedTime === null) {
             chrome.storage.sync.set({"pausedTime": null}, () => {
                 console.log("made new pausedTime tracker");
-                console.log('deadline', deadline);
             });
         } else {
             setPausedTime(storedPausedTime);
+            console.log('in set pausedTime', storedPausedTime);
         }
         });
     }, [])
@@ -69,20 +69,6 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
             }
             });
         }, [])
-
-//    useEffect(() => {
-//     chrome.storage.sync.get("deadline", (result) => {
-//         const storedPausedTime = result.pausedTime;
-//         if (deadline === null) {
-//             chrome.storage.sync.set({"deadline": null}, () => {
-//                 console.log("made new deadline tracker");
-//                 console.log('deadline', deadline);
-//             });
-//         } else {
-//             setDeadline(deadline);
-//         }
-//     });
-//   }, [])
 
     useEffect(() => {
         chrome.storage.sync.set({ deadline: deadline }, () => {
@@ -120,10 +106,8 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
    const getDeadTime = () => {
     let deadline = new Date();
 
-    // This is where you specify how many minute, hours you want in your timer
+    // This is where you specify how many minutes you want in your timer
     deadline.setMinutes(deadline.getMinutes() + duration);
-    // deadline.setMinutes(deadline.getMinutes() + minute);
-    // deadline.setHours(deadline.getHours() + hour);
     setDeadline(deadline);
 
     return deadline;
@@ -175,7 +159,6 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
     }
     updateTimerDisplay();
     setPausedTime(null);
-    console.log("in reset")
   };
 
   //starts the timer
@@ -267,10 +250,6 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
 
   //starts the timer
   const onClickStart = () => {
-    // const newDeadline = new Date(Date.now() + duration);
-    // setDeadline(newDeadline);
-    // console.log(deadline);
-    // if (deadline != null) startTimer(deadline);
     startTimer(getDeadTime());
   };
 

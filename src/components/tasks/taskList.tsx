@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Task from "./task";
 import TaskForm from "./taskForm";
+import { Task } from "../types";
 
 const TaskList = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -55,8 +55,23 @@ const TaskList = () => {
     chrome.storage.sync.set({ taskList: updatedTaskList });
   };
 
+  // when a timer is complete, add progress
+  const timerComplete = (timeElapsed: number) => {
+    if (selectedTask) {
+      const updatedTaskList = taskList.map((task) => {
+        if (task.name === selectedTask.name) {
+          return { ...task, dailyProgress: task.dailyProgress + timeElapsed };
+        }
+        return task;
+      });
+
+      setTaskList(updatedTaskList);
+      chrome.storage.sync.set({ taskList: updatedTaskList });
+    }
+  };
   return (
     <>
+      <button onClick={() => timerComplete(10)}>timer complete</button>
       {taskList.map((task, index) => (
         <div key={task.name}>
           {" "}

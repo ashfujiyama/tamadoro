@@ -11584,10 +11584,10 @@ var TaskList = function () {
                 }
             });
         };
-        // Run checkDeadline function initially
+        // Run checkDeadline function
         checkDeadline();
-        // Set up interval to periodically check deadline
-        var intervalId = setInterval(checkDeadline, 60000); // Check every minute
+        // Run the function every 5 seconds to check for deadline completion
+        var intervalId = setInterval(checkDeadline, 5000);
         // Clean up interval when component unmounts
         return function () { return clearInterval(intervalId); };
     }, []);
@@ -11600,6 +11600,7 @@ var TaskList = function () {
         };
         // Run the function every minute to check for midnight
         var intervalId = setInterval(checkStorageAtMidnight, 60000);
+        // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
         // Clean up interval when component unmounts
         return function () { return clearInterval(intervalId); };
     }, []);

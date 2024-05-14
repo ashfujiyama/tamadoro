@@ -26,23 +26,47 @@ const TaskForm = () => {
       dailyGoal: time + +formData.minutes,
       complete: false,
     };
-    console.log(newTask);
+
     chrome.storage.sync.get(["taskList"], (result) => {
-      if (result) {
-        // const taskList = result.taskList ?? [];
-        const updatedTaskList = [...result.taskList, newTask];
-        chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
-          console.log("Task list updated:", updatedTaskList);
-        });
-      } else {
-        const updatedTaskList = [newTask];
-        chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
-          console.log("Task list updated:", updatedTaskList);
-        });
-      }
+      // Ensure taskList is an array, use an empty array if taskList is undefined
+      const taskList = result.taskList ?? [];
+      const updatedTaskList = [...taskList, newTask];
+
+      chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+        console.log("Task list updated:", updatedTaskList);
+      });
     });
+
+    // Reset form fields
     reset();
   };
+
+  // const onSubmit: SubmitHandler<IFormInput> = (formData) => {
+  //   const time = formData.hours * 60;
+  //   const newTask: Task = {
+  //     name: formData.name,
+  //     dailyProgress: 0,
+  //     dailyGoal: time + +formData.minutes,
+  //     complete: false,
+  //   };
+  //   console.log(newTask);
+  //   chrome.storage.sync.get(["taskList"], (result) => {
+  //     if (result.taskList) {
+  //       // const taskList = result.taskList ?? [];
+  //       console.log(result.taskList);
+  //       const updatedTaskList = [...result.taskList, newTask];
+  //       chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+  //         console.log("Task list updated:", updatedTaskList);
+  //       });
+  //     } else {
+  //       const updatedTaskList = [newTask];
+  //       chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+  //         console.log("Task list updated:", updatedTaskList);
+  //       });
+  //     }
+  //   });
+  //   reset();
+  // };
 
   return (
     <form className="taskForm" onSubmit={handleSubmit(onSubmit)}>

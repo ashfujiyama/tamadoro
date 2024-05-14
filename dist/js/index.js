@@ -11586,9 +11586,9 @@ var TaskList = function () {
     (0,react.useEffect)(function () {
         // Function to compare deadline with current time
         var checkDeadline = function () {
-            chrome.storage.sync.set({ deadline: new Date() }, function () {
-                console.log("set deadline to: ", new Date());
-            });
+            // chrome.storage.sync.set({ deadline: new Date() }, () => {
+            //   console.log("set deadline to: ", new Date());
+            // });
             chrome.storage.sync.get("deadline", function (result) {
                 if (result.deadline) {
                     var currentTime = new Date();

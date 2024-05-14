@@ -11547,7 +11547,7 @@ var TaskList = function () {
     };
     // Displays the task list stored in Chrome
     (0,react.useEffect)(function () {
-        updateTaskListState(); // Load initial task list
+        updateTaskListState(); // Load saved task list
         // Add event listener for changes in Chrome storage
         chrome.storage.onChanged.addListener(function (changes, namespace) {
             if (changes["taskList"]) {
@@ -11563,6 +11563,56 @@ var TaskList = function () {
             });
         };
     }, []);
+    // useEffect(() => {
+    //   // Function to compare deadline with current time
+    //   const checkDeadline = () => {
+    //     chrome.storage.sync.get(["deadline"], (result) => {
+    //       const deadline = result.deadline;
+    //       if (deadline) {
+    //         const currentTime = new Date();
+    //         const deadlineTime = new Date(deadline);
+    //         if (currentTime > deadlineTime) {
+    //           console.log("Deadline has passed.");
+    //         } else {
+    //           console.log("Deadline is in the future.");
+    //         }
+    //       } else {
+    //         console.log("No deadline found in Chrome storage.");
+    //       }
+    //     });
+    //   };
+    //   // Run checkDeadline function initially
+    //   checkDeadline();
+    //   // Set up interval to periodically check deadline
+    //   const intervalId = setInterval(checkDeadline, 60000); // Check every minute
+    //   // Clean up interval when component unmounts
+    //   return () => clearInterval(intervalId);
+    // }, []);
+    (0,react.useEffect)(function () {
+        var checkStorageAtMidnight = function () {
+            var now = new Date();
+            if (now.getHours() === 0 && now.getMinutes() === 0) {
+                resetProgress();
+            }
+        };
+        // Run the function every minute to check for midnight
+        var intervalId = setInterval(checkStorageAtMidnight, 60000);
+        // Clean up interval when component unmounts
+        return function () { return clearInterval(intervalId); };
+    }, []);
+    var resetProgress = function () {
+        console.log("Resetting progress...");
+        chrome.storage.sync.get(["taskList"], function (result) {
+            if (result.taskList) {
+                var updatedTaskList_1 = result.taskList.map(function (task) { return (taskList_assign(taskList_assign({}, task), { dailyProgress: 0 })); });
+                // Update taskList in Chrome storage
+                chrome.storage.sync.set({ taskList: updatedTaskList_1 }, function () {
+                    console.log("Task list updated in Chrome storage:", updatedTaskList_1);
+                    setTaskList(updatedTaskList_1);
+                });
+            }
+        });
+    };
     // Chooses current task to complete
     var onClickTask = function (task) {
         setSelectedTask(task);
@@ -11589,16 +11639,6 @@ var TaskList = function () {
                 }
             }
         });
-        // if (selectedTask && taskList != null) {
-        //   const updatedTaskList = taskList.map((task) => {
-        //     if (task.name === selectedTask.name) {
-        //       return { ...task, dailyProgress: task.dailyProgress + timeElapsed };
-        //     }
-        //     return task;
-        //   });
-        //   setTaskList(updatedTaskList);
-        //   chrome.storage.sync.set({ taskList: updatedTaskList });
-        // }
     };
     return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return timerComplete(); } }, { children: "timer complete" })), taskList === null || taskList === void 0 ? void 0 : taskList.map(function (task, index) { return ((0,jsx_runtime.jsxs)("div", { children: [" ", (0,jsx_runtime.jsx)("p", { children: task.name }), selectedTask === task && (0,jsx_runtime.jsx)("p", { children: "this task is selected" }), (0,jsx_runtime.jsxs)("p", { children: ["today's progress: ", task.dailyProgress, " / ", task.dailyGoal] }), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return onClickTask(task); } }, { children: "select" })), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return removeTask(task.name); } }, { children: "delete" }))] }, task.name)); }), (0,jsx_runtime.jsxs)("div", taskList_assign({ className: "collapsible-container" }, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ className: "collapsible-header", onClick: toggleFormVisibility }, { children: "Add Task" })), isFormVisible && ((0,jsx_runtime.jsx)("div", taskList_assign({ className: "collapsible-content" }, { children: (0,jsx_runtime.jsx)(taskForm, {}) })))] }))] }));
 };

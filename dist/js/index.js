@@ -11494,12 +11494,19 @@ var TaskForm = function () {
         };
         console.log(newTask);
         chrome.storage.sync.get(["taskList"], function (result) {
-            var _a;
-            var taskList = (_a = result.taskList) !== null && _a !== void 0 ? _a : [];
-            var updatedTaskList = __spreadArray(__spreadArray([], taskList, true), [newTask], false);
-            chrome.storage.sync.set({ taskList: updatedTaskList }, function () {
-                console.log("Task list updated:", updatedTaskList);
-            });
+            if (result !== null) {
+                // const taskList = result.taskList ?? [];
+                var updatedTaskList_1 = __spreadArray(__spreadArray([], result.taskList, true), [newTask], false);
+                chrome.storage.sync.set({ taskList: updatedTaskList_1 }, function () {
+                    console.log("Task list updated:", updatedTaskList_1);
+                });
+            }
+            else {
+                var updatedTaskList_2 = [newTask];
+                chrome.storage.sync.set({ taskList: updatedTaskList_2 }, function () {
+                    console.log("Task list updated:", updatedTaskList_2);
+                });
+            }
         });
         reset();
     };

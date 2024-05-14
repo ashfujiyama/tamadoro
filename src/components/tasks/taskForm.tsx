@@ -28,11 +28,18 @@ const TaskForm = () => {
     };
     console.log(newTask);
     chrome.storage.sync.get(["taskList"], (result) => {
-      const taskList = result.taskList ?? [];
-      const updatedTaskList = [...taskList, newTask];
-      chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
-        console.log("Task list updated:", updatedTaskList);
-      });
+      if (result !== null) {
+        // const taskList = result.taskList ?? [];
+        const updatedTaskList = [...result.taskList, newTask];
+        chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+          console.log("Task list updated:", updatedTaskList);
+        });
+      } else {
+        const updatedTaskList = [newTask];
+        chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+          console.log("Task list updated:", updatedTaskList);
+        });
+      }
     });
     reset();
   };

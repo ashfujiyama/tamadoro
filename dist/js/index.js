@@ -13587,6 +13587,8 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
+    var _d = (0,react.useState)(0), focusCounter = _d[0], setFocusCounter = _d[1];
+    // initialize CURR MODE with chrome storage and update when pausedTime changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("currMode", function (result) {
             var storedCurrMode = result.currMode;
@@ -13605,6 +13607,7 @@ var Tamadoro = function () {
             console.log('currMode at time saved:', currMode);
         });
     }, [currMode]);
+    // check if we passed the deadline, if so, change mode 
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("deadline", function (result) {
             var storedDeadline = result.deadline;
@@ -13618,16 +13621,26 @@ var Tamadoro = function () {
             }
         });
     }, []);
+    // change mode 
     var updateMode = function () {
-        setCurrMode(function (prevMode) { return prevMode === "Focus" ? "Break" : "Focus"; });
-        console.log("changed mode");
-        if (currMode == "Break") {
-            setDuration(5);
-            setInitDeadline(new Date(Date.now() + initDuration));
-        }
-        else {
+        // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
+        //       console.log("changed mode");
+        if (currMode == "Break" || currMode == "Long Break") { // we want to change to focus mode
             setDuration(10);
             setInitDeadline(new Date(Date.now() + initDuration));
+            setFocusCounter(focusCounter + 1);
+            setCurrMode("Focus");
+        }
+        else if (currMode == "Focus" && focusCounter == 3) { // we want to change to long break
+            setDuration(10);
+            setInitDeadline(new Date(Date.now() + initDuration));
+            setCurrMode("Long Break");
+            setFocusCounter(0);
+        }
+        else { // we want to change to break
+            setDuration(5);
+            setInitDeadline(new Date(Date.now() + initDuration));
+            setCurrMode("Break");
         }
     };
     (0,react.useEffect)(function () {

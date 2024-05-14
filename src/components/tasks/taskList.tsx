@@ -42,35 +42,36 @@ const TaskList = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   // Function to compare deadline with current time
-  //   const checkDeadline = () => {
-  //     chrome.storage.sync.get(["deadline"], (result) => {
-  //       const deadline = result.deadline;
-  //       if (deadline) {
-  //         const currentTime = new Date();
-  //         const deadlineTime = new Date(deadline);
+  useEffect(() => {
+    // Function to compare deadline with current time
+    const checkDeadline = () => {
+      chrome.storage.sync.get(["deadline"], (result) => {
+        if (result.deadline) {
+          const currentTime = new Date();
+          const deadlineTime = new Date(result.deadline);
 
-  //         if (currentTime > deadlineTime) {
-  //           console.log("Deadline has passed.");
-  //         } else {
-  //           console.log("Deadline is in the future.");
-  //         }
-  //       } else {
-  //         console.log("No deadline found in Chrome storage.");
-  //       }
-  //     });
-  //   };
+          if (currentTime >= deadlineTime) {
+            console.log("Deadline has passed.");
+            timerComplete();
+          } else {
+            console.log("Deadline is in the future. " + deadlineTime);
+            console.log("curr time = " + currentTime);
+          }
+        } else {
+          console.log("No deadline found in Chrome storage.");
+        }
+      });
+    };
 
-  //   // Run checkDeadline function initially
-  //   checkDeadline();
+    // Run checkDeadline function initially
+    checkDeadline();
 
-  //   // Set up interval to periodically check deadline
-  //   const intervalId = setInterval(checkDeadline, 60000); // Check every minute
+    // Set up interval to periodically check deadline
+    const intervalId = setInterval(checkDeadline, 60000); // Check every minute
 
-  //   // Clean up interval when component unmounts
-  //   return () => clearInterval(intervalId);
-  // }, []);
+    // Clean up interval when component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     const checkStorageAtMidnight = () => {

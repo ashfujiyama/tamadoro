@@ -11563,31 +11563,34 @@ var TaskList = function () {
             });
         };
     }, []);
-    // useEffect(() => {
-    //   // Function to compare deadline with current time
-    //   const checkDeadline = () => {
-    //     chrome.storage.sync.get(["deadline"], (result) => {
-    //       const deadline = result.deadline;
-    //       if (deadline) {
-    //         const currentTime = new Date();
-    //         const deadlineTime = new Date(deadline);
-    //         if (currentTime > deadlineTime) {
-    //           console.log("Deadline has passed.");
-    //         } else {
-    //           console.log("Deadline is in the future.");
-    //         }
-    //       } else {
-    //         console.log("No deadline found in Chrome storage.");
-    //       }
-    //     });
-    //   };
-    //   // Run checkDeadline function initially
-    //   checkDeadline();
-    //   // Set up interval to periodically check deadline
-    //   const intervalId = setInterval(checkDeadline, 60000); // Check every minute
-    //   // Clean up interval when component unmounts
-    //   return () => clearInterval(intervalId);
-    // }, []);
+    (0,react.useEffect)(function () {
+        // Function to compare deadline with current time
+        var checkDeadline = function () {
+            chrome.storage.sync.get(["deadline"], function (result) {
+                if (result.deadline) {
+                    var currentTime = new Date();
+                    var deadlineTime = new Date(result.deadline);
+                    if (currentTime >= deadlineTime) {
+                        console.log("Deadline has passed.");
+                        timerComplete();
+                    }
+                    else {
+                        console.log("Deadline is in the future. " + deadlineTime);
+                        console.log("curr time = " + currentTime);
+                    }
+                }
+                else {
+                    console.log("No deadline found in Chrome storage.");
+                }
+            });
+        };
+        // Run checkDeadline function initially
+        checkDeadline();
+        // Set up interval to periodically check deadline
+        var intervalId = setInterval(checkDeadline, 60000); // Check every minute
+        // Clean up interval when component unmounts
+        return function () { return clearInterval(intervalId); };
+    }, []);
     (0,react.useEffect)(function () {
         var checkStorageAtMidnight = function () {
             var now = new Date();

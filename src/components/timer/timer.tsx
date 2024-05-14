@@ -25,7 +25,7 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
   const [pausedTime, setPausedTime] = useState<string | null>(null);
   const [deadline, setDeadline] = useState<Date | null>(initialDeadline);
   const [duration, setDuration] = useState(initDuration);
-  const [pausedDeadline, setPausedDeadline] = useState<Date | null>(initialDeadline);
+  
   console.log(deadline)
 
   // The state for our timer
@@ -57,14 +57,14 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
     // initialize deadline with chrome storage and update when deadline changes
    useEffect(() => {
     chrome.storage.sync.get("deadline", (result) => {
-        const storedPausedDeadline = result.pausedDeadline;
+        const storedPausedTime = result.pausedTime;
         if (deadline === null) {
-            chrome.storage.sync.set({"pausedDeadline": null}, () => {
+            chrome.storage.sync.set({"deadline": null}, () => {
                 console.log("made new deadline tracker");
-                console.log('deadline', pausedDeadline);
+                console.log('deadline', deadline);
             });
         } else {
-            setDeadline(storedPausedDeadline);
+            setDeadline(deadline);
         }
     });
   }, [])
@@ -208,8 +208,8 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
     if (initialDeadline != null && pausedTime == null){
         updateTimerDisplay();
     } else {
-        if(pausedDeadline != null){
-            setTimerDisplayFromDate(pausedDeadline)
+        if(deadline != null){
+            setTimerDisplayFromDate(deadline)
         }
     }
   }, []); // Need this to run once on component mount

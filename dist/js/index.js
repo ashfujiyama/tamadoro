@@ -12835,10 +12835,9 @@ var Timer = function (_a) {
     var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
     var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
     var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
-    var _e = (0,react.useState)(initialDeadline), pausedDeadline = _e[0], setPausedDeadline = _e[1];
     console.log(deadline);
     // The state for our timer
-    var _f = (0,react.useState)("00:00:00"), timerDisplay = _f[0], setTimerDisplay = _f[1];
+    var _e = (0,react.useState)("00:00:00"), timerDisplay = _e[0], setTimerDisplay = _e[1];
     // initialize pausedTime with chrome storage and update when pausedTime changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("pausedTime", function (result) {
@@ -12863,15 +12862,15 @@ var Timer = function (_a) {
     // initialize deadline with chrome storage and update when deadline changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("deadline", function (result) {
-            var storedPausedDeadline = result.pausedDeadline;
+            var storedPausedTime = result.pausedTime;
             if (deadline === null) {
-                chrome.storage.sync.set({ "pausedDeadline": null }, function () {
+                chrome.storage.sync.set({ "deadline": null }, function () {
                     console.log("made new deadline tracker");
-                    console.log('deadline', pausedDeadline);
+                    console.log('deadline', deadline);
                 });
             }
             else {
-                setDeadline(storedPausedDeadline);
+                setDeadline(deadline);
             }
         });
     }, []);
@@ -12996,8 +12995,8 @@ var Timer = function (_a) {
             updateTimerDisplay();
         }
         else {
-            if (pausedDeadline != null) {
-                setTimerDisplayFromDate(pausedDeadline);
+            if (deadline != null) {
+                setTimerDisplayFromDate(deadline);
             }
         }
     }, []); // Need this to run once on component mount

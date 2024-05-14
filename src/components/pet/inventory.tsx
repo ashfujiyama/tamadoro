@@ -47,7 +47,7 @@ const Inventory = () => {
     chrome.storage.sync.get("iTomato", (result) => {
       if (result.iTomato == null) {
         chrome.storage.sync.set({"iTomato": 0}, () => {
-          console.log("made new tomato counter");
+          // console.log("made new tomato counter");
         });
       } else {
         setTomatoes({...tomatoes,
@@ -58,7 +58,7 @@ const Inventory = () => {
 
   useEffect(() => {
     chrome.storage.sync.set({"iTomato": tomatoes.count}, () => {
-              console.log('Updated tomato count: ' + tomatoes.count);
+              // console.log('Updated tomato count: ' + tomatoes.count);
             })
   })
 
@@ -68,7 +68,7 @@ const Inventory = () => {
     chrome.storage.sync.get("iSlice", (result) => {
       if (result.iSlice == null) {
         chrome.storage.sync.set({"iSlice": 0}, () => {
-          console.log("made new slice counter");
+          // console.log("made new slice counter");
         });
       } else {
         setCakeSlices({...cakeSlices,
@@ -79,7 +79,7 @@ const Inventory = () => {
 
   useEffect(() => {
     chrome.storage.sync.set({"iSlice": cakeSlices.count}, () => {
-              console.log('Updated slice count: ' + cakeSlices.count);
+              // console.log('Updated slice count: ' + cakeSlices.count);
             })
   })
 
@@ -89,7 +89,7 @@ const Inventory = () => {
     chrome.storage.sync.get("iCake", (result) => {
       if (result.iCake == null) {
         chrome.storage.sync.set({"iCake": 0}, () => {
-          console.log("made new cake counter");
+          // console.log("made new cake counter");
         });
       } else {
         setCake({...cake,
@@ -100,7 +100,7 @@ const Inventory = () => {
 
   useEffect(() => {
     chrome.storage.sync.set({"iCake": cake.count}, () => {
-              console.log('Updated cake count: ' + cake.count);
+              // console.log('Updated cake count: ' + cake.count);
             })
   })
 

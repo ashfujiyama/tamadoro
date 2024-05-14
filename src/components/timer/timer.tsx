@@ -8,109 +8,116 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "@mui/material/styles";
 import { RuleFolderSharp } from "@mui/icons-material";
-import * as timerUtils from "./timerUtils";
-import Switch from "./modes";
+import * as timerUtils from "./timerUtils"
+import Switch from "./modes"
 // import notification from '../src/notifications'
 
 interface TimerProps {
-  initialDeadline: Date | null;
-  initDuration: number | 0;
-  paused: Date | null;
-}
-
-const Timer: React.FC<TimerProps> = ({
-  initialDeadline,
-  initDuration,
-  paused,
-}) => {
+    initialDeadline: Date | null;
+    initDuration: number | 0;
+    paused: Date | null;
+  }
+  
+const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) => {
   const Ref = useRef<NodeJS.Timeout | null>(null);
 
   // actual state of the timer
   const [pausedTime, setPausedTime] = useState<string | null>(null);
   const [deadline, setDeadline] = useState<Date | null>(initialDeadline);
   const [duration, setDuration] = useState(initDuration);
-
-  console.log(deadline);
+  
+  console.log(deadline)
 
   // The state for our timer
   const [timerDisplay, setTimerDisplay] = useState("00:00:00");
 
-  // initialize pausedTime with chrome storage and update when pausedTime changes
-  useEffect(() => {
+   // initialize pausedTime with chrome storage and update when pausedTime changes
+   useEffect(() => {
     chrome.storage.sync.get("pausedTime", (result) => {
-      const storedPausedTime = result.pausedTime;
-      if (storedPausedTime === null) {
-        chrome.storage.sync.set({ pausedTime: null }, () => {
-          console.log("made new pausedTime tracker");
-          console.log("deadline", deadline);
+        const storedPausedTime = result.pausedTime;
+        if (storedPausedTime === null) {
+            chrome.storage.sync.set({"pausedTime": null}, () => {
+                console.log("made new pausedTime tracker");
+            });
+        } else {
+            setPausedTime(storedPausedTime);
+            console.log('in set pausedTime', storedPausedTime);
+        }
         });
-      } else {
-        setPausedTime(storedPausedTime);
-      }
-    });
-  }, []);
+    }, [])
 
-  useEffect(() => {
-    chrome.storage.sync.set({ pausedTime }, () => {
-      console.log("Paused at time saved:", pausedTime);
-      console.log("deadline", deadline);
-    });
-  }, [pausedTime]);
-
-  // initialize deadline with chrome storage and update when deadline changes
-  useEffect(() => {
-    chrome.storage.sync.get("deadline", (result) => {
-      const storedPausedTime = result.pausedTime;
-      if (deadline === null) {
-        chrome.storage.sync.set({ deadline: null }, () => {
-          console.log("made new deadline tracker");
-          console.log("deadline", deadline);
+    useEffect(() => {
+        chrome.storage.sync.set({ pausedTime: pausedTime }, () => {
+            console.log('Paused at time saved:', pausedTime);
+            console.log('deadline', deadline);
         });
-      } else {
-        setDeadline(deadline);
-      }
-    });
-  }, []);
+    }, [pausedTime]);
 
-  useEffect(() => {
-    chrome.storage.sync.set({ deadline }, () => {
-      console.log("deadline at time saved:", deadline);
-    });
-  }, [deadline]);
 
-  // initialize DURATION with chrome storage and update when changes
-  useEffect(() => {
-    chrome.storage.sync.get("duration", (result) => {
-      if (result.duration) {
-        chrome.storage.sync.set({ duration: initDuration }, () => {
-          console.log("made new duration tracker");
+    // initialize deadline with chrome storage and update when deadline changes
+    useEffect(() => {
+        chrome.storage.sync.get("deadline", (result) => {
+            if (!result.deadline) {
+                chrome.storage.sync.set({"deadline": initialDeadline}, () => {
+                    console.log("made new deadline tracker");
+                });
+            } else {
+                setDeadline(deadline);
+                chrome.storage.sync.set({ deadline: deadline }, () => {
+                    console.log('deadline saved:', deadline);
+                });
+            }
+            });
+        }, [])
+
+    useEffect(() => {
+        chrome.storage.sync.set({ deadline: deadline }, () => {
+            console.log('deadline at time saved:', deadline);
         });
-      } else {
-        setDuration(duration);
-        chrome.storage.sync.set({ duration: duration }, () => {
-          console.log("Duration saved:", duration);
-        });
-      }
-    });
-  }, []);
+    }, [deadline]);
 
-  //sets the deadline for the timer (what the timer is counting down to)
-  const getDeadTime = () => {
+     // initialize DURATION with chrome storage and update when changes
+     useEffect(() => {
+        chrome.storage.sync.get("duration", (result) => {
+            if (!result.duration) {
+                chrome.storage.sync.set({"duration": initDuration}, () => {
+                    console.log("made new duration tracker");
+                });
+                onClickReset();
+            } else {
+                setDuration(duration);
+                chrome.storage.sync.set({ duration: duration }, () => {
+                    console.log('Duration saved:', duration);
+                });
+                onClickReset();
+            }
+            });
+        }, [])
+
+        useEffect(() => {
+            chrome.storage.sync.set({ duration: duration }, () => {
+                console.log('duration at time saved:', duration);
+                onClickReset();
+            });
+        }, [duration]);
+
+
+    //sets the deadline for the timer (what the timer is counting down to)
+   const getDeadTime = () => {
     let deadline = new Date();
 
-    // This is where you specify how many minute, hours you want in your timer
-    deadline.setSeconds(deadline.getSeconds() + duration);
-    // deadline.setMinutes(deadline.getMinutes() + minute);
-    // deadline.setHours(deadline.getHours() + hour);
+    // This is where you specify how many minutes you want in your timer
+    deadline.setMinutes(deadline.getMinutes() + duration);
     setDeadline(deadline);
 
     return deadline;
   };
 
+
   // additional accessors
   const isPaused = () => {
     return pausedTime != null;
-  };
+  }
 
   // calculate time remaining in the timer by subtracting the current date/time from the deadline time
   const getTimeRemaining = (e: Date) => {
@@ -143,7 +150,7 @@ const Timer: React.FC<TimerProps> = ({
 
   const updateTimerDisplay = () => {
     if (deadline != null) setTimerDisplayFromDate(getDeadTime());
-  };
+   }
 
   //resets the timer with the previous deadline
   const onClickReset = () => {
@@ -168,7 +175,7 @@ const Timer: React.FC<TimerProps> = ({
       const remainingTime = deadline.getTime() - new Date(pausedTime).getTime();
       const newDeadline = new Date(Date.now() + remainingTime);
       setDeadline(newDeadline);
-      const s = Math.floor(remainingTime / 1000);
+      const s = Math.floor((remainingTime / 1000));
 
       setTimerDisplayFromDate(newDeadline);
       startTimer(newDeadline);
@@ -176,35 +183,24 @@ const Timer: React.FC<TimerProps> = ({
     }
   };
 
-  const increaseTimeGeneral = (
-    d: Date,
-    hoursDelta: number,
-    minutesDelta: number,
-    secondsDelta: number
-  ) => {
+  const increaseTimeGeneral = (d: Date, hoursDelta: number, minutesDelta: number, secondsDelta: number) => {
     let newDate = new Date();
     newDate.setSeconds(d.getSeconds() + secondsDelta);
     newDate.setMinutes(d.getMinutes() + minutesDelta);
     newDate.setHours(d.getHours() + hoursDelta);
-    console.log(duration);
+    console.log(duration)
     return newDate;
-  };
+  }
 
-  const increaseDeadline = (
-    hoursDelta: number,
-    minutesDelta: number,
-    secondsDelta: number
-  ) => {
-    if (deadline != null)
-      setDeadline(
-        increaseTimeGeneral(deadline, hoursDelta, minutesDelta, secondsDelta)
-      );
-  };
+  const increaseDeadline = (hoursDelta: number, minutesDelta: number, secondsDelta: number) => {
+    if (deadline != null) setDeadline(increaseTimeGeneral(deadline, hoursDelta, minutesDelta, secondsDelta));
+  }
 
   //increase the timer by 5 minutes (5 seconds for testing purposes rn)
   const increaseTime = (e: Date) => {
     //increasing the set time by 5 seconds
     setDuration(duration + 5);
+    console.log('inc', duration)
     // increaseDeadline(0, 5, 0);
     updateTimerDisplay(); //reloading the timer display
   };
@@ -219,18 +215,14 @@ const Timer: React.FC<TimerProps> = ({
   };
 
   const onClickInc = () => {
-    if (
-      deadline != null &&
-      deadline.getHours() - new Date().getHours() < 2 &&
-      !isPaused()
-    ) {
+    if (deadline != null && (deadline.getHours() - (new Date).getHours() ) < 2 && !isPaused()) {
       increaseTime(deadline);
       updateTimerDisplay(); //reloading the timer display
     }
   };
 
   const onClickDec = () => {
-    if (deadline != null && deadline != new Date() && !isPaused()) {
+    if (deadline != null && deadline != new Date && !isPaused()) {
       decreaseTime(deadline);
       updateTimerDisplay(); //reloading the timer display
     }
@@ -238,29 +230,26 @@ const Timer: React.FC<TimerProps> = ({
 
   // display current deadline time when open chrome
   useEffect(() => {
-    if (initialDeadline != null && pausedTime == null) {
-      updateTimerDisplay();
+    if (initialDeadline != null && pausedTime == null){
+        updateTimerDisplay();
     } else {
-      if (deadline != null) {
-        setTimerDisplayFromDate(deadline);
-      }
+        if(deadline != null){
+            setTimerDisplayFromDate(deadline)
+        }
     }
   }, []); // Need this to run once on component mount
 
+
   // if application was paused when closed, automatically starts countdown when deploy
   useEffect(() => {
-    if (pausedTime != null) {
-      onClickResume();
-      console.log("here");
-    }
-  }, []);
+    if (pausedTime != null){
+       onClickResume();
+       console.log("here")
+    } 
+  }, []); 
 
   //starts the timer
   const onClickStart = () => {
-    // const newDeadline = new Date(Date.now() + duration);
-    // setDeadline(newDeadline);
-    // console.log(deadline);
-    // if (deadline != null) startTimer(deadline);
     startTimer(getDeadTime());
   };
 
@@ -270,6 +259,53 @@ const Timer: React.FC<TimerProps> = ({
       setPausedTime(new Date(Date.now()).toString());
     }
   };
+
+    // updae timer based on mode
+    useEffect(() => {
+    
+
+    //Add event listener for changes in Chrome storage
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      if (changes["currMode"]) {
+        chrome.storage.sync.get("currMode", (result) => {
+            const storedMode = result.currMode;
+            if (storedMode) {
+                if (storedMode == "Break") {
+                    setDuration(5);
+                    setDeadline(new Date(Date.now() + duration));
+                    updateTimerDisplay();
+                  } else {
+                    setDuration(10);
+                    setDeadline(new Date(Date.now() + duration));
+                    updateTimerDisplay();
+                  }
+            }
+          });
+      }
+    });
+
+    // Clean up event listener when component unmounts
+    return () => {
+      chrome.storage.onChanged.removeListener((changes, namespace) => {
+        if (changes["currMode"]) {
+            chrome.storage.sync.get("currMode", (result) => {
+                const storedMode = result.currMode;
+                if (storedMode) {
+                    if (storedMode == "Break") {
+                        setDuration(5);
+                        setDeadline(new Date(Date.now() + initDuration));
+                        updateTimerDisplay();
+                      } else {
+                        setDuration(10);
+                        setDeadline(new Date(Date.now() + initDuration));
+                        updateTimerDisplay();
+                      }
+                }
+              });
+        }
+      });
+    };
+  }, []);
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -313,15 +349,18 @@ const Timer: React.FC<TimerProps> = ({
           </button>
         )}
       </div>
+
     </div>
   );
 };
 
 export default Timer;
 
+
 // *********** when the timer closes set paused time to reactivate when reopen
 
 // pause: need to store time remaining whe the user pauses. To restart need to set a new deadline time with the time left
+
 
 // timer countdown with timer controller buttoms (start, stop, restart, skip)
 // keep track of time elapsed and add to progress if complete
@@ -342,8 +381,8 @@ export default Timer;
 //     duration: number | 0;
 //     paused: Date | null;
 //   }
-
-// // get propositions passed in from tomodoro to keep track of what to set the timer to. InitDeadline is the dealdine it is counting down to
+  
+// // get propositions passed in from tomodoro to keep track of what to set the timer to. InitDeadline is the dealdine it is counting down to 
 // // duraiton is how long we are setting the timer to (its 10 seconds right now)
 // const Timer: React.FC<TimerProps> = ({ initialDeadline, duration }) => {
 //   const Ref = useRef<NodeJS.Timeout | null>(null);

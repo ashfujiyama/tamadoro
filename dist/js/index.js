@@ -7318,7 +7318,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".App {\n  font-family: '8bit';\n  text-align: center;\n}\n\n.health-bar {\n  box-sizing: border-box;\n  height: 15px;\n  padding: 0;\n  background: transparent;\n  border: 1px solid black;\n  border-radius: 1px;\n  position: relative;\n  font-size: 10px;\n  vertical-align: middle; \n  color: black;\n}\n\n.bar {\n  background: black;\n  width: 100%;\n  height: 100%; \n  transition: width 0.6s cubic-bezier(0.47, 1.64, 0.41, 0.8);\n}\n\n.hit {\n  background: black;\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  transition: width 0.5s linear;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.level-bar {\n  position: relative;\n  height: 6px;\n  width: 80%;\n  background-color: rgba(211, 211, 211, 0); \n  border: 1px solid black;\n}\n\n.bar {\n  height: 100%;\n  background-color: black;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11492,24 +11492,44 @@ var TaskForm = function () {
             dailyGoal: time + +formData.minutes,
             complete: false,
         };
-        console.log(newTask);
         chrome.storage.sync.get(["taskList"], function (result) {
-            if (result) {
-                // const taskList = result.taskList ?? [];
-                var updatedTaskList_1 = __spreadArray(__spreadArray([], result.taskList, true), [newTask], false);
-                chrome.storage.sync.set({ taskList: updatedTaskList_1 }, function () {
-                    console.log("Task list updated:", updatedTaskList_1);
-                });
-            }
-            else {
-                var updatedTaskList_2 = [newTask];
-                chrome.storage.sync.set({ taskList: updatedTaskList_2 }, function () {
-                    console.log("Task list updated:", updatedTaskList_2);
-                });
-            }
+            var _a;
+            // Ensure taskList is an array, use an empty array if taskList is undefined
+            var taskList = (_a = result.taskList) !== null && _a !== void 0 ? _a : [];
+            var updatedTaskList = __spreadArray(__spreadArray([], taskList, true), [newTask], false);
+            chrome.storage.sync.set({ taskList: updatedTaskList }, function () {
+                console.log("Task list updated:", updatedTaskList);
+            });
         });
+        // Reset form fields
         reset();
     };
+    // const onSubmit: SubmitHandler<IFormInput> = (formData) => {
+    //   const time = formData.hours * 60;
+    //   const newTask: Task = {
+    //     name: formData.name,
+    //     dailyProgress: 0,
+    //     dailyGoal: time + +formData.minutes,
+    //     complete: false,
+    //   };
+    //   console.log(newTask);
+    //   chrome.storage.sync.get(["taskList"], (result) => {
+    //     if (result.taskList) {
+    //       // const taskList = result.taskList ?? [];
+    //       console.log(result.taskList);
+    //       const updatedTaskList = [...result.taskList, newTask];
+    //       chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+    //         console.log("Task list updated:", updatedTaskList);
+    //       });
+    //     } else {
+    //       const updatedTaskList = [newTask];
+    //       chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+    //         console.log("Task list updated:", updatedTaskList);
+    //       });
+    //     }
+    //   });
+    //   reset();
+    // };
     return ((0,jsx_runtime.jsxs)("form", __assign({ className: "taskForm", onSubmit: handleSubmit(onSubmit) }, { children: [(0,jsx_runtime.jsx)("input", __assign({ className: "projectTitleInput" }, register("name", { required: true, maxLength: 20 }), { placeholder: "Project Title" })), (0,jsx_runtime.jsxs)("div", __assign({ className: "input-with-label" }, { children: [(0,jsx_runtime.jsx)("input", __assign({ type: "number", className: "time-input" }, register("hours", { min: 0, max: 24 }), { placeholder: "HH" })), (0,jsx_runtime.jsx)("span", { children: ":" }), (0,jsx_runtime.jsx)("input", __assign({ type: "number", className: "time-input" }, register("minutes", { min: 0, max: 59 }), { placeholder: "MM" }))] })), (0,jsx_runtime.jsx)("input", { type: "submit" })] })));
 };
 /* harmony default export */ const taskForm = (TaskForm);
@@ -11584,10 +11604,10 @@ var TaskList = function () {
                 }
             });
         };
-        // Run checkDeadline function initially
+        // Run checkDeadline function
         checkDeadline();
-        // Set up interval to periodically check deadline
-        var intervalId = setInterval(checkDeadline, 60000); // Check every minute
+        // Run the function every 5 seconds to check for deadline completion
+        var intervalId = setInterval(checkDeadline, 5000);
         // Clean up interval when component unmounts
         return function () { return clearInterval(intervalId); };
     }, []);
@@ -11600,6 +11620,7 @@ var TaskList = function () {
         };
         // Run the function every minute to check for midnight
         var intervalId = setInterval(checkStorageAtMidnight, 60000);
+        // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
         // Clean up interval when component unmounts
         return function () { return clearInterval(intervalId); };
     }, []);
@@ -11655,6 +11676,59 @@ function TitleComponent() {
     return ((0,jsx_runtime.jsx)(jsx_runtime.Fragment, { children: (0,jsx_runtime.jsx)("img", { style: { marginTop: '1rem', width: '100%' }, src: "https://i.ibb.co/sWLZdg7/title-logo.png" }) }));
 }
 /* harmony default export */ const title = (TitleComponent);
+
+;// CONCATENATED MODULE: ./src/components/pet/heartIcons.tsx
+var heartIcons_assign = (undefined && undefined.__assign) || function () {
+    heartIcons_assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return heartIcons_assign.apply(this, arguments);
+};
+
+var FullHeart = function () { return ((0,jsx_runtime.jsx)("svg", heartIcons_assign({ viewBox: "0 0 24 24", width: "14", height: "14", fill: "black" }, { children: (0,jsx_runtime.jsx)("path", { d: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" }) }))); };
+var HalfHeart = function () { return ((0,jsx_runtime.jsxs)("svg", heartIcons_assign({ viewBox: "0 0 24 24", width: "14", height: "14" }, { children: [(0,jsx_runtime.jsx)("path", { fill: "black", d: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09V21.35Z" }), (0,jsx_runtime.jsx)("path", { fill: "gray", d: "M12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" })] }))); };
+var GrayHeart = function () { return ((0,jsx_runtime.jsx)("svg", heartIcons_assign({ viewBox: "0 0 24 24", width: "14", height: "14", fill: "gray" }, { children: (0,jsx_runtime.jsx)("path", { d: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" }) }))); };
+
+
+;// CONCATENATED MODULE: ./src/components/pet/healthDisplay.tsx
+var healthDisplay_assign = (undefined && undefined.__assign) || function () {
+    healthDisplay_assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return healthDisplay_assign.apply(this, arguments);
+};
+
+
+var HealthDisplay = function (_a) {
+    var health = _a.health;
+    var fullHearts = Math.floor(health / 10);
+    var hasHalfHeart = (health % 10) > 0;
+    var totalFullHearts = health === 100 ? 10 : fullHearts;
+    var halfHeart = hasHalfHeart ? 1 : 0;
+    var grayHeartsCount = health === 0 ? 10 : 10 - totalFullHearts - halfHeart;
+    var hearts = [];
+    for (var i = 0; i < totalFullHearts; i++) {
+        hearts.push((0,jsx_runtime.jsx)(FullHeart, {}, "full-".concat(i)));
+    }
+    if (halfHeart && health > 0) {
+        hearts.push((0,jsx_runtime.jsx)(HalfHeart, {}, "half"));
+    }
+    for (var i = 0; i < grayHeartsCount; i++) {
+        hearts.push((0,jsx_runtime.jsx)(GrayHeart, {}, "gray-".concat(i)));
+    }
+    return (0,jsx_runtime.jsx)("div", healthDisplay_assign({ style: { margin: '.5rem' } }, { children: hearts }));
+};
+/* harmony default export */ const healthDisplay = (HealthDisplay);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/timer/timerStyle.css
 var timerStyle = __webpack_require__(6802);
@@ -13418,33 +13492,12 @@ var levelBar_assign = (undefined && undefined.__assign) || function () {
 };
 
 
-
-var HealthBar = function (_a) {
-    var _b = _a === void 0 ? {} : _a, _c = _b.maxHp, maxHp = _c === void 0 ? 100 : _c, _d = _b.hp, hp = _d === void 0 ? 100 : _d;
+var LevelBar = function (_a) {
+    var _b = _a.maxHp, maxHp = _b === void 0 ? 100 : _b, _c = _a.hp, hp = _c === void 0 ? 100 : _c;
     var barWidth = (hp / maxHp) * 100;
-    // setHitWidth((damage / hp) * 100);
-    // setBarWidth((hpLeft / maxHp) * 100);
-    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsxs)("div", levelBar_assign({ className: "health-bar" }, { children: [(0,jsx_runtime.jsx)("div", { className: "bar", style: { width: "".concat(barWidth, "%") } }), (0,jsx_runtime.jsx)("div", { className: "hit", style: { width: "".concat(0, "%") } }), (0,jsx_runtime.jsxs)("div", levelBar_assign({ style: {
-                            position: "absolute",
-                            top: "5px",
-                            left: 0,
-                            right: 0,
-                            textAlign: "center"
-                        } }, { children: [hp, " / ", maxHp] }))] })), (0,jsx_runtime.jsx)("br", {})] }));
+    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)("div", { children: " lvl 21" }), (0,jsx_runtime.jsx)("div", levelBar_assign({ className: "level-bar" }, { children: (0,jsx_runtime.jsx)("div", { className: "bar", style: { width: "".concat(barWidth, "%") } }) }))] }));
 };
-var ControlledHealthBar = function () {
-    var maxHp = 100;
-    var _a = (0,react.useState)(maxHp), hp = _a[0], setHp = _a[1];
-    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(HealthBar, { hp: hp, maxHp: maxHp }), (0,jsx_runtime.jsx)("button", levelBar_assign({ className: "damage random", onClick: function () {
-                    var damage = Math.floor(Math.random() * maxHp);
-                    setHp(Math.max(0, hp - damage));
-                } }, { children: "hit random" })), (0,jsx_runtime.jsx)("button", levelBar_assign({ className: "reset", onClick: function () {
-                    setHp(maxHp);
-                } }, { children: "reset" }))] }));
-};
-function levelBar_App() {
-    return ((0,jsx_runtime.jsx)("div", levelBar_assign({ className: "App" }, { children: (0,jsx_runtime.jsx)(ControlledHealthBar, {}) })));
-}
+/* harmony default export */ const components_pet_levelBar = (LevelBar);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/petDisplay.css
 var petDisplay = __webpack_require__(6205);
@@ -13529,6 +13582,7 @@ var tamadoro_assign = (undefined && undefined.__assign) || function () {
     };
     return tamadoro_assign.apply(this, arguments);
 };
+
 
 // import React from "react";
 // import Timer from "../timer/timer";
@@ -13690,7 +13744,7 @@ var Tamadoro = function () {
         setInitDeadline(new Date(Date.now() + initDuration));
         setCurrMode("Focus");
     }, []);
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)("h2", tamadoro_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", tamadoro_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

@@ -1,3 +1,6 @@
+
+import ModeDisplay from '../timer/modeDisplay';
+import HealthDisplay from '../pet/healthDisplay';
 // import React from "react";
 // import Timer from "../timer/timer";
 // import Inventory from "../pet/inventory";
@@ -188,7 +191,8 @@ const Tamadoro: React.FC = () => {
           <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} />
         )}
         <Inventory />
-        <LevelBar />
+        <HealthDisplay health={100} />
+        <LevelBar maxHp={100} hp={60} />
       </div>
     </div>
   );

@@ -12842,11 +12842,12 @@ var Timer = function (_a) {
     var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
     var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
     var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
-    console.log(deadline);
+    var _e = (0,react.useState)(null), pausedDeadline = _e[0], setPausedDeadline = _e[1];
     // The state for our timer
-    var _e = (0,react.useState)("00:00:00"), timerDisplay = _e[0], setTimerDisplay = _e[1];
+    var _f = (0,react.useState)("00:00:00"), timerDisplay = _f[0], setTimerDisplay = _f[1];
     // initialize pausedTime with chrome storage and update when pausedTime changes
     (0,react.useEffect)(function () {
+        console.log("use effect");
         chrome.storage.sync.get("pausedTime", function (result) {
             var storedPausedTime = result.pausedTime;
             if (storedPausedTime === null) {
@@ -12857,35 +12858,42 @@ var Timer = function (_a) {
             }
             else {
                 setPausedTime(storedPausedTime);
-            }
-        });
-    }, []);
-    (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ pausedTime: pausedTime }, function () {
-            console.log('Paused at time saved:', pausedTime);
-            console.log('deadline', deadline);
-        });
-    }, [pausedTime]);
-    // initialize deadline with chrome storage and update when deadline changes
-    (0,react.useEffect)(function () {
-        chrome.storage.sync.get("deadline", function (result) {
-            var storedPausedTime = result.pausedTime;
-            if (deadline === null) {
-                chrome.storage.sync.set({ "deadline": null }, function () {
-                    console.log("made new deadline tracker");
+                console.log("here3", storedPausedTime);
+                chrome.storage.sync.set({ pausedTime: pausedTime }, function () {
+                    console.log('Paused at time saved:', pausedTime);
                     console.log('deadline', deadline);
                 });
             }
+        });
+    }, []);
+    // useEffect(() => {
+    //     chrome.storage.sync.set({ pausedTime: pausedTime }, () => {
+    //         console.log('Paused at time saved:', pausedTime);
+    //         console.log('deadline', deadline);
+    //     });
+    // }, [pausedTime]);
+    // initialize deadline with chrome storage and update when deadline changes
+    (0,react.useEffect)(function () {
+        console.log("use effect2");
+        chrome.storage.sync.get("pausedDeadline", function (result) {
+            var storedpausedDeadline = result.pausedDeadline;
+            if (storedpausedDeadline === null) {
+                chrome.storage.sync.set({ "pausedDeadline": null }, function () {
+                    console.log("made new deadline tracker");
+                    console.log('pausedDeadline', storedpausedDeadline);
+                });
+            }
             else {
-                setDeadline(deadline);
+                setPausedDeadline(storedpausedDeadline);
+                console.log("set deadline");
             }
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ deadline: deadline }, function () {
-            console.log('deadline at time saved:', deadline);
+        chrome.storage.sync.set({ pausedDeadline: pausedDeadline }, function () {
+            console.log('deadline at time saved:', pausedDeadline);
         });
-    }, [deadline]);
+    }, [pausedDeadline]);
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
@@ -12955,6 +12963,7 @@ var Timer = function (_a) {
             setTimerDisplayFromDate(newDeadline);
             startTimer(newDeadline);
             setPausedTime(null);
+            console.log('deadline new', deadline);
         }
     };
     var increaseTimeGeneral = function (d, hoursDelta, minutesDelta, secondsDelta) {
@@ -12962,7 +12971,6 @@ var Timer = function (_a) {
         newDate.setSeconds(d.getSeconds() + secondsDelta);
         newDate.setMinutes(d.getMinutes() + minutesDelta);
         newDate.setHours(d.getHours() + hoursDelta);
-        console.log(duration);
         return newDate;
     };
     var increaseDeadline = function (hoursDelta, minutesDelta, secondsDelta) {
@@ -12981,7 +12989,6 @@ var Timer = function (_a) {
         //increasing the set time by 5 seconds
         // increaseDeadline(0, -5, 0);
         setDuration(duration - 5);
-        console.log(duration);
         updateTimerDisplay(); //reloading the timer display
     };
     var onClickInc = function () {
@@ -12998,20 +13005,21 @@ var Timer = function (_a) {
     };
     // display current deadline time when open chrome
     (0,react.useEffect)(function () {
-        if (initialDeadline != null && pausedTime == null) {
-            updateTimerDisplay();
+        if (pausedDeadline !== null) {
+            setTimerDisplayFromDate(new Date(pausedDeadline));
+            console.log("here2");
         }
         else {
-            if (deadline != null) {
-                setTimerDisplayFromDate(deadline);
+            if (pausedTime == null) {
+                updateTimerDisplay();
+                console.log("here");
             }
         }
     }, []); // Need this to run once on component mount
     // if application was paused when closed, automatically starts countdown when deploy
     (0,react.useEffect)(function () {
-        if (pausedTime != null) {
+        if (isPaused()) {
             onClickResume();
-            console.log("here");
         }
     }, []);
     //starts the timer

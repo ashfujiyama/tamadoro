@@ -12899,9 +12899,11 @@ var Timer = function (_a) {
     var _b = (0,react.useState)(null), pausedTime = _b[0], setPausedTime = _b[1];
     var _c = (0,react.useState)(initialDeadline), deadline = _c[0], setDeadline = _c[1];
     var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
+    var _e = (0,react.useState)(null), currMode = _e[0], setCurrMode = _e[1];
+    var _f = (0,react.useState)(0), focusCounter = _f[0], setFocusCounter = _f[1];
     console.log(deadline);
     // The state for our timer
-    var _e = (0,react.useState)("00:00:00"), timerDisplay = _e[0], setTimerDisplay = _e[1];
+    var _g = (0,react.useState)("00:00:00"), timerDisplay = _g[0], setTimerDisplay = _g[1];
     // initialize pausedTime with chrome storage and update when pausedTime changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("pausedTime", function (result) {
@@ -13150,6 +13152,26 @@ var Timer = function (_a) {
             });
         };
     }, []);
+    // change mode 
+    var updateMode = function () {
+        // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
+        //       console.log("changed mode");
+        if (currMode == "Break" || currMode == "Long Break") { // we want to change to focus mode
+            setDuration(25);
+            setFocusCounter(focusCounter + 1);
+            setCurrMode("Focus");
+        }
+        else if (currMode == "Focus" && focusCounter == 3) { // we want to change to long break
+            setDuration(10);
+            setCurrMode("Long Break");
+            setFocusCounter(0);
+        }
+        else { // we want to change to break
+            setDuration(5);
+            setCurrMode("Break");
+        }
+        onClickReset();
+    };
     return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
                             margin: "0px",
                             color: "black",
@@ -13159,7 +13181,7 @@ var Timer = function (_a) {
                             fontSize: "10px",
                             color: "black",
                             backgroundColor: "transparent",
-                        }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused() ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused() && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] })] })));
+                        }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused() ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused() && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] }), (0,jsx_runtime.jsx)("h2", timer_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", timer_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" }))] })));
 };
 /* harmony default export */ const timer = (Timer);
 
@@ -13630,8 +13652,7 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
-    var _d = (0,react.useState)(0), focusCounter = _d[0], setFocusCounter = _d[1];
-    // initialize CURR MODE with chrome storage and update when pausedTime changes
+    // initialize CURR MODE with chrome storage and update when it changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("currMode", function (result) {
             var storedCurrMode = result.currMode;
@@ -13664,34 +13685,12 @@ var Tamadoro = function () {
             }
         });
     }, []);
-    // change mode 
-    var updateMode = function () {
-        // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
-        //       console.log("changed mode");
-        if (currMode == "Break" || currMode == "Long Break") { // we want to change to focus mode
-            setDuration(10);
-            setInitDeadline(new Date(Date.now() + initDuration));
-            setFocusCounter(focusCounter + 1);
-            setCurrMode("Focus");
-        }
-        else if (currMode == "Focus" && focusCounter == 3) { // we want to change to long break
-            setDuration(10);
-            setInitDeadline(new Date(Date.now() + initDuration));
-            setCurrMode("Long Break");
-            setFocusCounter(0);
-        }
-        else { // we want to change to break
-            setDuration(5);
-            setInitDeadline(new Date(Date.now() + initDuration));
-            setCurrMode("Break");
-        }
-    };
     (0,react.useEffect)(function () {
-        setDuration(10);
+        setDuration(25);
         setInitDeadline(new Date(Date.now() + initDuration));
         setCurrMode("Focus");
     }, []);
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)("h2", tamadoro_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", tamadoro_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

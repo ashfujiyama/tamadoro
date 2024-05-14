@@ -137,10 +137,9 @@ const Tamadoro: React.FC = () => {
   const [initDeadline, setInitDeadline] = useState<Date | null>(null);
   const [initDuration, setDuration] = useState(0);
   const [currMode, setCurrMode] = useState<string | null>(null);
-  const [focusCounter, setFocusCounter] = useState(0);
 
 
-  // initialize CURR MODE with chrome storage and update when pausedTime changes
+  // initialize CURR MODE with chrome storage and update when it changes
   useEffect(() => {
     chrome.storage.sync.get("currMode", (result) => {
       const storedCurrMode = result.currMode;
@@ -175,30 +174,8 @@ const Tamadoro: React.FC = () => {
     });
   }, []);
 
-  // change mode 
-
-  const updateMode = () => {
-    // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
-    //       console.log("changed mode");
-    if (currMode == "Break" || currMode == "Long Break") { // we want to change to focus mode
-      setDuration(10);
-      setInitDeadline(new Date(Date.now() + initDuration));
-      setFocusCounter(focusCounter + 1)
-      setCurrMode("Focus")
-    } else if (currMode == "Focus" && focusCounter == 3) { // we want to change to long break
-      setDuration(10); 
-      setInitDeadline(new Date(Date.now() + initDuration));
-      setCurrMode("Long Break")
-      setFocusCounter(0)
-    } else { // we want to change to break
-      setDuration(5); 
-      setInitDeadline(new Date(Date.now() + initDuration));
-      setCurrMode("Break")
-    }
-  }
-
   useEffect(() => {
-    setDuration(10);
+    setDuration(25);
     setInitDeadline(new Date(Date.now() + initDuration));
     setCurrMode("Focus");
   }, []);
@@ -210,10 +187,6 @@ const Tamadoro: React.FC = () => {
         {initDeadline && (
           <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} />
         )}
-        <h2 className="mode">{currMode}</h2>
-        <button className="Update_Mode" onClick={updateMode}>
-          Update Mode
-        </button>
         <Inventory />
         <LevelBar />
       </div>

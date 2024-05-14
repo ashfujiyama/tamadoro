@@ -25,6 +25,8 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
   const [pausedTime, setPausedTime] = useState<string | null>(null);
   const [deadline, setDeadline] = useState<Date | null>(initialDeadline);
   const [duration, setDuration] = useState(initDuration);
+  const [currMode, setCurrMode] = useState<string | null>(null);
+  const [focusCounter, setFocusCounter] = useState(0);
   
   console.log(deadline)
 
@@ -307,6 +309,27 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
     };
   }, []);
 
+
+  // change mode 
+  const updateMode = () => {
+    // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
+    //       console.log("changed mode");
+    if (currMode == "Break" || currMode == "Long Break") { // we want to change to focus mode
+      setDuration(25);
+      setFocusCounter(focusCounter + 1)
+      setCurrMode("Focus")
+    } else if (currMode == "Focus" && focusCounter == 3) { // we want to change to long break
+      setDuration(10); 
+      setCurrMode("Long Break")
+      setFocusCounter(0)
+    } else { // we want to change to break
+      setDuration(5); 
+      setCurrMode("Break")
+    }
+    onClickReset();
+  }
+
+
   return (
     <div style={{ textAlign: "center" }}>
       <h2 className="timeLeft">{timerDisplay}</h2>
@@ -349,6 +372,10 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
           </button>
         )}
       </div>
+      <h2 className="mode">{currMode}</h2>
+      <button className="Update_Mode" onClick={updateMode}>
+          Update Mode
+      </button>
 
     </div>
   );

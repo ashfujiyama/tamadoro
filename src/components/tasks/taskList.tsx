@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import TaskForm from "./taskForm";
 import { Task } from "../types";
-import { duration } from "@mui/material";
 
 const TaskList = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -10,7 +9,7 @@ const TaskList = () => {
 
   // Function to update task list state
   const updateTaskListState = () => {
-    chrome.storage.sync.get("taskList", (result) => {
+    chrome.storage.sync.get(["taskList"], (result) => {
       if (result.taskList) {
         setTaskList(result.taskList);
       }
@@ -56,39 +55,42 @@ const TaskList = () => {
     chrome.storage.sync.set({ taskList: updatedTaskList });
   };
 
-  const timerListener = () => {
-    chrome.storage.onChanged.addListener((changes, area) => {
-      if (area === "sync" && changes.deadline) {
-        const newValue = changes.deadline.newValue;
-        if (newValue === new Date()) {
-          chrome.storage.sync.get("duration", (result) => {
-            if (result.duration) {
-              timerComplete(result.duration);
+  // when a timer is complete, add progress
+  const timerComplete = () => {
+    chrome.storage.sync.get(["duration"], (result) => {
+      if (result.duration) {
+        if (selectedTask && taskList != null) {
+          const updatedTaskList = taskList.map((task) => {
+            if (task.name === selectedTask.name) {
+              return {
+                ...task,
+                dailyProgress: task.dailyProgress + result.duration,
+              };
             }
+            return task;
           });
+
+          setTaskList(updatedTaskList);
+          chrome.storage.sync.set({ taskList: updatedTaskList });
         }
       }
     });
-  };
+    // if (selectedTask && taskList != null) {
+    //   const updatedTaskList = taskList.map((task) => {
+    //     if (task.name === selectedTask.name) {
+    //       return { ...task, dailyProgress: task.dailyProgress + timeElapsed };
+    //     }
+    //     return task;
+    //   });
 
-  // when a timer is complete, add progress
-  const timerComplete = (timeElapsed: number) => {
-    if (selectedTask && taskList != null) {
-      const updatedTaskList = taskList.map((task) => {
-        if (task.name === selectedTask.name) {
-          return { ...task, dailyProgress: task.dailyProgress + timeElapsed };
-        }
-        return task;
-      });
-
-      setTaskList(updatedTaskList);
-      chrome.storage.sync.set({ taskList: updatedTaskList });
-    }
+    //   setTaskList(updatedTaskList);
+    //   chrome.storage.sync.set({ taskList: updatedTaskList });
+    // }
   };
 
   return (
     <>
-      <button onClick={() => timerComplete(10)}>timer complete</button>
+      <button onClick={() => timerComplete()}>timer complete</button>
       {taskList?.map((task, index) => (
         <div key={task.name}>
           {" "}

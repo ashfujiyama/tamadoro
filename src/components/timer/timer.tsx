@@ -43,8 +43,8 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
         } else {
             setPausedTime(storedPausedTime);
         }
-    });
-  }, [])
+        });
+    }, [])
 
     useEffect(() => {
         chrome.storage.sync.set({ pausedTime }, () => {
@@ -55,42 +55,62 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
 
 
     // initialize deadline with chrome storage and update when deadline changes
-   useEffect(() => {
-    chrome.storage.sync.get("deadline", (result) => {
-        const storedPausedTime = result.pausedTime;
-        if (deadline === null) {
-            chrome.storage.sync.set({"deadline": null}, () => {
-                console.log("made new deadline tracker");
-                console.log('deadline', deadline);
+    useEffect(() => {
+        chrome.storage.sync.get("deadline", (result) => {
+            if (!result.deadline) {
+                chrome.storage.sync.set({"deadline": initialDeadline}, () => {
+                    console.log("made new deadline tracker");
+                });
+            } else {
+                setDeadline(deadline);
+                chrome.storage.sync.set({ deadline: deadline }, () => {
+                    console.log('deadline saved:', deadline);
+                });
+            }
             });
-        } else {
-            setDeadline(deadline);
-        }
-    });
-  }, [])
+        }, [])
+
+//    useEffect(() => {
+//     chrome.storage.sync.get("deadline", (result) => {
+//         const storedPausedTime = result.pausedTime;
+//         if (deadline === null) {
+//             chrome.storage.sync.set({"deadline": null}, () => {
+//                 console.log("made new deadline tracker");
+//                 console.log('deadline', deadline);
+//             });
+//         } else {
+//             setDeadline(deadline);
+//         }
+//     });
+//   }, [])
 
     useEffect(() => {
-        chrome.storage.sync.set({ deadline }, () => {
+        chrome.storage.sync.set({ deadline: deadline }, () => {
             console.log('deadline at time saved:', deadline);
         });
     }, [deadline]);
 
      // initialize DURATION with chrome storage and update when changes
-   useEffect(() => {
-    chrome.storage.sync.get("duration", (result) => {
-        const storedDuration = result.duration;
-        if (storedDuration === null) {
-            chrome.storage.sync.set({"duration": null}, () => {
-                console.log("made new duration tracker");
+     useEffect(() => {
+        chrome.storage.sync.get("duration", (result) => {
+            if (!result.duration) {
+                chrome.storage.sync.set({"duration": initDuration}, () => {
+                    console.log("made new duration tracker");
+                });
+            } else {
+                setDuration(duration);
+                chrome.storage.sync.set({ duration: duration }, () => {
+                    console.log('Duration saved:', duration);
+                });
+            }
             });
-        } else {
-            setDuration(storedDuration);
-            chrome.storage.sync.set({ duration: storedDuration }, () => {
-                console.log('Duration saved:', storedDuration);
+        }, [])
+
+        useEffect(() => {
+            chrome.storage.sync.set({ duration: duration }, () => {
+                console.log('duration at time saved:', duration);
             });
-        }
-        });
-    }, [])
+        }, [duration]);
 
 
     //sets the deadline for the timer (what the timer is counting down to)
@@ -193,6 +213,7 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
   const increaseTime = (e: Date) => {
     //increasing the set time by 5 seconds
     setDuration(duration + 5);
+    console.log('inc', duration)
     // increaseDeadline(0, 5, 0);
     updateTimerDisplay(); //reloading the timer display
   };

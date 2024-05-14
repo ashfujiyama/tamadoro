@@ -12869,23 +12869,58 @@ var Timer = function (_a) {
     // initialize deadline with chrome storage and update when deadline changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("deadline", function (result) {
-            var storedPausedTime = result.pausedTime;
-            if (deadline === null) {
-                chrome.storage.sync.set({ "deadline": null }, function () {
+            if (!result.deadline) {
+                chrome.storage.sync.set({ "deadline": initialDeadline }, function () {
                     console.log("made new deadline tracker");
-                    console.log('deadline', deadline);
                 });
             }
             else {
                 setDeadline(deadline);
+                chrome.storage.sync.set({ deadline: deadline }, function () {
+                    console.log('deadline saved:', deadline);
+                });
             }
         });
     }, []);
+    //    useEffect(() => {
+    //     chrome.storage.sync.get("deadline", (result) => {
+    //         const storedPausedTime = result.pausedTime;
+    //         if (deadline === null) {
+    //             chrome.storage.sync.set({"deadline": null}, () => {
+    //                 console.log("made new deadline tracker");
+    //                 console.log('deadline', deadline);
+    //             });
+    //         } else {
+    //             setDeadline(deadline);
+    //         }
+    //     });
+    //   }, [])
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ deadline: deadline }, function () {
             console.log('deadline at time saved:', deadline);
         });
     }, [deadline]);
+    // initialize DURATION with chrome storage and update when changes
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("duration", function (result) {
+            if (!result.duration) {
+                chrome.storage.sync.set({ "duration": initDuration }, function () {
+                    console.log("made new duration tracker");
+                });
+            }
+            else {
+                setDuration(duration);
+                chrome.storage.sync.set({ duration: duration }, function () {
+                    console.log('Duration saved:', duration);
+                });
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ duration: duration }, function () {
+            console.log('duration at time saved:', duration);
+        });
+    }, [duration]);
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
@@ -12973,6 +13008,7 @@ var Timer = function (_a) {
     var increaseTime = function (e) {
         //increasing the set time by 5 seconds
         setDuration(duration + 5);
+        console.log('inc', duration);
         // increaseDeadline(0, 5, 0);
         updateTimerDisplay(); //reloading the timer display
     };

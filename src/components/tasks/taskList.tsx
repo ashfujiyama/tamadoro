@@ -57,7 +57,7 @@ const TaskList = () => {
 
   // when a timer is complete, add progress
   const timerComplete = (timeElapsed: number) => {
-    if (selectedTask) {
+    if (selectedTask && taskList!= null) {
       const updatedTaskList = taskList.map((task) => {
         if (task.name === selectedTask.name) {
           return { ...task, dailyProgress: task.dailyProgress + timeElapsed };
@@ -72,7 +72,7 @@ const TaskList = () => {
   return (
     <>
       <button onClick={() => timerComplete(10)}>timer complete</button>
-      {taskList.map((task, index) => (
+      {taskList?.map((task, index) => (
         <div key={task.name}>
           {" "}
           <p>{task.name}</p>

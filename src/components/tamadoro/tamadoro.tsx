@@ -218,6 +218,7 @@ const Tamadoro: React.FC = () => {
           Update Mode
         </button>
         <Inventory />
+        <HealthDisplay health={100} />
         <LevelBar maxHp={100} hp={60} />
       </div>
     </div>

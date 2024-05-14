@@ -12907,25 +12907,28 @@ var Timer = function (_a) {
                 chrome.storage.sync.set({ "duration": initDuration }, function () {
                     console.log("made new duration tracker");
                 });
+                onClickReset();
             }
             else {
                 setDuration(duration);
                 chrome.storage.sync.set({ duration: duration }, function () {
                     console.log('Duration saved:', duration);
                 });
+                onClickReset();
             }
         });
     }, []);
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ duration: duration }, function () {
             console.log('duration at time saved:', duration);
+            onClickReset();
         });
     }, [duration]);
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
         // This is where you specify how many minute, hours you want in your timer
-        deadline.setSeconds(deadline.getSeconds() + duration);
+        deadline.setMinutes(deadline.getMinutes() + duration);
         // deadline.setMinutes(deadline.getMinutes() + minute);
         // deadline.setHours(deadline.getHours() + hour);
         setDeadline(deadline);
@@ -12971,6 +12974,7 @@ var Timer = function (_a) {
         }
         updateTimerDisplay();
         setPausedTime(null);
+        console.log("in reset");
     };
     //starts the timer
     var startTimer = function (e) {
@@ -13064,6 +13068,51 @@ var Timer = function (_a) {
             setPausedTime(new Date(Date.now()).toString());
         }
     };
+    // updae timer based on mode
+    (0,react.useEffect)(function () {
+        //Add event listener for changes in Chrome storage
+        chrome.storage.onChanged.addListener(function (changes, namespace) {
+            if (changes["currMode"]) {
+                chrome.storage.sync.get("currMode", function (result) {
+                    var storedMode = result.currMode;
+                    if (storedMode) {
+                        if (storedMode == "Break") {
+                            setDuration(5);
+                            setDeadline(new Date(Date.now() + duration));
+                            updateTimerDisplay();
+                        }
+                        else {
+                            setDuration(10);
+                            setDeadline(new Date(Date.now() + duration));
+                            updateTimerDisplay();
+                        }
+                    }
+                });
+            }
+        });
+        // Clean up event listener when component unmounts
+        return function () {
+            chrome.storage.onChanged.removeListener(function (changes, namespace) {
+                if (changes["currMode"]) {
+                    chrome.storage.sync.get("currMode", function (result) {
+                        var storedMode = result.currMode;
+                        if (storedMode) {
+                            if (storedMode == "Break") {
+                                setDuration(5);
+                                setDeadline(new Date(Date.now() + initDuration));
+                                updateTimerDisplay();
+                            }
+                            else {
+                                setDuration(10);
+                                setDeadline(new Date(Date.now() + initDuration));
+                                updateTimerDisplay();
+                            }
+                        }
+                    });
+                }
+            });
+        };
+    }, []);
     return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
                             margin: "0px",
                             color: "black",
@@ -13422,6 +13471,118 @@ var tamadoro_assign = (undefined && undefined.__assign) || function () {
     return tamadoro_assign.apply(this, arguments);
 };
 
+// import React from "react";
+// import Timer from "../timer/timer";
+// import Inventory from "../pet/inventory";
+// import LevelBar from "../pet/levelBar";
+// import PetDisplay from "../pet/petDisplay";
+// import { useState, useRef, useEffect } from "react";
+// import "./tamadoro.css";
+// const Tamadoro: React.FC = () => {
+//   // the initial deadline and duration of timer to pass to the Timer component 
+//   // InitPaused is the time when the user hit the paused button
+//   // need to store all of this in chrome storage so we can reload the timer ws this data when reopening the sidebar
+//   // right these variables are at a defualt but we will need to call chrome storage to set them 
+//   const [initDeadline, setInitDeadline] = useState<Date | null>(null);
+//   const [initDuration, setDuration] = useState(0);
+//   const [initPaused, setInitPaused] = useState<number | null>(null);
+//   // initialize modes
+//   const [focusMode, setFocusMode] = useState<string | null>(null);
+//   const [breakMode, setBreakMode] = useState<string | null>(null);
+//   const [longBreakMode, setLongBreakMode] = useState<string | null>(null);
+//   const [currMode, setCurrMode] = useState<string | null>(null);
+//   // initialize FOCUS with chrome storage and update when changes
+//   useEffect(() => {
+//     chrome.storage.sync.get("currMode", (result) => {
+//         if (!result.currMode) {
+//             chrome.storage.sync.set({"currMode": null}, () => {
+//                 console.log("made new currMode tracker");
+//             });
+//         } else {
+//             setCurrMode(currMode);
+//             chrome.storage.sync.set({ currMode: currMode }, () => {
+//                 console.log('currMode saved:', currMode);
+//             });
+//         }
+//         });
+//     }, [])
+//     useEffect(() => {
+//         chrome.storage.sync.set({ currMode: currMode }, () => {
+//             console.log('currMode at time saved:', currMode);
+//         });
+//     }, [currMode]);
+//     // check state of each mode
+//     const isFocus = () => {
+//       return focusMode != null;
+//     }
+//     // check state of each mode
+//     const isBreak = () => {
+//       return breakMode != null;
+//     }
+//     // check state of each mode
+//     const isLongBreak = () => {
+//       return longBreakMode != null;
+//     }
+//     useEffect(() => {
+//       console.log("inside change mode")
+//       chrome.storage.sync.get("deadline", (result) => {
+//           const storedDeadline = result.deadline;
+//           if (storedDeadline) {
+//               const deadlineTime = new Date(storedDeadline).getTime();
+//               const currentTime = new Date().getTime();
+//               if (currentTime >= deadlineTime) {
+//                 if (currMode === "Focus") {
+//                   setCurrMode("Break");
+//                   console.log("break")
+//                 } else {
+//                   setCurrMode("Focus");
+//                 }
+//               }
+//           }
+//           console.log('cur', currMode)
+//       });
+//     }, []);
+//   useEffect(() => {
+//     // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
+//     setDuration(10);
+//     setInitDeadline(new Date(Date.now() + initDuration));
+//     setFocusMode("Focus")
+//     setCurrMode("Focus")
+//   }, []); // Need this to run once on component mount
+//   // Displays the mode in Chrome
+//   // Displays the task list stored in Chrome
+//   // useEffect(() => {
+//   //   updateMode(); // Load initial task list
+//     // Add event listener for changes in Chrome storage
+//   //   chrome.storage.onChanged.addListener((changes, namespace) => {
+//   //     if (changes["pausedTime"]) {
+//   //       updateMode(); // Update task list state when taskList changes
+//   //     }
+//   //   });
+//   //   // Clean up event listener when component unmounts
+//   //   return () => {
+//   //     chrome.storage.onChanged.removeListener((changes, namespace) => {
+//   //       if (changes["pausedTime"]) {
+//   //         updateMode(); // Update task list state when taskList changes
+//   //       }
+//   //     });
+//   //   };
+//   // }, []);
+//   return (
+//     <div className="screen">
+//       <div>
+//         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
+//         {initDeadline != null && (
+//            <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} /> 
+//         )}
+//         <h2 className="mode">{currMode}</h2>
+//         <Inventory />
+//         <LevelBar />
+//       </div>
+//     </div>
+//   );
+// };
+// export default Tamadoro;
 
 
 
@@ -13429,19 +13590,58 @@ var tamadoro_assign = (undefined && undefined.__assign) || function () {
 
 
 var Tamadoro = function () {
-    // the initial deadline and duration of timer to pass to the Timer component 
-    // InitPaused is the time when the user hit the paused button
-    // need to store all of this in chrome storage so we can reload the timer ws this data when reopening the sidebar
-    // right these variables are at a defualt but we will need to call chrome storage to set them 
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
-    var _c = (0,react.useState)(null), initPaused = _c[0], setInitPaused = _c[1];
+    var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
     (0,react.useEffect)(function () {
-        // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
-        setInitDeadline(new Date(Date.now() + 10));
+        chrome.storage.sync.get("currMode", function (result) {
+            var storedCurrMode = result.currMode;
+            if (storedCurrMode === null) {
+                chrome.storage.sync.set({ "currMode": null }, function () {
+                    console.log("made new currMode tracker");
+                });
+            }
+            else {
+                setCurrMode(storedCurrMode);
+            }
+        });
+    }, []);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.set({ currMode: currMode }, function () {
+            console.log('currMode at time saved:', currMode);
+        });
+    }, [currMode]);
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("deadline", function (result) {
+            var storedDeadline = result.deadline;
+            if (storedDeadline) {
+                var deadlineTime = new Date(storedDeadline).getTime();
+                var currentTime = new Date().getTime();
+                if (currentTime >= deadlineTime) {
+                    setCurrMode(function (prevMode) { return prevMode === "Focus" ? "Break" : "Focus"; });
+                    console.log("changed mode");
+                }
+            }
+        });
+    }, []);
+    var updateMode = function () {
+        setCurrMode(function (prevMode) { return prevMode === "Focus" ? "Break" : "Focus"; });
+        console.log("changed mode");
+        if (currMode == "Break") {
+            setDuration(5);
+            setInitDeadline(new Date(Date.now() + initDuration));
+        }
+        else {
+            setDuration(10);
+            setInitDeadline(new Date(Date.now() + initDuration));
+        }
+    };
+    (0,react.useEffect)(function () {
         setDuration(10);
-    }, []); // Need this to run once on component mount
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline != null && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
+        setInitDeadline(new Date(Date.now() + initDuration));
+        setCurrMode("Focus");
+    }, []);
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null })), (0,jsx_runtime.jsx)("h2", tamadoro_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", tamadoro_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(levelBar_App, {})] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

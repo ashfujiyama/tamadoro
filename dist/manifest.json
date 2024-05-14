@@ -8,7 +8,7 @@
     }, 
     "background": {
         "service_worker": "js/service-worker.js",
-        "type": "module"
+        "mode": "module"
     },
     "icons": {
 
@@ -19,6 +19,7 @@
       "permissions": [
         "sidePanel",
         "storage",
-        "notifications"
+        "notifications",
+        "alarms"
       ]
 }

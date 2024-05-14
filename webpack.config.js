@@ -3,6 +3,9 @@ const HTMLPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+    optimization: {
+        minimize: false,
+    },
     entry: {
         index: "./src/index.tsx"
     },

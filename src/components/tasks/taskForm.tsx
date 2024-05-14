@@ -1,43 +1,68 @@
-// add task needs to modify local storage
-
-import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./taskStyle.css";
 
-// import Task from "../types";
-
-interface IFormInput {
-  taskName: string;
+export interface Task {
+  name: string;
+  dailyProgress: number;
   dailyGoal: number;
+  complete: boolean;
 }
 
-// form to keep track of and submit new tasks entered
+// Interface for the form inputs, assuming dailyProgress starts at 0 for new tasks and complete is false
+interface IFormInput {
+  name: string;
+  hours: number; // Daily goal in hours
+  minutes: number; // Daily goal in minutes
+}
+
 const TaskForm = () => {
-  const { register, handleSubmit, reset } = useForm<IFormInput>(); // Specify the type for useForm
+  const { register, handleSubmit, reset } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (formData) => {
-    console.log(formData);
+    const time = formData.hours * 60;
+    const newTask: Task = {
+      name: formData.name,
+      dailyProgress: 0,
+      dailyGoal: time + +formData.minutes,
+      complete: false,
+    };
+    console.log(newTask);
+    chrome.storage.sync.get(["taskList"], (result) => {
+      if (result) {
+        // const taskList = result.taskList ?? [];
+        const updatedTaskList = [...result.taskList, newTask];
+        chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+          console.log("Task list updated:", updatedTaskList);
+        });
+      } else {
+        const updatedTaskList = [newTask];
+        chrome.storage.sync.set({ taskList: updatedTaskList }, () => {
+          console.log("Task list updated:", updatedTaskList);
+        });
+      }
+    });
     reset();
   };
 
   return (
-    <form className = "taskForm" onSubmit={handleSubmit(onSubmit)}>
-      <input className = "projectTitleInput"
-        {...(register("taskName"), { required: true, maxLength: 20 })}
+    <form className="taskForm" onSubmit={handleSubmit(onSubmit)}>
+      <input
+        className="projectTitleInput"
+        {...register("name", { required: true, maxLength: 20 })}
         placeholder="Project Title"
       />
       <div className="input-with-label">
         <input
           type="number"
           className="time-input"
-          {...register("dailyGoal", { min: 1, max: 24 })}
+          {...register("hours", { min: 0, max: 24 })}
           placeholder="HH"
         />
         <span>:</span>
         <input
           type="number"
           className="time-input"
-          {...register("dailyGoal", { min: 0, max: 59 })}
+          {...register("minutes", { min: 0, max: 59 })}
           placeholder="MM"
         />
       </div>

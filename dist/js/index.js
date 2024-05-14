@@ -11494,7 +11494,7 @@ var TaskForm = function () {
         };
         console.log(newTask);
         chrome.storage.sync.get(["taskList"], function (result) {
-            if (result !== null) {
+            if (result) {
                 // const taskList = result.taskList ?? [];
                 var updatedTaskList_1 = __spreadArray(__spreadArray([], result.taskList, true), [newTask], false);
                 chrome.storage.sync.set({ taskList: updatedTaskList_1 }, function () {
@@ -11536,7 +11536,7 @@ var TaskList = function () {
     // Function to update task list state
     var updateTaskListState = function () {
         chrome.storage.sync.get("taskList", function (result) {
-            if (result.taskList !== null) {
+            if (result.taskList) {
                 setTaskList(result.taskList);
             }
         });
@@ -11572,6 +11572,20 @@ var TaskList = function () {
         var updatedTaskList = taskList.filter(function (task) { return task.name !== taskName; });
         setTaskList(updatedTaskList);
         chrome.storage.sync.set({ taskList: updatedTaskList });
+    };
+    var timerListener = function () {
+        chrome.storage.onChanged.addListener(function (changes, area) {
+            if (area === "sync" && changes.deadline) {
+                var newValue = changes.deadline.newValue;
+                if (newValue === new Date()) {
+                    chrome.storage.sync.get("duration", function (result) {
+                        if (result.duration) {
+                            timerComplete(result.duration);
+                        }
+                    });
+                }
+            }
+        });
     };
     // when a timer is complete, add progress
     var timerComplete = function (timeElapsed) {
@@ -12850,9 +12864,9 @@ var Timer = function (_a) {
         chrome.storage.sync.get("pausedTime", function (result) {
             var storedPausedTime = result.pausedTime;
             if (storedPausedTime === null) {
-                chrome.storage.sync.set({ "pausedTime": null }, function () {
+                chrome.storage.sync.set({ pausedTime: null }, function () {
                     console.log("made new pausedTime tracker");
-                    console.log('deadline', deadline);
+                    console.log("deadline", deadline);
                 });
             }
             else {
@@ -12862,8 +12876,8 @@ var Timer = function (_a) {
     }, []);
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ pausedTime: pausedTime }, function () {
-            console.log('Paused at time saved:', pausedTime);
-            console.log('deadline', deadline);
+            console.log("Paused at time saved:", pausedTime);
+            console.log("deadline", deadline);
         });
     }, [pausedTime]);
     // initialize deadline with chrome storage and update when deadline changes
@@ -12871,9 +12885,9 @@ var Timer = function (_a) {
         chrome.storage.sync.get("deadline", function (result) {
             var storedPausedTime = result.pausedTime;
             if (deadline === null) {
-                chrome.storage.sync.set({ "deadline": null }, function () {
+                chrome.storage.sync.set({ deadline: null }, function () {
                     console.log("made new deadline tracker");
-                    console.log('deadline', deadline);
+                    console.log("deadline", deadline);
                 });
             }
             else {
@@ -12883,9 +12897,25 @@ var Timer = function (_a) {
     }, []);
     (0,react.useEffect)(function () {
         chrome.storage.sync.set({ deadline: deadline }, function () {
-            console.log('deadline at time saved:', deadline);
+            console.log("deadline at time saved:", deadline);
         });
     }, [deadline]);
+    // initialize DURATION with chrome storage and update when changes
+    (0,react.useEffect)(function () {
+        chrome.storage.sync.get("duration", function (result) {
+            if (result.duration) {
+                chrome.storage.sync.set({ duration: initDuration }, function () {
+                    console.log("made new duration tracker");
+                });
+            }
+            else {
+                setDuration(duration);
+                chrome.storage.sync.set({ duration: duration }, function () {
+                    console.log("Duration saved:", duration);
+                });
+            }
+        });
+    }, []);
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
         var deadline = new Date();
@@ -12951,7 +12981,7 @@ var Timer = function (_a) {
             var remainingTime = deadline.getTime() - new Date(pausedTime).getTime();
             var newDeadline = new Date(Date.now() + remainingTime);
             setDeadline(newDeadline);
-            var s = Math.floor((remainingTime / 1000));
+            var s = Math.floor(remainingTime / 1000);
             setTimerDisplayFromDate(newDeadline);
             startTimer(newDeadline);
             setPausedTime(null);
@@ -12985,13 +13015,15 @@ var Timer = function (_a) {
         updateTimerDisplay(); //reloading the timer display
     };
     var onClickInc = function () {
-        if (deadline != null && (deadline.getHours() - (new Date).getHours()) < 2 && !isPaused()) {
+        if (deadline != null &&
+            deadline.getHours() - new Date().getHours() < 2 &&
+            !isPaused()) {
             increaseTime(deadline);
             updateTimerDisplay(); //reloading the timer display
         }
     };
     var onClickDec = function () {
-        if (deadline != null && deadline != new Date && !isPaused()) {
+        if (deadline != null && deadline != new Date() && !isPaused()) {
             decreaseTime(deadline);
             updateTimerDisplay(); //reloading the timer display
         }

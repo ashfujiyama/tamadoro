@@ -75,6 +75,23 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
         });
     }, [deadline]);
 
+     // initialize DURATION with chrome storage and update when changes
+   useEffect(() => {
+    chrome.storage.sync.get("duration", (result) => {
+        const storedDuration = result.duration;
+        if (storedDuration === null) {
+            chrome.storage.sync.set({"duration": null}, () => {
+                console.log("made new duration tracker");
+            });
+        } else {
+            setDuration(storedDuration);
+            chrome.storage.sync.set({ duration: storedDuration }, () => {
+                console.log('Duration saved:', storedDuration);
+            });
+        }
+        });
+    }, [])
+
 
     //sets the deadline for the timer (what the timer is counting down to)
    const getDeadTime = () => {

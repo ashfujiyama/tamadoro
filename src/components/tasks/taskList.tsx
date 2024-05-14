@@ -45,7 +45,10 @@ const TaskList = () => {
   useEffect(() => {
     // Function to compare deadline with current time
     const checkDeadline = () => {
-      chrome.storage.sync.get(["deadline"], (result) => {
+      chrome.storage.sync.set({ deadline: new Date() }, () => {
+        console.log("set deadline to: ", new Date());
+      });
+      chrome.storage.sync.get("deadline", (result) => {
         if (result.deadline) {
           const currentTime = new Date();
           const deadlineTime = new Date(result.deadline);
@@ -54,7 +57,9 @@ const TaskList = () => {
             console.log("Deadline has passed.");
             timerComplete();
           } else {
-            console.log("Deadline is in the future. " + deadlineTime);
+            const deadlineDate = new Date(result.deadline);
+            console.log("Deadline is in the future: " + isNaN(result.deadline));
+
             console.log("curr time = " + currentTime);
           }
         } else {

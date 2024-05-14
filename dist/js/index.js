@@ -11586,7 +11586,10 @@ var TaskList = function () {
     (0,react.useEffect)(function () {
         // Function to compare deadline with current time
         var checkDeadline = function () {
-            chrome.storage.sync.get(["deadline"], function (result) {
+            chrome.storage.sync.set({ deadline: new Date() }, function () {
+                console.log("set deadline to: ", new Date());
+            });
+            chrome.storage.sync.get("deadline", function (result) {
                 if (result.deadline) {
                     var currentTime = new Date();
                     var deadlineTime = new Date(result.deadline);
@@ -11595,7 +11598,8 @@ var TaskList = function () {
                         timerComplete();
                     }
                     else {
-                        console.log("Deadline is in the future. " + deadlineTime);
+                        var deadlineDate = new Date(result.deadline);
+                        console.log("Deadline is in the future: " + isNaN(result.deadline));
                         console.log("curr time = " + currentTime);
                     }
                 }
@@ -13508,11 +13512,12 @@ var levelBar_assign = (undefined && undefined.__assign) || function () {
 
 var LevelBar = function (_a) {
     var _b = _a.fullXP, fullXP = _b === void 0 ? 0 : _b;
-    var level = fullXP / 100;
-    var xpOverflow = fullXP % 100;
-    var maxXP = (level + 1) * 100;
+    var level = Math.floor(fullXP / 100);
+    var maxXP = (level + 1) * 100; // xp required to complete this level
+    var completeXP = level * 100; // xp that filled up lower levels
+    var xpOverflow = (fullXP - completeXP) % maxXP; // xp attributed to this level
     var barWidth = (xpOverflow / maxXP) * 100;
-    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsxs)("div", { children: [" lvl ", level] }), (0,jsx_runtime.jsx)("div", levelBar_assign({ className: "level-bar" }, { children: (0,jsx_runtime.jsx)("div", { className: "bar", style: { width: "".concat(barWidth, "%") } }) }))] }));
+    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)("div", { children: fullXP }), (0,jsx_runtime.jsxs)("div", { children: [" lvl ", level] }), (0,jsx_runtime.jsx)("div", levelBar_assign({ className: "level-bar" }, { children: (0,jsx_runtime.jsx)("div", { className: "bar", style: { width: "".concat(barWidth, "%") } }) }))] }));
 };
 /* harmony default export */ const components_pet_levelBar = (LevelBar);
 
@@ -13707,7 +13712,7 @@ var Tamadoro = function () {
             }
         });
     };
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp })] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

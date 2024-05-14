@@ -28,7 +28,7 @@ const TaskForm = () => {
     };
     console.log(newTask);
     chrome.storage.sync.get(["taskList"], (result) => {
-      if (result !== null) {
+      if (result) {
         // const taskList = result.taskList ?? [];
         const updatedTaskList = [...result.taskList, newTask];
         chrome.storage.sync.set({ taskList: updatedTaskList }, () => {

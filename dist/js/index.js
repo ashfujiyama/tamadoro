@@ -11494,7 +11494,7 @@ var TaskForm = function () {
         };
         console.log(newTask);
         chrome.storage.sync.get(["taskList"], function (result) {
-            if (result !== null) {
+            if (result) {
                 // const taskList = result.taskList ?? [];
                 var updatedTaskList_1 = __spreadArray(__spreadArray([], result.taskList, true), [newTask], false);
                 chrome.storage.sync.set({ taskList: updatedTaskList_1 }, function () {
@@ -11535,8 +11535,8 @@ var TaskList = function () {
     var _c = (0,react.useState)(null), selectedTask = _c[0], setSelectedTask = _c[1];
     // Function to update task list state
     var updateTaskListState = function () {
-        chrome.storage.sync.get("taskList", function (result) {
-            if (result.taskList !== null) {
+        chrome.storage.sync.get(["taskList"], function (result) {
+            if (result.taskList) {
                 setTaskList(result.taskList);
             }
         });
@@ -11574,19 +11574,33 @@ var TaskList = function () {
         chrome.storage.sync.set({ taskList: updatedTaskList });
     };
     // when a timer is complete, add progress
-    var timerComplete = function (timeElapsed) {
-        if (selectedTask && taskList != null) {
-            var updatedTaskList = taskList.map(function (task) {
-                if (task.name === selectedTask.name) {
-                    return taskList_assign(taskList_assign({}, task), { dailyProgress: task.dailyProgress + timeElapsed });
+    var timerComplete = function () {
+        chrome.storage.sync.get(["duration"], function (result) {
+            if (result.duration) {
+                if (selectedTask && taskList != null) {
+                    var updatedTaskList = taskList.map(function (task) {
+                        if (task.name === selectedTask.name) {
+                            return taskList_assign(taskList_assign({}, task), { dailyProgress: task.dailyProgress + result.duration });
+                        }
+                        return task;
+                    });
+                    setTaskList(updatedTaskList);
+                    chrome.storage.sync.set({ taskList: updatedTaskList });
                 }
-                return task;
-            });
-            setTaskList(updatedTaskList);
-            chrome.storage.sync.set({ taskList: updatedTaskList });
-        }
+            }
+        });
+        // if (selectedTask && taskList != null) {
+        //   const updatedTaskList = taskList.map((task) => {
+        //     if (task.name === selectedTask.name) {
+        //       return { ...task, dailyProgress: task.dailyProgress + timeElapsed };
+        //     }
+        //     return task;
+        //   });
+        //   setTaskList(updatedTaskList);
+        //   chrome.storage.sync.set({ taskList: updatedTaskList });
+        // }
     };
-    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return timerComplete(10); } }, { children: "timer complete" })), taskList === null || taskList === void 0 ? void 0 : taskList.map(function (task, index) { return ((0,jsx_runtime.jsxs)("div", { children: [" ", (0,jsx_runtime.jsx)("p", { children: task.name }), selectedTask === task && (0,jsx_runtime.jsx)("p", { children: "this task is selected" }), (0,jsx_runtime.jsxs)("p", { children: ["today's progress: ", task.dailyProgress, " / ", task.dailyGoal] }), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return onClickTask(task); } }, { children: "select" })), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return removeTask(task.name); } }, { children: "delete" }))] }, task.name)); }), (0,jsx_runtime.jsxs)("div", taskList_assign({ className: "collapsible-container" }, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ className: "collapsible-header", onClick: toggleFormVisibility }, { children: "Add Task" })), isFormVisible && ((0,jsx_runtime.jsx)("div", taskList_assign({ className: "collapsible-content" }, { children: (0,jsx_runtime.jsx)(taskForm, {}) })))] }))] }));
+    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return timerComplete(); } }, { children: "timer complete" })), taskList === null || taskList === void 0 ? void 0 : taskList.map(function (task, index) { return ((0,jsx_runtime.jsxs)("div", { children: [" ", (0,jsx_runtime.jsx)("p", { children: task.name }), selectedTask === task && (0,jsx_runtime.jsx)("p", { children: "this task is selected" }), (0,jsx_runtime.jsxs)("p", { children: ["today's progress: ", task.dailyProgress, " / ", task.dailyGoal] }), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return onClickTask(task); } }, { children: "select" })), (0,jsx_runtime.jsx)("button", taskList_assign({ onClick: function () { return removeTask(task.name); } }, { children: "delete" }))] }, task.name)); }), (0,jsx_runtime.jsxs)("div", taskList_assign({ className: "collapsible-container" }, { children: [(0,jsx_runtime.jsx)("button", taskList_assign({ className: "collapsible-header", onClick: toggleFormVisibility }, { children: "Add Task" })), isFormVisible && ((0,jsx_runtime.jsx)("div", taskList_assign({ className: "collapsible-content" }, { children: (0,jsx_runtime.jsx)(taskForm, {}) })))] }))] }));
 };
 /* harmony default export */ const taskList = (TaskList);
 

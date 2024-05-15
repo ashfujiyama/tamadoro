@@ -13890,7 +13890,7 @@ var Tamadoro = function () {
                 chrome.storage.sync.get("health", function (result) {
                     var storedHP = result.health;
                     if (storedHP) {
-                        setXP(storedHP);
+                        setHealth(storedHP);
                         console.log("Updated HP:", storedHP);
                     }
                 });

@@ -171,7 +171,7 @@ const Tamadoro: React.FC = () => {
         chrome.storage.sync.get("health", (result) => {
           const storedHP = result.health;
           if (storedHP) {
-            setXP(storedHP);
+            setHealth(storedHP);
             console.log("Updated HP:", storedHP);
           }
         });

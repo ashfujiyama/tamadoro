@@ -11,7 +11,7 @@ const Inventory = () => {
   const [tomatoes, setTomatoes] = useState<Food>({
     type: FoodType.Tomato,
     points: 5,
-    count: 0,
+    count: 2,
     image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
   });
   const [cakeSlices, setCakeSlices] = useState<Food>({
@@ -29,14 +29,14 @@ const Inventory = () => {
 
   // uncomment to clear things for testing
 
-  chrome.storage.local.clear(function () {
-    var error = chrome.runtime.lastError;
-    if (error) {
-      console.error(error);
-    }
-    // do something more
-  });
-  chrome.storage.sync.clear();
+  // chrome.storage.local.clear(function () {
+  //   var error = chrome.runtime.lastError;
+  //   if (error) {
+  //     console.error(error);
+  //   }
+  //   // do something more
+  // });
+  // chrome.storage.sync.clear();
 
   // TOMATOES: retrieve stored value at init + track changes/update chrome storage
 
@@ -148,21 +148,70 @@ const Inventory = () => {
       });
     }
   };
+  
+  const updateFood = () => {
+    chrome.storage.sync.get(["duration"], (result) => {
+      if (chrome.runtime.lastError) {
+        console.error('Error retrieving duration data:', chrome.runtime.lastError);
+      } else {
+        console.log('Retrieved duration data:', result.duration);
+        // Use the retrieved duration data here
+        const currentDuration = result.duration || 0;
+  
+        if (currentDuration >= 15 && currentDuration < 45) {
+          increaseTomatoes();
+        } else if (currentDuration >= 45 && currentDuration <= 90) {
+          increaseCakeSlice();
+        } 
+    
+      }
+    });
+  }
 
   const increaseHealth = (hp: number) => {
     chrome.storage.sync.get(["health"], (result) => {
-      console.log("increase health" + result.health!);
-      if (result.health) {
-        console.log(result.health);
+      if (chrome.runtime.lastError) {
+        console.error('Error retrieving health data:', chrome.runtime.lastError);
+      } else {
+        console.log('Retrieved health data:', result.health);
+        // Use the retrieved health data here
         const currentHealth = result.health || 0;
-        const newHealth = currentHealth + hp;
+        // const newHealth = Math.max(currentHealth + hp, 100);
+        let newHealth = currentHealth + hp
+        if (newHealth > 100){
+          const xp = Math.max(newHealth - 100, 0)
+          console.log("hp", hp)
+          console.log("newhealth", newHealth)
+          if (xp > 0) {
+            console.log("called increase xp")
+            increaseXP(xp)
+          }
+          newHealth = 100
+        }
 
-        chrome.storage.sync.set({ health: newHealth }, () => {
+        chrome.storage.sync.set({ "health": newHealth }, () => {
           console.log("Health increased to", newHealth);
         });
       }
     });
   };
+
+  const increaseXP = (xp: number) => {
+    chrome.storage.sync.get(["xp"], (result) => {
+      if (chrome.runtime.lastError) {
+        console.error('Error retrieving XP data:', chrome.runtime.lastError);
+      } else {
+        console.log('Retrieved XP data:', result.xp);
+        // Use the retrieved health data here
+        const currXP = result.xp || 0;
+        const newXP = currXP + xp;
+
+        chrome.storage.sync.set({ "xp": newXP }, () => {
+          console.log("XP increased to", newXP);
+        });
+      }
+    });
+  }
   // decrease count of current chosen food
   const feed = (foodType: FoodType) => {
     switch (foodType) {

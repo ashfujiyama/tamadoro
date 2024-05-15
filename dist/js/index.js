@@ -7302,7 +7302,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 /***/ }),
 
-/***/ 800:
+/***/ 8800:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -11622,8 +11622,8 @@ var TaskList = function () {
                     }
                     else {
                         var deadlineDate = new Date(result.deadline);
-                        console.log("Deadline is in the future: " + deadlineTime);
-                        console.log("curr time = " + currentTime);
+                        // console.log("Deadline is in the future: " + deadlineTime);
+                        // console.log("curr time = " + currentTime);
                     }
                 }
                 else {
@@ -13311,7 +13311,7 @@ var Timer = function (_a) {
 /* harmony default export */ const timer = (Timer);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/inventory.css
-var inventory = __webpack_require__(800);
+var inventory = __webpack_require__(8800);
 ;// CONCATENATED MODULE: ./src/components/pet/inventory.css
 
       
@@ -13380,7 +13380,7 @@ var Inventory = function () {
     var _a = (0,react.useState)({
         type: FoodType.Tomato,
         points: 5,
-        count: 0,
+        count: 2,
         image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
     }), tomatoes = _a[0], setTomatoes = _a[1];
     var _b = (0,react.useState)({
@@ -13396,14 +13396,14 @@ var Inventory = function () {
         image: "https://i.ibb.co/gmZZMDB/fullcake.png",
     }), cake = _c[0], setCake = _c[1];
     // uncomment to clear things for testing
-    chrome.storage.local.clear(function () {
-        var error = chrome.runtime.lastError;
-        if (error) {
-            console.error(error);
-        }
-        // do something more
-    });
-    chrome.storage.sync.clear();
+    // chrome.storage.local.clear(function () {
+    //   var error = chrome.runtime.lastError;
+    //   if (error) {
+    //     console.error(error);
+    //   }
+    //   // do something more
+    // });
+    // chrome.storage.sync.clear();
     // TOMATOES: retrieve stored value at init + track changes/update chrome storage
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iTomato", function (result) {
@@ -13487,15 +13487,63 @@ var Inventory = function () {
             setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count - 1 }));
         }
     };
+    var updateFood = function () {
+        chrome.storage.sync.get(["duration"], function (result) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving duration data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved duration data:', result.duration);
+                // Use the retrieved duration data here
+                var currentDuration = result.duration || 0;
+                if (currentDuration >= 15 && currentDuration < 45) {
+                    increaseTomatoes();
+                }
+                else if (currentDuration >= 45 && currentDuration <= 90) {
+                    increaseCakeSlice();
+                }
+            }
+        });
+    };
     var increaseHealth = function (hp) {
         chrome.storage.sync.get(["health"], function (result) {
-            console.log("increase health" + result.health);
-            if (result.health) {
-                console.log(result.health);
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving health data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved health data:', result.health);
+                // Use the retrieved health data here
                 var currentHealth = result.health || 0;
+                // const newHealth = Math.max(currentHealth + hp, 100);
                 var newHealth_1 = currentHealth + hp;
-                chrome.storage.sync.set({ health: newHealth_1 }, function () {
+                if (newHealth_1 > 100) {
+                    var xp = Math.max(newHealth_1 - 100, 0);
+                    console.log("hp", hp);
+                    console.log("newhealth", newHealth_1);
+                    if (xp > 0) {
+                        console.log("called increase xp");
+                        increaseXP(xp);
+                    }
+                    newHealth_1 = 100;
+                }
+                chrome.storage.sync.set({ "health": newHealth_1 }, function () {
                     console.log("Health increased to", newHealth_1);
+                });
+            }
+        });
+    };
+    var increaseXP = function (xp) {
+        chrome.storage.sync.get(["xp"], function (result) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving XP data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved XP data:', result.xp);
+                // Use the retrieved health data here
+                var currXP = result.xp || 0;
+                var newXP_1 = currXP + xp;
+                chrome.storage.sync.set({ "xp": newXP_1 }, function () {
+                    console.log("XP increased to", newXP_1);
                 });
             }
         });
@@ -13593,7 +13641,7 @@ var LevelBar = function (_a) {
     if (fullXP == 0) {
         barWidth = 0;
     }
-    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsxs)("div", { children: [" lvl ", level] }), (0,jsx_runtime.jsx)("div", levelBar_assign({ className: "level-bar" }, { children: (0,jsx_runtime.jsx)("div", { className: "bar", style: { width: "".concat(barWidth, "%") } }) }))] }));
+    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)("div", { children: fullXP }), (0,jsx_runtime.jsxs)("div", { children: [" lvl ", level] }), (0,jsx_runtime.jsx)("div", levelBar_assign({ className: "level-bar" }, { children: (0,jsx_runtime.jsx)("div", { className: "bar", style: { width: "".concat(barWidth, "%") } }) }))] }));
 };
 /* harmony default export */ const components_pet_levelBar = (LevelBar);
 
@@ -13692,7 +13740,7 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
-    var _d = (0,react.useState)(50), health = _d[0], setHealth = _d[1];
+    var _d = (0,react.useState)(100), health = _d[0], setHealth = _d[1];
     var _e = (0,react.useState)(0), xp = _e[0], setXP = _e[1];
     // initialize CURR MODE with chrome storage and update when it changes
     (0,react.useEffect)(function () {
@@ -13735,63 +13783,124 @@ var Tamadoro = function () {
             console.log("health created");
         });
     }, []);
+    // at midnight, decrease hp/xp if tasks are incomplete
+    (0,react.useEffect)(function () {
+        var checkStorageAtMidnight = function () {
+            var now = new Date();
+            // if (now.getHours() === 0 && now.getMinutes() === 0) {
+            getDeficit();
+            // }
+        };
+        //Run the function every minute to check for midnight
+        // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
+        var intervalId = setInterval(checkStorageAtMidnight, 10000);
+        // const intervalId = setInterval(checkStorageAtMidnight, 300000);
+        // Clean up interval when component unmounts
+        return function () { return clearInterval(intervalId); };
+    }, []);
     // calculate incomplete productivity minutes
     var getDeficit = function () {
         chrome.storage.sync.get(["taskList"], function (result) {
-            if (result.taskList && result.taskList.length > 0) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving health data:', chrome.runtime.lastError);
+            }
+            else {
                 var taskList = result.taskList;
-                // Calculate the sum of all (dailyGoal - dailyProgress)
-                var totalDeficit = taskList.reduce(function (acc, task) {
-                    var deficit = task.dailyGoal - task.dailyProgress;
-                    return acc + (deficit > 0 ? deficit : 0);
-                }, 0);
-                console.log("Total Health Deficit:", totalDeficit);
+                if (taskList) {
+                    console.log("deficit");
+                    // Calculate the sum of all (dailyGoal - dailyProgress)
+                    var totalDeficit = taskList.reduce(function (acc, task) {
+                        var deficit = task.dailyGoal - task.dailyProgress;
+                        return acc + (deficit > 0 ? deficit : 0);
+                    }, 0);
+                    console.log("the total deficit is ", totalDeficit);
+                    if (totalDeficit > 0) {
+                        var overflow = decreaseHealth(totalDeficit);
+                        decreaseXP(overflow);
+                    }
+                    console.log("Total Health Deficit:", totalDeficit);
+                }
             }
         });
     };
     // decrement health
     var decreaseHealth = function (deficit) {
+        console.log("dec hp");
         chrome.storage.sync.get("health", function (result) {
-            if (result.health) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving health data:', chrome.runtime.lastError);
+            }
+            else {
                 var newHealth_1 = Math.max(result.health - deficit, 0);
                 var overflow = result.health - deficit - newHealth_1;
+                console.log("new health is ", newHealth_1);
                 chrome.storage.sync.set({ health: newHealth_1 }, function () {
                     setHealth(newHealth_1);
                     console.log("Health updated to ".concat(health));
                 });
-                return overflow; // Return the new health value
-            }
-            else {
-                var newHealth_2 = health - deficit;
-                var overflow = health - deficit - newHealth_2;
-                chrome.storage.sync.set({ health: newHealth_2 }, function () {
-                    console.log("Health initialized to ".concat(newHealth_2));
-                });
-                return overflow;
+                return overflow; // return the deficit overflow
             }
         });
         return 0;
     };
     // decrease xp from health decrement overflow
     var decreaseXP = function (deficit) {
+        console.log("dec xp");
         chrome.storage.sync.get("xp", function (result) {
-            if (result.xp) {
-                var newXP_1 = Math.max(result.xp - deficit, 0);
-                chrome.storage.sync.set({ xp: newXP_1 }, function () {
-                    setXP(newXP_1);
-                    console.log("XP updated to ".concat(xp));
-                });
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving xp data:', chrome.runtime.lastError);
             }
             else {
-                var newXP_2 = Math.max(xp - deficit, 0);
-                chrome.storage.sync.set({ xp: newXP_2 }, function () {
-                    setXP(newXP_2);
-                    console.log("Health initialized to ".concat(xp));
-                });
+                if (result.xp) {
+                    var newXP_1 = Math.max(result.xp - deficit, 0);
+                    chrome.storage.sync.set({ xp: newXP_1 }, function () {
+                        setXP(newXP_1);
+                        console.log("XP updated to ".concat(xp));
+                    });
+                }
             }
         });
     };
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s12.gifyu.com/images/SfbkQ.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
+    // updates XP when it is changed in chrome storage
+    (0,react.useEffect)(function () {
+        var handleXPChange = function (changes, namespace) {
+            if (changes["xp"]) {
+                chrome.storage.sync.get("xp", function (result) {
+                    var storedXP = result.xp;
+                    if (storedXP) {
+                        setXP(storedXP);
+                        console.log("Updated XP:", storedXP);
+                    }
+                });
+            }
+        };
+        // Add event listener for changes in XP Chrome storage
+        chrome.storage.onChanged.addListener(handleXPChange);
+        // Clean up event listener when component unmounts
+        return function () {
+            chrome.storage.onChanged.removeListener(handleXPChange);
+        };
+    }, []);
+    (0,react.useEffect)(function () {
+        var handleHPChange = function (changes, namespace) {
+            if (changes["health"]) {
+                chrome.storage.sync.get("health", function (result) {
+                    var storedHP = result.health;
+                    if (storedHP) {
+                        setHealth(storedHP);
+                        console.log("Updated HP:", storedHP);
+                    }
+                });
+            }
+        };
+        // Add event listener for changes in XP Chrome storage
+        chrome.storage.onChanged.addListener(handleHPChange);
+        // Clean up event listener when component unmounts
+        return function () {
+            chrome.storage.onChanged.removeListener(handleHPChange);
+        };
+    }, []);
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

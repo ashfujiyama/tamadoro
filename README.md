@@ -1,6 +1,13 @@
-# Tamatimer
+<img width="328" alt="Screenshot 2024-05-15 at 12 11 59 PM" src="https://github.com/ashfujiyama/team14/assets/114324180/57e2c85a-c3ca-4688-b361-7b912ddd0323">
+
+# Tamadoro
 Tamatimer is a time management chrome extension which enhances user productivity based on the pomodoro study method. Users are encouraged to develop good productivity habits by having to choose and take care of their Tamagotchi inspired pet. Each focus session rewards users with they can use to feed their pet to keep them happy and healthy.
 
+# Team Members 
+Amanda Lee, Sydney Simon, Ash Fujiyama, Gabby Gu
+
+# Landing Page
+https://gabby-gu.github.io/tamadoro-landing-page/
 
 ## Features
 * Pomodoro timer with focus, break, and long break mode
@@ -13,7 +20,7 @@ Tamatimer is a time management chrome extension which enhances user productivity
 # Screenshots
 This screenshot shows with sidebard open in focus mode with a task of CIS 350 selected. The current progress is 0/60 minutes since the timer has not been run yet, but will update when user completes a focus mode. You can also see the food inventory which will be used to feed the pet after completing your task goals.
 
-<img width="409" alt="Screenshot 2024-05-14 at 11 17 53 PM" src="https://github.com/ashfujiyama/team14/assets/114324180/cf9cbb17-3005-43b3-8dd1-450458ca77c9">
+<img width="391" alt="Screenshot 2024-05-15 at 12 13 20 PM" src="https://github.com/ashfujiyama/team14/assets/114324180/33f6b114-5f9d-48c4-8520-ef150422aa63">
 
 # Installation from Source 
 1. Clone the repository:
@@ -52,4 +59,9 @@ npm run build
 * Add more pet options
 * Notification when a timer ends
 * Option to switch betweeen stopwatch and pomodoro
-  
+
+# Blog Posts
+https://medium.com/@sydsimon/tamadoro-blog-post-045fe0327c6a
+
+# Report Issues
+Please report any problems you may encounter in the issues section of this repository.   

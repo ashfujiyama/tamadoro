@@ -42,6 +42,7 @@ const TaskList = () => {
     };
   }, []);
 
+
   useEffect(() => {
     // Function to compare deadline with current time
     const checkDeadline = () => {
@@ -58,9 +59,9 @@ const TaskList = () => {
             timerComplete();
           } else {
             const deadlineDate = new Date(result.deadline);
-            console.log("Deadline is in the future: " + deadlineTime);
+            // console.log("Deadline is in the future: " + deadlineTime);
 
-            console.log("curr time = " + currentTime);
+            // console.log("curr time = " + currentTime);
           }
         } else {
           console.log("No deadline found in Chrome storage.");

@@ -71,7 +71,7 @@ const Tamadoro: React.FC = () => {
   
       //Run the function every minute to check for midnight
       // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
-      const intervalId = setInterval(checkStorageAtMidnight, 3000);
+      const intervalId = setInterval(checkStorageAtMidnight, 10000);
       // const intervalId = setInterval(checkStorageAtMidnight, 300000);
   
       // Clean up interval when component unmounts
@@ -165,6 +165,27 @@ const Tamadoro: React.FC = () => {
     };
   }, []);
   
+  useEffect(() => {
+    const handleHPChange = (changes: { [x: string]: any; }, namespace: any) => {
+      if (changes["health"]) {
+        chrome.storage.sync.get("health", (result) => {
+          const storedHP = result.health;
+          if (storedHP) {
+            setXP(storedHP);
+            console.log("Updated HP:", storedHP);
+          }
+        });
+      }
+    };
+  
+    // Add event listener for changes in XP Chrome storage
+    chrome.storage.onChanged.addListener(handleHPChange);
+  
+    // Clean up event listener when component unmounts
+    return () => {
+      chrome.storage.onChanged.removeListener(handleHPChange);
+    };
+  }, []);
 
   return (
     <div className="screen">

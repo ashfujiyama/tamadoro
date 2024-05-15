@@ -13778,7 +13778,7 @@ var Tamadoro = function () {
         };
         //Run the function every minute to check for midnight
         // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
-        var intervalId = setInterval(checkStorageAtMidnight, 3000);
+        var intervalId = setInterval(checkStorageAtMidnight, 10000);
         // const intervalId = setInterval(checkStorageAtMidnight, 300000);
         // Clean up interval when component unmounts
         return function () { return clearInterval(intervalId); };
@@ -13864,6 +13864,25 @@ var Tamadoro = function () {
         // Clean up event listener when component unmounts
         return function () {
             chrome.storage.onChanged.removeListener(handleXPChange);
+        };
+    }, []);
+    (0,react.useEffect)(function () {
+        var handleHPChange = function (changes, namespace) {
+            if (changes["health"]) {
+                chrome.storage.sync.get("health", function (result) {
+                    var storedHP = result.health;
+                    if (storedHP) {
+                        setXP(storedHP);
+                        console.log("Updated HP:", storedHP);
+                    }
+                });
+            }
+        };
+        // Add event listener for changes in XP Chrome storage
+        chrome.storage.onChanged.addListener(handleHPChange);
+        // Clean up event listener when component unmounts
+        return function () {
+            chrome.storage.onChanged.removeListener(handleHPChange);
         };
     }, []);
     return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));

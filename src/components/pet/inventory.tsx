@@ -29,14 +29,14 @@ const Inventory = () => {
 
   // uncomment to clear things for testing
 
-  chrome.storage.local.clear(function () {
-    var error = chrome.runtime.lastError;
-    if (error) {
-      console.error(error);
-    }
-    // do something more
-  });
-  chrome.storage.sync.clear();
+  // chrome.storage.local.clear(function () {
+  //   var error = chrome.runtime.lastError;
+  //   if (error) {
+  //     console.error(error);
+  //   }
+  //   // do something more
+  // });
+  // chrome.storage.sync.clear();
 
   // TOMATOES: retrieve stored value at init + track changes/update chrome storage
 

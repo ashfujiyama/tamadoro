@@ -11622,8 +11622,8 @@ var TaskList = function () {
                     }
                     else {
                         var deadlineDate = new Date(result.deadline);
-                        console.log("Deadline is in the future: " + deadlineTime);
-                        console.log("curr time = " + currentTime);
+                        // console.log("Deadline is in the future: " + deadlineTime);
+                        // console.log("curr time = " + currentTime);
                     }
                 }
                 else {
@@ -13396,14 +13396,14 @@ var Inventory = function () {
         image: "https://i.ibb.co/gmZZMDB/fullcake.png",
     }), cake = _c[0], setCake = _c[1];
     // uncomment to clear things for testing
-    chrome.storage.local.clear(function () {
-        var error = chrome.runtime.lastError;
-        if (error) {
-            console.error(error);
-        }
-        // do something more
-    });
-    chrome.storage.sync.clear();
+    // chrome.storage.local.clear(function () {
+    //   var error = chrome.runtime.lastError;
+    //   if (error) {
+    //     console.error(error);
+    //   }
+    //   // do something more
+    // });
+    // chrome.storage.sync.clear();
     // TOMATOES: retrieve stored value at init + track changes/update chrome storage
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iTomato", function (result) {
@@ -13718,7 +13718,7 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
-    var _d = (0,react.useState)(50), health = _d[0], setHealth = _d[1];
+    var _d = (0,react.useState)(100), health = _d[0], setHealth = _d[1];
     var _e = (0,react.useState)(0), xp = _e[0], setXP = _e[1];
     // initialize CURR MODE with chrome storage and update when it changes
     (0,react.useEffect)(function () {
@@ -13761,59 +13761,81 @@ var Tamadoro = function () {
             console.log("health created");
         });
     }, []);
+    // at midnight, decrease hp/xp if tasks are incomplete
+    (0,react.useEffect)(function () {
+        var checkStorageAtMidnight = function () {
+            var now = new Date();
+            // if (now.getHours() === 0 && now.getMinutes() === 0) {
+            getDeficit();
+            // }
+        };
+        //Run the function every minute to check for midnight
+        // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
+        var intervalId = setInterval(checkStorageAtMidnight, 3000);
+        // const intervalId = setInterval(checkStorageAtMidnight, 300000);
+        // Clean up interval when component unmounts
+        return function () { return clearInterval(intervalId); };
+    }, []);
     // calculate incomplete productivity minutes
     var getDeficit = function () {
         chrome.storage.sync.get(["taskList"], function (result) {
-            if (result.taskList && result.taskList.length > 0) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving health data:', chrome.runtime.lastError);
+            }
+            else {
                 var taskList = result.taskList;
-                // Calculate the sum of all (dailyGoal - dailyProgress)
-                var totalDeficit = taskList.reduce(function (acc, task) {
-                    var deficit = task.dailyGoal - task.dailyProgress;
-                    return acc + (deficit > 0 ? deficit : 0);
-                }, 0);
-                console.log("Total Health Deficit:", totalDeficit);
+                if (taskList) {
+                    console.log("deficit");
+                    // Calculate the sum of all (dailyGoal - dailyProgress)
+                    var totalDeficit = taskList.reduce(function (acc, task) {
+                        var deficit = task.dailyGoal - task.dailyProgress;
+                        return acc + (deficit > 0 ? deficit : 0);
+                    }, 0);
+                    console.log("the total deficit is ", totalDeficit);
+                    if (totalDeficit > 0) {
+                        var overflow = decreaseHealth(totalDeficit);
+                        decreaseXP(overflow);
+                    }
+                    console.log("Total Health Deficit:", totalDeficit);
+                }
             }
         });
     };
     // decrement health
     var decreaseHealth = function (deficit) {
+        console.log("dec hp");
         chrome.storage.sync.get("health", function (result) {
-            if (result.health) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving health data:', chrome.runtime.lastError);
+            }
+            else {
                 var newHealth_1 = Math.max(result.health - deficit, 0);
                 var overflow = result.health - deficit - newHealth_1;
+                console.log("new health is ", newHealth_1);
                 chrome.storage.sync.set({ health: newHealth_1 }, function () {
                     setHealth(newHealth_1);
                     console.log("Health updated to ".concat(health));
                 });
-                return overflow; // Return the new health value
-            }
-            else {
-                var newHealth_2 = health - deficit;
-                var overflow = health - deficit - newHealth_2;
-                chrome.storage.sync.set({ health: newHealth_2 }, function () {
-                    console.log("Health initialized to ".concat(newHealth_2));
-                });
-                return overflow;
+                return overflow; // return the deficit overflow
             }
         });
         return 0;
     };
     // decrease xp from health decrement overflow
     var decreaseXP = function (deficit) {
+        console.log("dec xp");
         chrome.storage.sync.get("xp", function (result) {
-            if (result.xp) {
-                var newXP_1 = Math.max(result.xp - deficit, 0);
-                chrome.storage.sync.set({ xp: newXP_1 }, function () {
-                    setXP(newXP_1);
-                    console.log("XP updated to ".concat(xp));
-                });
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving xp data:', chrome.runtime.lastError);
             }
             else {
-                var newXP_2 = Math.max(xp - deficit, 0);
-                chrome.storage.sync.set({ xp: newXP_2 }, function () {
-                    setXP(newXP_2);
-                    console.log("Health initialized to ".concat(xp));
-                });
+                if (result.xp) {
+                    var newXP_1 = Math.max(result.xp - deficit, 0);
+                    chrome.storage.sync.set({ xp: newXP_1 }, function () {
+                        setXP(newXP_1);
+                        console.log("XP updated to ".concat(xp));
+                    });
+                }
             }
         });
     };

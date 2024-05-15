@@ -13380,7 +13380,7 @@ var Inventory = function () {
     var _a = (0,react.useState)({
         type: FoodType.Tomato,
         points: 5,
-        count: 0,
+        count: 2,
         image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
     }), tomatoes = _a[0], setTomatoes = _a[1];
     var _b = (0,react.useState)({
@@ -13489,12 +13489,15 @@ var Inventory = function () {
     };
     var increaseHealth = function (hp) {
         chrome.storage.sync.get(["health"], function (result) {
-            console.log("increase health" + result.health);
-            if (result.health) {
-                console.log(result.health);
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving health data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved health data:', result.health);
+                // Use the retrieved health data here
                 var currentHealth = result.health || 0;
                 var newHealth_1 = currentHealth + hp;
-                chrome.storage.sync.set({ health: newHealth_1 }, function () {
+                chrome.storage.sync.set({ "health": newHealth_1 }, function () {
                     console.log("Health increased to", newHealth_1);
                 });
             }

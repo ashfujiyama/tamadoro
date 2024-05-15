@@ -13487,6 +13487,24 @@ var Inventory = function () {
             setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count - 1 }));
         }
     };
+    var updateFood = function () {
+        chrome.storage.sync.get(["duration"], function (result) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving duration data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved duration data:', result.duration);
+                // Use the retrieved duration data here
+                var currentDuration = result.duration || 0;
+                if (currentDuration >= 15 && currentDuration < 45) {
+                    increaseTomatoes();
+                }
+                else if (currentDuration >= 45 && currentDuration <= 90) {
+                    increaseCakeSlice();
+                }
+            }
+        });
+    };
     var increaseHealth = function (hp) {
         chrome.storage.sync.get(["health"], function (result) {
             if (chrome.runtime.lastError) {

@@ -148,6 +148,25 @@ const Inventory = () => {
       });
     }
   };
+  
+  const updateFood = () => {
+    chrome.storage.sync.get(["duration"], (result) => {
+      if (chrome.runtime.lastError) {
+        console.error('Error retrieving duration data:', chrome.runtime.lastError);
+      } else {
+        console.log('Retrieved duration data:', result.duration);
+        // Use the retrieved duration data here
+        const currentDuration = result.duration || 0;
+  
+        if (currentDuration >= 15 && currentDuration < 45) {
+          increaseTomatoes();
+        } else if (currentDuration >= 45 && currentDuration <= 90) {
+          increaseCakeSlice();
+        } 
+    
+      }
+    });
+  }
 
   const increaseHealth = (hp: number) => {
     chrome.storage.sync.get(["health"], (result) => {

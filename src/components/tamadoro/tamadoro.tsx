@@ -216,7 +216,12 @@ const Tamadoro: React.FC = () => {
     <div className="screen">
       <div>
         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
-        <Timer />
+        <Timer
+          initialDeadline={null}
+          initDuration={0}
+          paused={null}
+          initMode={null}
+        />
         <ModeDisplay isFocus={false} />
         <HealthDisplay health={3} />
         <LevelBar fullXP={30} />

@@ -7302,6 +7302,29 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 /***/ }),
 
+/***/ 800:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8081);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3645);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".foodbutton {\n    margin-top: 0px;\n    background-color: rgba(255, 0, 0, 0);\n    border: 0px;\n    font-family: '8bit';\n    font-size: 16pt;\n}\n.button {\n    margin-top:0px;\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ 492:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
@@ -7364,7 +7387,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".image {\n    width: 30%; \n    height
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".screen {\n    margin-right: 1.5rem;\n    margin-left: 1.5em;\n    margin-top: -.5rem;\n    padding-top: 4rem;\n    background-color:#C0C8BB;\n    border-radius: 20px; \n    padding-right: 1rem;\n    padding-left: 1rem;\n    padding-bottom: 1rem;\n    border: 5px solid #A2DBFF; \n    background-clip: padding-box;\n    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.27); \n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".screen {\n    margin-right: 1.5rem;\n    margin-left: 1.5em;\n    margin-top: -.5rem;\n    padding-top: 1rem;\n    background-color:#C0C8BB;\n    border-radius: 20px; \n    padding-right: 1rem;\n    padding-left: 1rem;\n    padding-bottom: 1rem;\n    border: 5px solid #A2DBFF; \n    background-clip: padding-box;\n    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.27); \n}\n.mode {\n    padding: .5rem;\n    font-size: 10pt;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7410,7 +7433,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".taskForm {\n    background-color: #A2
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".timeLeft {\n    font-size: 28pt;\n}\n.arrowContainer {\n    display: flex;\n    flex-direction: column;\n}\n\n.up, .down {\n  padding: 0; \n  background-color: transparent !important; \n}\n\n.up:hover, .down:hover {\n  background-color: transparent !important;\n}\n\n.up .MuiIconButton-label, .down .MuiIconButton-label {\n  font-size: 100px !important; \n  margin: 0px;\n  color: black !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".timeLeft {\n    font-size: 28pt;\n}\n.arrowContainer {\n    display: flex;\n    flex-direction: column;\n}\n\n.up, .down {\n  padding: 0; \n  background-color: transparent !important; \n}\n\n.up:hover, .down:hover {\n  background-color: transparent !important;\n}\n\n.up .MuiIconButton-label, .down .MuiIconButton-label {\n  font-size: 100px !important; \n  margin: 0px;\n  color: black !important;\n}\n\n.timerContainer {\n  display: flex;\n  align-items: center; /* Center items vertically */\n  justify-content: center; /* Center items horizontally */\n}\n\n.timerDisplay {\n  margin-right: 10px; /* Adjust margin as needed */\n}\n\n.arrowContainer {\n  display: flex;\n  flex-direction: column; /* Align arrows vertically */\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11681,6 +11704,27 @@ function TitleComponent() {
 }
 /* harmony default export */ const title = (TitleComponent);
 
+;// CONCATENATED MODULE: ./src/components/timer/modeDisplay.tsx
+var modeDisplay_assign = (undefined && undefined.__assign) || function () {
+    modeDisplay_assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return modeDisplay_assign.apply(this, arguments);
+};
+
+// Component that returns "focus" or "break" based on the prop
+var ModeDisplay = function (_a) {
+    var isFocus = _a.isFocus;
+    var message = isFocus ? 'focus' : 'break';
+    return (0,jsx_runtime.jsxs)("div", modeDisplay_assign({ style: { margin: '.5rem' } }, { children: [message, " mode"] }));
+};
+/* harmony default export */ const modeDisplay = (ModeDisplay);
+
 ;// CONCATENATED MODULE: ./src/components/pet/heartIcons.tsx
 var heartIcons_assign = (undefined && undefined.__assign) || function () {
     heartIcons_assign = Object.assign || function(t) {
@@ -13264,18 +13308,51 @@ var Timer = function (_a) {
         }
         onClickReset();
     };
-    return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
-                            margin: "0px",
-                            color: "black",
-                            backgroundColor: "transparent",
-                        }, onClick: onClickInc }, { children: (0,jsx_runtime.jsx)(ArrowDropUp/* default */.Z, {}) })), (0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
-                            margin: "0px",
-                            fontSize: "10px",
-                            color: "black",
-                            backgroundColor: "transparent",
-                        }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused() ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused() && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] }), (0,jsx_runtime.jsx)("h2", timer_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", timer_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" }))] })));
+    return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsxs)("div", timer_assign({ className: "timerContainer" }, { children: [(0,jsx_runtime.jsx)("div", timer_assign({ className: "timerDisplay" }, { children: (0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })) })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
+                                    padding: "0",
+                                    margin: "0",
+                                    color: "black",
+                                    backgroundColor: "transparent",
+                                }, onClick: onClickInc }, { children: (0,jsx_runtime.jsx)(ArrowDropUp/* default */.Z, {}) })), (0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
+                                    padding: "0",
+                                    margin: "0",
+                                    fontSize: "10px",
+                                    color: "black",
+                                    backgroundColor: "transparent",
+                                }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused() ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused() && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] }), (0,jsx_runtime.jsx)("h2", timer_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", timer_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" }))] })));
 };
 /* harmony default export */ const timer = (Timer);
+
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/inventory.css
+var inventory = __webpack_require__(800);
+;// CONCATENATED MODULE: ./src/components/pet/inventory.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var inventory_options = {};
+
+inventory_options.styleTagTransform = (styleTagTransform_default());
+inventory_options.setAttributes = (setAttributesWithoutAttributes_default());
+
+      inventory_options.insert = insertBySelector_default().bind(null, "head");
+    
+inventory_options.domAPI = (styleDomAPI_default());
+inventory_options.insertStyleElement = (insertStyleElement_default());
+
+var inventory_update = injectStylesIntoStyleTag_default()(inventory/* default */.Z, inventory_options);
+
+
+
+
+       /* harmony default export */ const pet_inventory = (inventory/* default */.Z && inventory/* default.locals */.Z.locals ? inventory/* default.locals */.Z.locals : undefined);
 
 ;// CONCATENATED MODULE: ./src/components/types/foodType.ts
 var FoodType;
@@ -13289,7 +13366,7 @@ var FoodType;
 
 var FoodComponent = function (_a) {
     var food = _a.food, selected = _a.selected;
-    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsxs)("p", { children: [(0,jsx_runtime.jsx)("img", { src: food.image, alt: food.type, width: "30px", height: "30px" }), ":", " ", food.count] }), food.type === selected.type && (0,jsx_runtime.jsx)("p", { children: selected.type })] }));
+    return ((0,jsx_runtime.jsx)("div", { children: (0,jsx_runtime.jsxs)("p", { children: [food.count, (0,jsx_runtime.jsx)("img", { src: food.image, alt: food.type, width: "20pt", height: "20pt" })] }) }));
 };
 /* harmony default export */ const food = (FoodComponent);
 
@@ -13307,6 +13384,8 @@ var inventory_assign = (undefined && undefined.__assign) || function () {
 };
 
 
+// to dos: feed function needs to increase hp, change feed to decrcease
+
 
 
 var Inventory = function () {
@@ -13314,20 +13393,20 @@ var Inventory = function () {
     var _a = (0,react.useState)({
         type: FoodType.Tomato,
         points: 5,
-        count: 2,
-        image: "../images/cake.png",
+        count: 0,
+        image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
     }), tomatoes = _a[0], setTomatoes = _a[1];
     var _b = (0,react.useState)({
         type: FoodType.CakeSlice,
         points: 15,
         count: 2,
-        image: "../images/cake.png",
+        image: "https://i.ibb.co/bgryPmB/cake.png",
     }), cakeSlices = _b[0], setCakeSlices = _b[1];
     var _c = (0,react.useState)({
         type: FoodType.Cake,
         points: 100,
         count: 2,
-        image: "../images/cake.png",
+        image: "https://i.ibb.co/gmZZMDB/fullcake.png",
     }), cake = _c[0], setCake = _c[1];
     // uncomment to clear things for testing
     chrome.storage.local.clear(function () {
@@ -13456,9 +13535,9 @@ var Inventory = function () {
                 break;
         }
     };
-    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(tomatoes); } }, { children: (0,jsx_runtime.jsx)(food, { food: tomatoes, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(cakeSlices); } }, { children: (0,jsx_runtime.jsx)(food, { food: cakeSlices, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(cake); } }, { children: (0,jsx_runtime.jsx)(food, { food: cake, selected: chooseFood }) }))] }), (0,jsx_runtime.jsx)("div", { children: (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return feed(); } }, { children: "Feed!" })) })] }));
+    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", inventory_assign({ className: "buttongroup" }, { children: [(0,jsx_runtime.jsx)("button", inventory_assign({ className: "foodbutton", onClick: function () { return setChooseFood(tomatoes); } }, { children: (0,jsx_runtime.jsx)(food, { food: tomatoes, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ className: "foodbutton", onClick: function () { return setChooseFood(cakeSlices); } }, { children: (0,jsx_runtime.jsx)(food, { food: cakeSlices, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ className: "foodbutton", onClick: function () { return setChooseFood(cake); } }, { children: (0,jsx_runtime.jsx)(food, { food: cake, selected: chooseFood }) }))] })), (0,jsx_runtime.jsx)("div", { children: (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return feed(); } }, { children: "Feed!" })) })] }));
 };
-/* harmony default export */ const inventory = (Inventory);
+/* harmony default export */ const components_pet_inventory = (Inventory);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/levelBar.css
 var levelBar = __webpack_require__(492);
@@ -13602,6 +13681,119 @@ var tamadoro_assign = (undefined && undefined.__assign) || function () {
 
 
 
+// import React from "react";
+// import Timer from "../timer/timer";
+// import Inventory from "../pet/inventory";
+// import LevelBar from "../pet/levelBar";
+// import PetDisplay from "../pet/petDisplay";
+// import { useState, useRef, useEffect } from "react";
+// import "./tamadoro.css";
+// const Tamadoro: React.FC = () => {
+//   // the initial deadline and duration of timer to pass to the Timer component
+//   // InitPaused is the time when the user hit the paused button
+//   // need to store all of this in chrome storage so we can reload the timer ws this data when reopening the sidebar
+//   // right these variables are at a defualt but we will need to call chrome storage to set them
+//   const [initDeadline, setInitDeadline] = useState<Date | null>(null);
+//   const [initDuration, setDuration] = useState(0);
+//   const [initPaused, setInitPaused] = useState<number | null>(null);
+//   // initialize modes
+//   const [focusMode, setFocusMode] = useState<string | null>(null);
+//   const [breakMode, setBreakMode] = useState<string | null>(null);
+//   const [longBreakMode, setLongBreakMode] = useState<string | null>(null);
+//   const [currMode, setCurrMode] = useState<string | null>(null);
+//   // initialize FOCUS with chrome storage and update when changes
+//   useEffect(() => {
+//     chrome.storage.sync.get("currMode", (result) => {
+//         if (!result.currMode) {
+//             chrome.storage.sync.set({"currMode": null}, () => {
+//                 console.log("made new currMode tracker");
+//             });
+//         } else {
+//             setCurrMode(currMode);
+//             chrome.storage.sync.set({ currMode: currMode }, () => {
+//                 console.log('currMode saved:', currMode);
+//             });
+//         }
+//         });
+//     }, [])
+//     useEffect(() => {
+//         chrome.storage.sync.set({ currMode: currMode }, () => {
+//             console.log('currMode at time saved:', currMode);
+//         });
+//     }, [currMode]);
+//     // check state of each mode
+//     const isFocus = () => {
+//       return focusMode != null;
+//     }
+//     // check state of each mode
+//     const isBreak = () => {
+//       return breakMode != null;
+//     }
+//     // check state of each mode
+//     const isLongBreak = () => {
+//       return longBreakMode != null;
+//     }
+//     useEffect(() => {
+//       console.log("inside change mode")
+//       chrome.storage.sync.get("deadline", (result) => {
+//           const storedDeadline = result.deadline;
+//           if (storedDeadline) {
+//               const deadlineTime = new Date(storedDeadline).getTime();
+//               const currentTime = new Date().getTime();
+//               if (currentTime >= deadlineTime) {
+//                 if (currMode === "Focus") {
+//                   setCurrMode("Break");
+//                   console.log("break")
+//                 } else {
+//                   setCurrMode("Focus");
+//                 }
+//               }
+//           }
+//           console.log('cur', currMode)
+//       });
+//     }, []);
+//   useEffect(() => {
+//     // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
+//     setDuration(10);
+//     setInitDeadline(new Date(Date.now() + initDuration));
+//     setFocusMode("Focus")
+//     setCurrMode("Focus")
+//   }, []); // Need this to run once on component mount
+//   // Displays the mode in Chrome
+//   // Displays the task list stored in Chrome
+//   // useEffect(() => {
+//   //   updateMode(); // Load initial task list
+//     // Add event listener for changes in Chrome storage
+//   //   chrome.storage.onChanged.addListener((changes, namespace) => {
+//   //     if (changes["pausedTime"]) {
+//   //       updateMode(); // Update task list state when taskList changes
+//   //     }
+//   //   });
+//   //   // Clean up event listener when component unmounts
+//   //   return () => {
+//   //     chrome.storage.onChanged.removeListener((changes, namespace) => {
+//   //       if (changes["pausedTime"]) {
+//   //         updateMode(); // Update task list state when taskList changes
+//   //       }
+//   //     });
+//   //   };
+//   // }, []);
+//   return (
+//     <div className="screen">
+//       <div>
+//         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
+//         {initDeadline != null && (
+//            <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} />
+//         )}
+//         <h2 className="mode">{currMode}</h2>
+//         <Inventory />
+//         <LevelBar />
+//       </div>
+//     </div>
+//   );
+// };
+// export default Tamadoro;
+
 
 
 
@@ -13611,9 +13803,10 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
-    var _d = (0,react.useState)(50), health = _d[0], setHealth = _d[1];
-    var _e = (0,react.useState)(0), xp = _e[0], setXP = _e[1];
-    // initialize CURR MODE with chrome storage and update when it changes
+    var _d = (0,react.useState)(0), focusCounter = _d[0], setFocusCounter = _d[1];
+    var _e = (0,react.useState)(50), health = _e[0], setHealth = _e[1];
+    var _f = (0,react.useState)(0), xp = _f[0], setXP = _f[1];
+    // initialize CURR MODE with chrome storage and update when pausedTime changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("currMode", function (result) {
             var storedCurrMode = result.currMode;
@@ -13646,71 +13839,40 @@ var Tamadoro = function () {
             }
         });
     }, []);
+    // change mode
+    var updateMode = function () {
+        // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
+        //       console.log("changed mode");
+        if (currMode == "Break" || currMode == "Long Break") {
+            // we want to change to focus mode
+            setDuration(10);
+            setInitDeadline(new Date(Date.now() + initDuration));
+            setFocusCounter(focusCounter + 1);
+            setCurrMode("Focus");
+        }
+        else if (currMode == "Focus" && focusCounter == 3) {
+            // we want to change to long break
+            setDuration(10);
+            setInitDeadline(new Date(Date.now() + initDuration));
+            setCurrMode("Long Break");
+            setFocusCounter(0);
+        }
+        else {
+            // we want to change to break
+            setDuration(5);
+            setInitDeadline(new Date(Date.now() + initDuration));
+            setCurrMode("Break");
+        }
+    };
     (0,react.useEffect)(function () {
-        setDuration(25);
+        setDuration(10);
         setInitDeadline(new Date(Date.now() + initDuration));
         setCurrMode("Focus");
         chrome.storage.sync.set({ health: health }, function () {
             console.log("health created");
         });
     }, []);
-    // calculate incomplete productivity minutes
-    var getDeficit = function () {
-        chrome.storage.sync.get(["taskList"], function (result) {
-            if (result.taskList && result.taskList.length > 0) {
-                var taskList = result.taskList;
-                // Calculate the sum of all (dailyGoal - dailyProgress)
-                var totalDeficit = taskList.reduce(function (acc, task) {
-                    var deficit = task.dailyGoal - task.dailyProgress;
-                    return acc + (deficit > 0 ? deficit : 0);
-                }, 0);
-                console.log("Total Health Deficit:", totalDeficit);
-            }
-        });
-    };
-    // decrement health
-    var decreaseHealth = function (deficit) {
-        chrome.storage.sync.get("health", function (result) {
-            if (result.health) {
-                var newHealth_1 = Math.max(result.health - deficit, 0);
-                var overflow = result.health - deficit - newHealth_1;
-                chrome.storage.sync.set({ health: newHealth_1 }, function () {
-                    setHealth(newHealth_1);
-                    console.log("Health updated to ".concat(health));
-                });
-                return overflow; // Return the new health value
-            }
-            else {
-                var newHealth_2 = health - deficit;
-                var overflow = health - deficit - newHealth_2;
-                chrome.storage.sync.set({ health: newHealth_2 }, function () {
-                    console.log("Health initialized to ".concat(newHealth_2));
-                });
-                return overflow;
-            }
-        });
-        return 0;
-    };
-    // decrease xp from health decrement overflow
-    var decreaseXP = function (deficit) {
-        chrome.storage.sync.get("xp", function (result) {
-            if (result.xp) {
-                var newXP_1 = Math.max(result.xp - deficit, 0);
-                chrome.storage.sync.set({ xp: newXP_1 }, function () {
-                    setXP(newXP_1);
-                    console.log("XP updated to ".concat(xp));
-                });
-            }
-            else {
-                var newXP_2 = Math.max(xp - deficit, 0);
-                chrome.storage.sync.set({ xp: newXP_2 }, function () {
-                    setXP(newXP_2);
-                    console.log("Health initialized to ".concat(xp));
-                });
-            }
-        });
-    };
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), (0,jsx_runtime.jsx)(timer, { initialDeadline: null, initDuration: 0, paused: null, initMode: null }), (0,jsx_runtime.jsx)(modeDisplay, { isFocus: false }), (0,jsx_runtime.jsx)(healthDisplay, { health: 3 }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: 30 }), (0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: 100 }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: 100 })] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

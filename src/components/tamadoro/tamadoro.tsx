@@ -126,6 +126,30 @@ const Tamadoro: React.FC = () => {
     });
   };
 
+  // updates XP when it is changed in chrome storage
+  useEffect(() => {
+    const handleXPChange = (changes: { [x: string]: any; }, namespace: any) => {
+      if (changes["xp"]) {
+        chrome.storage.sync.get("xp", (result) => {
+          const storedXP = result.xp;
+          if (storedXP) {
+            setXP(storedXP);
+            console.log("Updated XP:", storedXP);
+          }
+        });
+      }
+    };
+  
+    // Add event listener for changes in XP Chrome storage
+    chrome.storage.onChanged.addListener(handleXPChange);
+  
+    // Clean up event listener when component unmounts
+    return () => {
+      chrome.storage.onChanged.removeListener(handleXPChange);
+    };
+  }, []);
+  
+
   return (
     <div className="screen">
       <div>

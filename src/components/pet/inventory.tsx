@@ -29,14 +29,14 @@ const Inventory = () => {
 
   // uncomment to clear things for testing
 
-  chrome.storage.local.clear(function () {
-    var error = chrome.runtime.lastError;
-    if (error) {
-      console.error(error);
-    }
-    // do something more
-  });
-  chrome.storage.sync.clear();
+  // chrome.storage.local.clear(function () {
+  //   var error = chrome.runtime.lastError;
+  //   if (error) {
+  //     console.error(error);
+  //   }
+  //   // do something more
+  // });
+  // chrome.storage.sync.clear();
 
   // TOMATOES: retrieve stored value at init + track changes/update chrome storage
 
@@ -157,10 +157,17 @@ const Inventory = () => {
         console.log('Retrieved health data:', result.health);
         // Use the retrieved health data here
         const currentHealth = result.health || 0;
-        const newHealth = Math.max(currentHealth + hp, 100);
-        const xp = Math.max(newHealth - 100, 0)
-        if (xp > 0) {
-          increaseXP(xp)
+        // const newHealth = Math.max(currentHealth + hp, 100);
+        let newHealth = currentHealth + hp
+        if (newHealth > 100){
+          const xp = Math.max(newHealth - 100, 0)
+          console.log("hp", hp)
+          console.log("newhealth", newHealth)
+          if (xp > 0) {
+            console.log("called increase xp")
+            increaseXP(xp)
+          }
+          newHealth = 100
         }
 
         chrome.storage.sync.set({ "health": newHealth }, () => {

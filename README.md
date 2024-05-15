@@ -59,7 +59,7 @@ npm run build
 * Option to switch betweeen stopwatch and pomodoro
 
 # Blog Posts
-Please find our project blog post in the BLOGPOST.md file in the root directory/
+Please find our project blog post our landing page here
 
 # Report Issues
 Please report any problems you may encounter in the issues section of this repository.   

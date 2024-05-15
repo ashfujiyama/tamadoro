@@ -16,17 +16,36 @@ interface TimerProps {
     initialDeadline: Date | null;
     initDuration: number | 0;
     paused: Date | null;
+    initMode: string | null;
   }
   
-const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) => {
+const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused, initMode}) => {
   const Ref = useRef<NodeJS.Timeout | null>(null);
 
   // actual state of the timer
   const [pausedTime, setPausedTime] = useState<string | null>(null);
   const [deadline, setDeadline] = useState<Date | null>(initialDeadline);
   const [duration, setDuration] = useState(initDuration);
+  const [currMode, setCurrMode] = useState<string | null>(initMode);
+  const [focusCounter, setFocusCounter] = useState(0);
   
   console.log(deadline)
+
+  //  // check val of currMode
+  //  useEffect(() => {
+  //   chrome.storage.sync.get("currMode", (result) => {
+  //       const storedCurrMode = result.currMode;
+  //       if (storedCurrMode === null) {
+  //           chrome.storage.sync.set({"pausedTime": null}, () => {
+  //               console.log("made new mode tracker 6");
+  //           });
+  //       } else {
+  //         setCurrMode(storedCurrMode);
+  //         console.log('in set mode', storedCurrMode);
+  //       }
+  //       });
+  //   }, [])
+
 
   // The state for our timer
   const [timerDisplay, setTimerDisplay] = useState("00:00:00");
@@ -307,6 +326,27 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
     };
   }, []);
 
+
+  // change mode 
+  const updateMode = () => {
+    // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
+    //       console.log("changed mode");
+    if (currMode == "Break" || currMode == "Long Break") { // we want to change to focus mode
+      setDuration(25);
+      setFocusCounter(focusCounter + 1)
+      setCurrMode("Focus")
+    } else if (currMode == "Focus" && focusCounter == 3) { // we want to change to long break
+      setDuration(10); 
+      setCurrMode("Long Break")
+      setFocusCounter(0)
+    } else { // we want to change to break
+      setDuration(5); 
+      setCurrMode("Break")
+    }
+    onClickReset();
+  }
+
+
   return (
     <div style={{ textAlign: "center" }}>
       <div className="timerContainer">
@@ -358,6 +398,10 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
           </button>
         )}
       </div>
+      <h2 className="mode">{currMode}</h2>
+      <button className="Update_Mode" onClick={updateMode}>
+          Update Mode
+      </button>
 
     </div>
   );

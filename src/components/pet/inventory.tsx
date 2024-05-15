@@ -11,7 +11,7 @@ const Inventory = () => {
   const [tomatoes, setTomatoes] = useState<Food>({
     type: FoodType.Tomato,
     points: 5,
-    count: 0,
+    count: 2,
     image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
   });
   const [cakeSlices, setCakeSlices] = useState<Food>({
@@ -151,18 +151,21 @@ const Inventory = () => {
 
   const increaseHealth = (hp: number) => {
     chrome.storage.sync.get(["health"], (result) => {
-      console.log("increase health" + result.health!);
-      if (result.health) {
-        console.log(result.health);
+      if (chrome.runtime.lastError) {
+        console.error('Error retrieving health data:', chrome.runtime.lastError);
+      } else {
+        console.log('Retrieved health data:', result.health);
+        // Use the retrieved health data here
         const currentHealth = result.health || 0;
         const newHealth = currentHealth + hp;
 
-        chrome.storage.sync.set({ health: newHealth }, () => {
+        chrome.storage.sync.set({ "health": newHealth }, () => {
           console.log("Health increased to", newHealth);
         });
       }
     });
   };
+  
   // decrease count of current chosen food
   const feed = () => {
     switch (chooseFood.type) {

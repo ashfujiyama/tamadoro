@@ -7318,7 +7318,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".foodbutton {\n    margin-top: 0px;\n    background-color: rgba(255, 0, 0, 0);\n    border: 0px;\n    font-family: '8bit';\n    font-size: 16pt;\n}\n.button {\n    margin-top:0px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".foodbutton {\n    margin-right: .5rem !important;\n    margin-left: .5rem !important;\n    background-color: rgba(255, 0, 0, 0);\n    border: 0px solid black;\n    font-family: '8bit';\n    font-size: 16pt;\n    padding: 0; /* Remove padding */\n    line-height: 0; /* Set line-height to 1 */\n    margin: 0px;\n    cursor: pointer;\n}\n\n.buttongroup {\n    line-height: 0;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13002,7 +13002,6 @@ var Timer = function (_a) {
     var _d = (0,react.useState)(initDuration), duration = _d[0], setDuration = _d[1];
     var _e = (0,react.useState)(initMode), currMode = _e[0], setCurrMode = _e[1];
     var _f = (0,react.useState)(0), focusCounter = _f[0], setFocusCounter = _f[1];
-    console.log(deadline);
     //  // check val of currMode
     //  useEffect(() => {
     //   chrome.storage.sync.get("currMode", (result) => {
@@ -13025,73 +13024,82 @@ var Timer = function (_a) {
             var storedPausedTime = result.pausedTime;
             if (storedPausedTime === null) {
                 chrome.storage.sync.set({ "pausedTime": null }, function () {
-                    console.log("made new pausedTime tracker");
+                    // console.log("made new pausedTime tracker");
                 });
             }
             else {
-                setPausedTime(storedPausedTime);
-                console.log('in set pausedTime', storedPausedTime);
+                setPausedTime(storedPausedTime); //????????????
+                // console.log('in set pausedTime', storedPausedTime);
             }
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ pausedTime: pausedTime }, function () {
-            console.log('Paused at time saved:', pausedTime);
-            console.log('deadline', deadline);
+        chrome.storage.sync.set({ "pausedTime": pausedTime }, function () {
+            // console.log('Paused at time saved:', pausedTime);
+            // console.log('paused time changes, deadline:', deadline);
         });
     }, [pausedTime]);
     // initialize deadline with chrome storage and update when deadline changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("deadline", function (result) {
-            if (!result.deadline) {
-                chrome.storage.sync.set({ "deadline": initialDeadline }, function () {
+            if (!result.deadline) { //is this right with json, yes it is.
+                var deadjson = initialDeadline === null || initialDeadline === void 0 ? void 0 : initialDeadline.toJSON();
+                chrome.storage.sync.set({ "deadline": deadjson }, function () {
                     console.log("made new deadline tracker");
                 });
             }
             else {
-                setDeadline(deadline);
-                chrome.storage.sync.set({ deadline: deadline }, function () {
-                    console.log('deadline saved:', deadline);
-                });
+                //alr a json, no need ot convert to json
+                setDeadline(result.deadline);
+                // chrome.storage.sync.set({ "deadline": deadline }, () => {
+                //     console.log('deadline not null, deadline saved:', deadline);
+                // });
             }
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ deadline: deadline }, function () {
-            console.log('deadline at time saved:', deadline);
-        });
+        if (deadline != null) {
+            var deadjson_1 = deadline.toJSON();
+            chrome.storage.sync.set({ "deadline": deadjson_1 }, function () {
+                console.log('deadline at time saved when resume:', new Date(deadjson_1));
+            });
+            // chrome.storage.sync.get(null, function (Items) {console.log(Items)});
+        }
+        else {
+            chrome.storage.sync.set({ "deadline": null }, function () { });
+        }
     }, [deadline]);
     // initialize DURATION with chrome storage and update when changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("duration", function (result) {
             if (!result.duration) {
                 chrome.storage.sync.set({ "duration": initDuration }, function () {
-                    console.log("made new duration tracker");
+                    // console.log("made new duration tracker");
                 });
                 onClickReset();
             }
             else {
-                setDuration(duration);
-                chrome.storage.sync.set({ duration: duration }, function () {
-                    console.log('Duration saved:', duration);
+                setDuration(result.duration);
+                chrome.storage.sync.set({ "duration": result.duration }, function () {
+                    // console.log('Duration saved:', result.duration);
                 });
                 onClickReset();
             }
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ duration: duration }, function () {
-            console.log('duration at time saved:', duration);
+        chrome.storage.sync.set({ "duration": duration }, function () {
+            // console.log('duration at time saved:', duration);
             onClickReset();
         });
     }, [duration]);
     //sets the deadline for the timer (what the timer is counting down to)
     var getDeadTime = function () {
-        var deadline = new Date();
+        var tempDeadline = new Date();
         // This is where you specify how many minutes you want in your timer
-        deadline.setMinutes(deadline.getMinutes() + duration);
-        setDeadline(deadline);
-        return deadline;
+        tempDeadline.setMinutes(tempDeadline.getMinutes() + duration);
+        setDeadline(tempDeadline);
+        return tempDeadline;
     };
     // additional accessors
     var isPaused = function () {
@@ -13159,7 +13167,7 @@ var Timer = function (_a) {
         newDate.setSeconds(d.getSeconds() + secondsDelta);
         newDate.setMinutes(d.getMinutes() + minutesDelta);
         newDate.setHours(d.getHours() + hoursDelta);
-        console.log(duration);
+        // console.log(duration)
         return newDate;
     };
     var increaseDeadline = function (hoursDelta, minutesDelta, secondsDelta) {
@@ -13170,7 +13178,7 @@ var Timer = function (_a) {
     var increaseTime = function (e) {
         //increasing the set time by 5 seconds
         setDuration(duration + 5);
-        console.log('inc', duration);
+        // console.log('inc', duration)
         // increaseDeadline(0, 5, 0);
         updateTimerDisplay(); //reloading the timer display
     };
@@ -13179,7 +13187,7 @@ var Timer = function (_a) {
         //increasing the set time by 5 seconds
         // increaseDeadline(0, -5, 0);
         setDuration(duration - 5);
-        console.log(duration);
+        // console.log(duration);
         updateTimerDisplay(); //reloading the timer display
     };
     var onClickInc = function () {
@@ -13209,7 +13217,7 @@ var Timer = function (_a) {
     (0,react.useEffect)(function () {
         if (pausedTime != null) {
             onClickResume();
-            console.log("here");
+            //  console.log("here")
         }
     }, []);
     //starts the timer
@@ -13372,7 +13380,7 @@ var Inventory = function () {
     var _a = (0,react.useState)({
         type: FoodType.Tomato,
         points: 5,
-        count: 0,
+        count: 2,
         image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
     }), tomatoes = _a[0], setTomatoes = _a[1];
     var _b = (0,react.useState)({
@@ -13481,12 +13489,15 @@ var Inventory = function () {
     };
     var increaseHealth = function (hp) {
         chrome.storage.sync.get(["health"], function (result) {
-            console.log("increase health" + result.health);
-            if (result.health) {
-                console.log(result.health);
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving health data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved health data:', result.health);
+                // Use the retrieved health data here
                 var currentHealth = result.health || 0;
                 var newHealth_1 = currentHealth + hp;
-                chrome.storage.sync.set({ health: newHealth_1 }, function () {
+                chrome.storage.sync.set({ "health": newHealth_1 }, function () {
                     console.log("Health increased to", newHealth_1);
                 });
             }
@@ -13565,11 +13576,29 @@ var levelBar_assign = (undefined && undefined.__assign) || function () {
 
 var LevelBar = function (_a) {
     var _b = _a.fullXP, fullXP = _b === void 0 ? 0 : _b;
-    var level = Math.floor(fullXP / 100);
-    var maxXP = (level + 1) * 100; // xp required to complete this level
-    var completeXP = level * 100; // xp that filled up lower levels
-    var xpOverflow = (fullXP - completeXP) % maxXP; // xp attributed to this level
+    // Calculate the level based on accumulated XP
+    var level = 0;
+    var totalXP = 0;
+    while (totalXP <= fullXP) {
+        level++;
+        totalXP += level * 100;
+    }
+    // Calculate the maximum XP required to complete this level
+    var maxXP = level * 100;
+    // Calculate the XP required to complete lower levels
+    var completeXP = 0;
+    var i = 1;
+    while (i < level) {
+        completeXP += i * 100;
+        i++;
+    }
+    // Calculate the XP attributed to this level
+    var xpOverflow = (fullXP - completeXP) % maxXP;
+    // Calculate the width of the level bar
     var barWidth = (xpOverflow / maxXP) * 100;
+    if (fullXP == 0) {
+        barWidth = 0;
+    }
     return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)("div", { children: fullXP }), (0,jsx_runtime.jsxs)("div", { children: [" lvl ", level] }), (0,jsx_runtime.jsx)("div", levelBar_assign({ className: "level-bar" }, { children: (0,jsx_runtime.jsx)("div", { className: "bar", style: { width: "".concat(barWidth, "%") } }) }))] }));
 };
 /* harmony default export */ const components_pet_levelBar = (LevelBar);
@@ -13768,7 +13797,7 @@ var Tamadoro = function () {
             }
         });
     };
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

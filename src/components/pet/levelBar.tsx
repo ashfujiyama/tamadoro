@@ -36,7 +36,6 @@ const LevelBar: React.FC<LevelBarProps> = ({ fullXP = 0 }) => {
 
   return (
     <div>
-      <div>{fullXP}</div>
       <div> lvl {level}</div>
       <div className="level-bar">
         <div className="bar" style={{ width: `${barWidth}%` }}></div>

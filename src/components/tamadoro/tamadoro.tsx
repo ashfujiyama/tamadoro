@@ -191,7 +191,7 @@ const Tamadoro: React.FC = () => {
     <div className="screen">
       <div>
         <Inventory />
-        <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
+        <PetDisplay src="https://s12.gifyu.com/images/SfbkQ.gif" alt="TamaPet" />
         {initDeadline && (
           <Timer
             initialDeadline={initDeadline}

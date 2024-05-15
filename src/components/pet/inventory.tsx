@@ -219,49 +219,41 @@ const Inventory = () => {
     });
   }
   // decrease count of current chosen food
-  const feed = () => {
-    switch (chooseFood.type) {
-      case "Tomato":
-        // increaseTomatoes();
-        if (decreaseTomatoes()) {
-          increaseHealth(5);
-        }
+  const feed = (foodType: FoodType) => {
+    switch (foodType) {
+      case FoodType.Tomato:
+        decreaseTomatoes();
+        increaseHealth(5);
         break;
-      case "Cake Slice":
-        // increaseCakeSlice();
-        if (decreaseCakeSlice()) {
-          increaseHealth(15);
-        }
+      case FoodType.CakeSlice:
+        decreaseCakeSlice();
+        increaseHealth(15);
         break;
-      case "Cake":
-        // increaseCake();
-        if (decreaseCake()) {
-          increaseHealth(100);
-        }
+      case FoodType.Cake:
+        decreaseCake();
+        increaseHealth(100);
         break;
       default:
         break;
     }
   };
+  
 
   return (
     <>
       <div className="buttongroup">
-        <button className="foodbutton" onClick={() => setChooseFood(tomatoes)}>
+        <button className="foodbutton" onClick={() => feed(FoodType.Tomato)}>
           <FoodComponent food={tomatoes} selected={chooseFood} />
         </button>
         <button
           className="foodbutton"
-          onClick={() => setChooseFood(cakeSlices)}
+          onClick={() => feed(FoodType.CakeSlice)}
         >
           <FoodComponent food={cakeSlices} selected={chooseFood} />
         </button>
-        <button className="foodbutton" onClick={() => setChooseFood(cake)}>
+        <button className="foodbutton" onClick={() => feed(FoodType.Cake)}>
           <FoodComponent food={cake} selected={chooseFood} />
         </button>
-      </div>
-      <div>
-        <button onClick={() => feed()}>Feed!</button>
       </div>
     </>
   );

@@ -20,3 +20,18 @@
   margin: 0px;
   color: black !important;
 }
+
+.timerContainer {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+}
+
+.timerDisplay {
+  margin-right: 10px; /* Adjust margin as needed */
+}
+
+.arrowContainer {
+  display: flex;
+  flex-direction: column; /* Align arrows vertically */
+}

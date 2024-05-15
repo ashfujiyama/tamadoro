@@ -309,30 +309,39 @@ const Timer: React.FC<TimerProps> = ({ initialDeadline, initDuration, paused }) 
 
   return (
     <div style={{ textAlign: "center" }}>
-      <h2 className="timeLeft">{timerDisplay}</h2>
-      <div className="arrowContainer">
-        <IconButton
-          style={{
-            margin: "0px",
-            color: "black",
-            backgroundColor: "transparent",
-          }}
-          onClick={onClickInc}
-        >
-          <ArrowDropUpIcon />
-        </IconButton>
-        <IconButton
-          style={{
-            margin: "0px",
-            fontSize: "10px",
-            color: "black",
-            backgroundColor: "transparent",
-          }}
-          onClick={onClickDec}
-        >
-          <ArrowDropDownIcon />
-        </IconButton>
+      <div className="timerContainer">
+        <div className="timerDisplay">
+          <h2 className="timeLeft">{timerDisplay}</h2>
+        </div>
+        <div className="arrowContainer">
+          <IconButton
+            style={{
+              padding: "0", // Set padding to 0
+              margin: "0",
+              color: "black",
+              backgroundColor: "transparent",
+            }}
+            onClick={onClickInc}
+          >
+            <ArrowDropUpIcon />
+          </IconButton>
+          <IconButton
+            style={{
+              padding: "0", // Set padding to 0
+              margin: "0",
+              fontSize: "10px",
+              color: "black",
+              backgroundColor: "transparent",
+            }}
+            onClick={onClickDec}
+          >
+            <ArrowDropDownIcon />
+          </IconButton>
+        </div>
       </div>
+
+
+
 
       <div>
         {!isPaused() ? (

@@ -209,15 +209,15 @@ const Tamadoro: React.FC = () => {
   return (
     <div className="screen">
       <div>
+      <Inventory />
         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
         {initDeadline && (
           <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} />
         )}
-        <h2 className="mode">{currMode}</h2>
+        <div className="mode">{currMode}</div>
         <button className="Update_Mode" onClick={updateMode}>
           Update Mode
         </button>
-        <Inventory />
         <HealthDisplay health={100} />
         <LevelBar maxHp={100} hp={60} />
       </div>

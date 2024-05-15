@@ -1,3 +1,5 @@
+import "./inventory.css";
+
 // to dos: feed function needs to increase hp, change feed to decrcease
 
 import React, { useEffect, useState } from "react";
@@ -15,19 +17,19 @@ const Inventory = () => {
     type: FoodType.Tomato,
     points: 5,
     count: 0,
-    image: "../images/cake.png",
+    image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
   });
   const [cakeSlices, setCakeSlices] = useState<Food>({
     type: FoodType.CakeSlice,
     points: 15,
     count: 0,
-    image: "../images/cake.png",
+    image: "https://i.ibb.co/bgryPmB/cake.png",
   });
   const [cake, setCake] = useState<Food>({
     type: FoodType.Cake,
     points: 100,
     count: 0,
-    image: "../images/cake.png",
+    image: "https://i.ibb.co/gmZZMDB/fullcake.png",
   });
 
   // uncomment to clear things for testing
@@ -177,14 +179,14 @@ const Inventory = () => {
 
   return (
     <>
-      <div>
-        <button onClick={() => setChooseFood(tomatoes)}>
+      <div className="buttongroup">
+        <button className="foodbutton" onClick={() => setChooseFood(tomatoes)}>
           <FoodComponent food={tomatoes} selected={chooseFood} />
         </button>
-        <button onClick={() => setChooseFood(cakeSlices)}>
+        <button className="foodbutton" onClick={() => setChooseFood(cakeSlices)}>
           <FoodComponent food={cakeSlices} selected={chooseFood} />
         </button>
-        <button onClick={() => setChooseFood(cake)}>
+        <button className="foodbutton" onClick={() => setChooseFood(cake)}>
           <FoodComponent food={cake} selected={chooseFood} />
         </button>
       </div>

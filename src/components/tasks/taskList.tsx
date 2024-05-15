@@ -74,6 +74,7 @@ const TaskList = () => {
 
     // Run the function every 5 seconds to check for deadline completion
     const intervalId = setInterval(checkDeadline, 5000);
+    console.log("exiting?");
 
     // Clean up interval when component unmounts
     return () => clearInterval(intervalId);
@@ -129,19 +130,22 @@ const TaskList = () => {
 
   // when a timer is complete, add progress
   const timerComplete = () => {
+    console.log("timerComplete");
     chrome.storage.sync.get(["duration"], (result) => {
       if (result.duration) {
         if (selectedTask && taskList != null) {
           const updatedTaskList = taskList.map((task) => {
             if (task.name === selectedTask.name) {
+              console.log("first return in timercomplete");
               return {
                 ...task,
                 dailyProgress: task.dailyProgress + result.duration,
               };
             }
+            console.log("second return in timercomplete");
             return task;
           });
-
+          console.log("settasklist in timercomplete");
           setTaskList(updatedTaskList);
           chrome.storage.sync.set({ taskList: updatedTaskList });
         }

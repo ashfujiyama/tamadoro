@@ -98,6 +98,42 @@ const Inventory = () => {
     });
   });
 
+  //copied from tasklist.tsx
+  useEffect(() => {
+    // Function to compare deadline with current time
+    const checkDeadline = () => {
+      // chrome.storage.sync.set({ deadline: new Date() }, () => {
+      //   console.log("set deadline to: ", new Date());
+      // });
+      chrome.storage.sync.get(["deadline"], (result) => {
+        if (result.deadline) {
+          const currentTime = new Date();
+          const deadlineTime = new Date(result.deadline);
+
+          if (currentTime >= deadlineTime) {
+            console.log("Deadline has passed.");
+            updateFood();
+          } else {
+            const deadlineDate = new Date(result.deadline);
+            // console.log("Deadline is in the future: " + deadlineTime);
+
+            // console.log("curr time = " + currentTime);
+          }
+        } else {
+          console.log("No deadline found in Chrome storage.");
+        }
+      });
+    };
+    // Run checkDeadline function
+    checkDeadline();
+
+    // Run the function every 5 seconds to check for deadline completion
+    const intervalId = setInterval(checkDeadline, 5000);
+
+    // Clean up interval when component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
   // make state for current chosen food
   const [chooseFood, setChooseFood] = useState(tomatoes);
 
@@ -168,7 +204,9 @@ const Inventory = () => {
           increaseTomatoes();
         } else if (currentDuration >= 45 && currentDuration <= 90) {
           increaseCakeSlice();
-        } 
+        } else if (currentDuration > 90) {
+          increaseCake();
+        }
     
       }
     });
@@ -179,6 +217,11 @@ const Inventory = () => {
       if (chrome.runtime.lastError) {
         console.error('Error retrieving health data:', chrome.runtime.lastError);
       } else {
+        console.log("increaseHealth: trying to increase health now")
+        if (!result.health) {
+          console.log("unable to find a health value to increment, must initialize");
+          chrome.storage.sync.set({"health": 100});
+        }
         console.log('Retrieved health data:', result.health);
         // Use the retrieved health data here
         const currentHealth = result.health || 0;
@@ -222,16 +265,36 @@ const Inventory = () => {
   const feed = (foodType: FoodType) => {
     switch (foodType) {
       case FoodType.Tomato:
-        decreaseTomatoes();
-        increaseHealth(5);
+        chrome.storage.sync.get(["iTomato"], (result) => {
+          if(result.iTomato) {
+            if (result.iTomato > 0) {
+              decreaseTomatoes();
+              increaseHealth(5);
+            }
+          }
+        });
+        
         break;
       case FoodType.CakeSlice:
-        decreaseCakeSlice();
-        increaseHealth(15);
+        chrome.storage.sync.get("iSlice", (result) => {
+          if(result.iSlice) {
+            if(result.iSlice > 0) {
+              decreaseCakeSlice();
+              increaseHealth(15);
+            }
+          }
+        });
+        
         break;
       case FoodType.Cake:
-        decreaseCake();
-        increaseHealth(100);
+        chrome.storage.sync.get(["iCake"], (result) => {
+          if(result.iCake) {
+            if(result.iCake > 0) {
+              decreaseCake();
+              increaseHealth(100);
+            }
+          }
+        });
         break;
       default:
         break;

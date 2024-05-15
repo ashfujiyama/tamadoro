@@ -114,7 +114,9 @@ const Inventory = () => {
         ...tomatoes,
         count: tomatoes.count - 1,
       });
+      return true;
     }
+    return false;
   };
 
   // handle cake slice count
@@ -130,7 +132,9 @@ const Inventory = () => {
         ...cakeSlices,
         count: cakeSlices.count - 1,
       });
+      return true;
     }
+    return false;
   };
 
   // handle cake count
@@ -146,7 +150,9 @@ const Inventory = () => {
         ...cake,
         count: cake.count - 1,
       });
+      return true;
     }
+    return false;
   };
 
   const increaseHealth = (hp: number) => {
@@ -198,18 +204,21 @@ const Inventory = () => {
     switch (chooseFood.type) {
       case "Tomato":
         // increaseTomatoes();
-        decreaseTomatoes();
-        increaseHealth(5);
+        if (decreaseTomatoes()) {
+          increaseHealth(5);
+        }
         break;
       case "Cake Slice":
         // increaseCakeSlice();
-        decreaseCakeSlice();
-        increaseHealth(15);
+        if (decreaseCakeSlice()) {
+          increaseHealth(15);
+        }
         break;
       case "Cake":
         // increaseCake();
-        decreaseCake();
-        increaseHealth(100);
+        if (decreaseCake()) {
+          increaseHealth(100);
+        }
         break;
       default:
         break;

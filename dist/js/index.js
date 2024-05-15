@@ -13467,7 +13467,9 @@ var Inventory = function () {
     var decreaseTomatoes = function () {
         if (tomatoes.count != 0) {
             setTomatoes(inventory_assign(inventory_assign({}, tomatoes), { count: tomatoes.count - 1 }));
+            return true;
         }
+        return false;
     };
     // handle cake slice count
     var increaseCakeSlice = function () {
@@ -13476,7 +13478,9 @@ var Inventory = function () {
     var decreaseCakeSlice = function () {
         if (cakeSlices.count != 0) {
             setCakeSlices(inventory_assign(inventory_assign({}, cakeSlices), { count: cakeSlices.count - 1 }));
+            return true;
         }
+        return false;
     };
     // handle cake count
     var increaseCake = function () {
@@ -13485,7 +13489,9 @@ var Inventory = function () {
     var decreaseCake = function () {
         if (cake.count != 0) {
             setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count - 1 }));
+            return true;
         }
+        return false;
     };
     var increaseHealth = function (hp) {
         chrome.storage.sync.get(["health"], function (result) {
@@ -13535,18 +13541,21 @@ var Inventory = function () {
         switch (chooseFood.type) {
             case "Tomato":
                 // increaseTomatoes();
-                decreaseTomatoes();
-                increaseHealth(5);
+                if (decreaseTomatoes()) {
+                    increaseHealth(5);
+                }
                 break;
             case "Cake Slice":
                 // increaseCakeSlice();
-                decreaseCakeSlice();
-                increaseHealth(15);
+                if (decreaseCakeSlice()) {
+                    increaseHealth(15);
+                }
                 break;
             case "Cake":
                 // increaseCake();
-                decreaseCake();
-                increaseHealth(100);
+                if (decreaseCake()) {
+                    increaseHealth(100);
+                }
                 break;
             default:
                 break;

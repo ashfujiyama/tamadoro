@@ -10,10 +10,10 @@ const FoodComponent: React.FC<FoodProps> = ({ food, selected }) => {
   return (
     <div>
       <p>
-        <img src={food.image} alt={food.type} width="30px" height="30px" />:{" "}
         {food.count}
+        <img src={food.image} alt={food.type} width="20pt" height="20pt" />
       </p>
-      {food.type === selected.type && <p>{selected.type}</p>}
+      
     </div>
   );
 };

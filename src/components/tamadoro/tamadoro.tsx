@@ -1,22 +1,149 @@
 import ModeDisplay from "../timer/modeDisplay";
 import HealthDisplay from "../pet/healthDisplay";
+// import React from "react";
+// import Timer from "../timer/timer";
+// import Inventory from "../pet/inventory";
+// import LevelBar from "../pet/levelBar";
+// import PetDisplay from "../pet/petDisplay";
+// import { useState, useRef, useEffect } from "react";
+// import "./tamadoro.css";
+
+// const Tamadoro: React.FC = () => {
+//   // the initial deadline and duration of timer to pass to the Timer component
+//   // InitPaused is the time when the user hit the paused button
+//   // need to store all of this in chrome storage so we can reload the timer ws this data when reopening the sidebar
+//   // right these variables are at a defualt but we will need to call chrome storage to set them
+//   const [initDeadline, setInitDeadline] = useState<Date | null>(null);
+//   const [initDuration, setDuration] = useState(0);
+//   const [initPaused, setInitPaused] = useState<number | null>(null);
+
+//   // initialize modes
+//   const [focusMode, setFocusMode] = useState<string | null>(null);
+//   const [breakMode, setBreakMode] = useState<string | null>(null);
+//   const [longBreakMode, setLongBreakMode] = useState<string | null>(null);
+//   const [currMode, setCurrMode] = useState<string | null>(null);
+
+//   // initialize FOCUS with chrome storage and update when changes
+//   useEffect(() => {
+//     chrome.storage.sync.get("currMode", (result) => {
+//         if (!result.currMode) {
+//             chrome.storage.sync.set({"currMode": null}, () => {
+//                 console.log("made new currMode tracker");
+//             });
+//         } else {
+//             setCurrMode(currMode);
+//             chrome.storage.sync.set({ currMode: currMode }, () => {
+//                 console.log('currMode saved:', currMode);
+//             });
+//         }
+//         });
+//     }, [])
+
+//     useEffect(() => {
+//         chrome.storage.sync.set({ currMode: currMode }, () => {
+//             console.log('currMode at time saved:', currMode);
+//         });
+//     }, [currMode]);
+
+//     // check state of each mode
+//     const isFocus = () => {
+//       return focusMode != null;
+//     }
+
+//     // check state of each mode
+//     const isBreak = () => {
+//       return breakMode != null;
+//     }
+
+//     // check state of each mode
+//     const isLongBreak = () => {
+//       return longBreakMode != null;
+//     }
+
+//     useEffect(() => {
+//       console.log("inside change mode")
+//       chrome.storage.sync.get("deadline", (result) => {
+//           const storedDeadline = result.deadline;
+//           if (storedDeadline) {
+//               const deadlineTime = new Date(storedDeadline).getTime();
+//               const currentTime = new Date().getTime();
+//               if (currentTime >= deadlineTime) {
+//                 if (currMode === "Focus") {
+//                   setCurrMode("Break");
+//                   console.log("break")
+//                 } else {
+//                   setCurrMode("Focus");
+//                 }
+//               }
+//           }
+//           console.log('cur', currMode)
+//       });
+//     }, []);
+
+//   useEffect(() => {
+//     // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
+//     setDuration(10);
+//     setInitDeadline(new Date(Date.now() + initDuration));
+//     setFocusMode("Focus")
+//     setCurrMode("Focus")
+//   }, []); // Need this to run once on component mount
+
+//   // Displays the mode in Chrome
+//   // Displays the task list stored in Chrome
+//   // useEffect(() => {
+//   //   updateMode(); // Load initial task list
+
+//     // Add event listener for changes in Chrome storage
+//   //   chrome.storage.onChanged.addListener((changes, namespace) => {
+//   //     if (changes["pausedTime"]) {
+//   //       updateMode(); // Update task list state when taskList changes
+//   //     }
+//   //   });
+
+//   //   // Clean up event listener when component unmounts
+//   //   return () => {
+//   //     chrome.storage.onChanged.removeListener((changes, namespace) => {
+//   //       if (changes["pausedTime"]) {
+//   //         updateMode(); // Update task list state when taskList changes
+//   //       }
+//   //     });
+//   //   };
+//   // }, []);
+
+//   return (
+//     <div className="screen">
+//       <div>
+//         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
+//         {initDeadline != null && (
+//            <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} />
+//         )}
+//         <h2 className="mode">{currMode}</h2>
+//         <Inventory />
+//         <LevelBar />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Tamadoro;
+
 import React, { useState, useEffect } from "react";
 import Timer from "../timer/timer";
 import Inventory from "../pet/inventory";
 import LevelBar from "../pet/levelBar";
 import PetDisplay from "../pet/petDisplay";
 import "./tamadoro.css";
-import { Task } from "../types";
 
 const Tamadoro: React.FC = () => {
   const [initDeadline, setInitDeadline] = useState<Date | null>(null);
   const [initDuration, setDuration] = useState(0);
   const [currMode, setCurrMode] = useState<string | null>(null);
+  const [focusCounter, setFocusCounter] = useState(0);
 
   const [health, setHealth] = useState(50);
   const [xp, setXP] = useState(0);
 
-  // initialize CURR MODE with chrome storage and update when it changes
+  // initialize CURR MODE with chrome storage and update when pausedTime changes
   useEffect(() => {
     chrome.storage.sync.get("currMode", (result) => {
       const storedCurrMode = result.currMode;
@@ -51,8 +178,33 @@ const Tamadoro: React.FC = () => {
     });
   }, []);
 
+  // change mode
+
+  const updateMode = () => {
+    // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
+    //       console.log("changed mode");
+    if (currMode == "Break" || currMode == "Long Break") {
+      // we want to change to focus mode
+      setDuration(10);
+      setInitDeadline(new Date(Date.now() + initDuration));
+      setFocusCounter(focusCounter + 1);
+      setCurrMode("Focus");
+    } else if (currMode == "Focus" && focusCounter == 3) {
+      // we want to change to long break
+      setDuration(10);
+      setInitDeadline(new Date(Date.now() + initDuration));
+      setCurrMode("Long Break");
+      setFocusCounter(0);
+    } else {
+      // we want to change to break
+      setDuration(5);
+      setInitDeadline(new Date(Date.now() + initDuration));
+      setCurrMode("Break");
+    }
+  };
+
   useEffect(() => {
-    setDuration(25);
+    setDuration(10);
     setInitDeadline(new Date(Date.now() + initDuration));
     setCurrMode("Focus");
     chrome.storage.sync.set({ health: health }, () => {
@@ -60,88 +212,17 @@ const Tamadoro: React.FC = () => {
     });
   }, []);
 
-  // calculate incomplete productivity minutes
-  const getDeficit = () => {
-    chrome.storage.sync.get(["taskList"], (result: { taskList?: Task[] }) => {
-      if (result.taskList && result.taskList.length > 0) {
-        const taskList = result.taskList;
-
-        // Calculate the sum of all (dailyGoal - dailyProgress)
-        const totalDeficit = taskList.reduce((acc, task) => {
-          const deficit = task.dailyGoal - task.dailyProgress;
-          return acc + (deficit > 0 ? deficit : 0);
-        }, 0);
-
-        console.log("Total Health Deficit:", totalDeficit);
-      }
-    });
-  };
-
-  // decrement health
-  const decreaseHealth = (deficit: number): number => {
-    chrome.storage.sync.get("health", (result) => {
-      if (result.health) {
-        const newHealth = Math.max(result.health - deficit, 0);
-        const overflow = result.health - deficit - newHealth;
-
-        chrome.storage.sync.set({ health: newHealth }, () => {
-          setHealth(newHealth);
-          console.log(`Health updated to ${health}`);
-        });
-
-        return overflow; // Return the new health value
-      } else {
-        const newHealth = health - deficit;
-        const overflow = health - deficit - newHealth;
-
-        chrome.storage.sync.set({ health: newHealth }, () => {
-          console.log(`Health initialized to ${newHealth}`);
-        });
-
-        return overflow;
-      }
-    });
-
-    return 0;
-  };
-
-  // decrease xp from health decrement overflow
-  const decreaseXP = (deficit: number): void => {
-    chrome.storage.sync.get("xp", (result) => {
-      if (result.xp) {
-        const newXP = Math.max(result.xp - deficit, 0);
-
-        chrome.storage.sync.set({ xp: newXP }, () => {
-          setXP(newXP);
-          console.log(`XP updated to ${xp}`);
-        });
-      } else {
-        const newXP = Math.max(xp - deficit, 0);
-
-        chrome.storage.sync.set({ xp: newXP }, () => {
-          setXP(newXP);
-          console.log(`Health initialized to ${xp}`);
-        });
-      }
-    });
-  };
-
   return (
     <div className="screen">
       <div>
         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
-        {initDeadline && (
-          <Timer
-            initialDeadline={initDeadline}
-            initDuration={initDuration}
-            paused={null}
-            initMode={currMode}
-          />
-        )}
+        <Timer />
+        <ModeDisplay isFocus={false} />
+        <HealthDisplay health={3} />
+        <LevelBar fullXP={30} />
         <Inventory />
-        <HealthDisplay health={health} />
-        <LevelBar fullXP={xp} />
-        <button onClick={() => setXP(xp + 10)}>Increment XP</button>
+        <HealthDisplay health={100} />
+        <LevelBar fullXP={100} />
       </div>
     </div>
   );

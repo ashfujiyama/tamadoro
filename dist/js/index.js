@@ -11704,27 +11704,6 @@ function TitleComponent() {
 }
 /* harmony default export */ const title = (TitleComponent);
 
-;// CONCATENATED MODULE: ./src/components/timer/modeDisplay.tsx
-var modeDisplay_assign = (undefined && undefined.__assign) || function () {
-    modeDisplay_assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return modeDisplay_assign.apply(this, arguments);
-};
-
-// Component that returns "focus" or "break" based on the prop
-var ModeDisplay = function (_a) {
-    var isFocus = _a.isFocus;
-    var message = isFocus ? 'focus' : 'break';
-    return (0,jsx_runtime.jsxs)("div", modeDisplay_assign({ style: { margin: '.5rem' } }, { children: [message, " mode"] }));
-};
-/* harmony default export */ const modeDisplay = (ModeDisplay);
-
 ;// CONCATENATED MODULE: ./src/components/pet/heartIcons.tsx
 var heartIcons_assign = (undefined && undefined.__assign) || function () {
     heartIcons_assign = Object.assign || function(t) {
@@ -13681,119 +13660,6 @@ var tamadoro_assign = (undefined && undefined.__assign) || function () {
 
 
 
-// import React from "react";
-// import Timer from "../timer/timer";
-// import Inventory from "../pet/inventory";
-// import LevelBar from "../pet/levelBar";
-// import PetDisplay from "../pet/petDisplay";
-// import { useState, useRef, useEffect } from "react";
-// import "./tamadoro.css";
-// const Tamadoro: React.FC = () => {
-//   // the initial deadline and duration of timer to pass to the Timer component
-//   // InitPaused is the time when the user hit the paused button
-//   // need to store all of this in chrome storage so we can reload the timer ws this data when reopening the sidebar
-//   // right these variables are at a defualt but we will need to call chrome storage to set them
-//   const [initDeadline, setInitDeadline] = useState<Date | null>(null);
-//   const [initDuration, setDuration] = useState(0);
-//   const [initPaused, setInitPaused] = useState<number | null>(null);
-//   // initialize modes
-//   const [focusMode, setFocusMode] = useState<string | null>(null);
-//   const [breakMode, setBreakMode] = useState<string | null>(null);
-//   const [longBreakMode, setLongBreakMode] = useState<string | null>(null);
-//   const [currMode, setCurrMode] = useState<string | null>(null);
-//   // initialize FOCUS with chrome storage and update when changes
-//   useEffect(() => {
-//     chrome.storage.sync.get("currMode", (result) => {
-//         if (!result.currMode) {
-//             chrome.storage.sync.set({"currMode": null}, () => {
-//                 console.log("made new currMode tracker");
-//             });
-//         } else {
-//             setCurrMode(currMode);
-//             chrome.storage.sync.set({ currMode: currMode }, () => {
-//                 console.log('currMode saved:', currMode);
-//             });
-//         }
-//         });
-//     }, [])
-//     useEffect(() => {
-//         chrome.storage.sync.set({ currMode: currMode }, () => {
-//             console.log('currMode at time saved:', currMode);
-//         });
-//     }, [currMode]);
-//     // check state of each mode
-//     const isFocus = () => {
-//       return focusMode != null;
-//     }
-//     // check state of each mode
-//     const isBreak = () => {
-//       return breakMode != null;
-//     }
-//     // check state of each mode
-//     const isLongBreak = () => {
-//       return longBreakMode != null;
-//     }
-//     useEffect(() => {
-//       console.log("inside change mode")
-//       chrome.storage.sync.get("deadline", (result) => {
-//           const storedDeadline = result.deadline;
-//           if (storedDeadline) {
-//               const deadlineTime = new Date(storedDeadline).getTime();
-//               const currentTime = new Date().getTime();
-//               if (currentTime >= deadlineTime) {
-//                 if (currMode === "Focus") {
-//                   setCurrMode("Break");
-//                   console.log("break")
-//                 } else {
-//                   setCurrMode("Focus");
-//                 }
-//               }
-//           }
-//           console.log('cur', currMode)
-//       });
-//     }, []);
-//   useEffect(() => {
-//     // setInitDeadline(new Date(Date.now() + 25 * 60 * 1000)); // Setting initial deadline 25 minutes from now
-//     setDuration(10);
-//     setInitDeadline(new Date(Date.now() + initDuration));
-//     setFocusMode("Focus")
-//     setCurrMode("Focus")
-//   }, []); // Need this to run once on component mount
-//   // Displays the mode in Chrome
-//   // Displays the task list stored in Chrome
-//   // useEffect(() => {
-//   //   updateMode(); // Load initial task list
-//     // Add event listener for changes in Chrome storage
-//   //   chrome.storage.onChanged.addListener((changes, namespace) => {
-//   //     if (changes["pausedTime"]) {
-//   //       updateMode(); // Update task list state when taskList changes
-//   //     }
-//   //   });
-//   //   // Clean up event listener when component unmounts
-//   //   return () => {
-//   //     chrome.storage.onChanged.removeListener((changes, namespace) => {
-//   //       if (changes["pausedTime"]) {
-//   //         updateMode(); // Update task list state when taskList changes
-//   //       }
-//   //     });
-//   //   };
-//   // }, []);
-//   return (
-//     <div className="screen">
-//       <div>
-//         <PetDisplay src="https://s9.gifyu.com/images/SZoHU.gif" alt="TamaPet" />
-//         {initDeadline != null && (
-//            <Timer initialDeadline={initDeadline} initDuration={initDuration} paused={null} />
-//         )}
-//         <h2 className="mode">{currMode}</h2>
-//         <Inventory />
-//         <LevelBar />
-//       </div>
-//     </div>
-//   );
-// };
-// export default Tamadoro;
-
 
 
 
@@ -13803,10 +13669,9 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
-    var _d = (0,react.useState)(0), focusCounter = _d[0], setFocusCounter = _d[1];
-    var _e = (0,react.useState)(50), health = _e[0], setHealth = _e[1];
-    var _f = (0,react.useState)(0), xp = _f[0], setXP = _f[1];
-    // initialize CURR MODE with chrome storage and update when pausedTime changes
+    var _d = (0,react.useState)(50), health = _d[0], setHealth = _d[1];
+    var _e = (0,react.useState)(0), xp = _e[0], setXP = _e[1];
+    // initialize CURR MODE with chrome storage and update when it changes
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("currMode", function (result) {
             var storedCurrMode = result.currMode;
@@ -13839,40 +13704,71 @@ var Tamadoro = function () {
             }
         });
     }, []);
-    // change mode
-    var updateMode = function () {
-        // setCurrMode((prevMode) => prevMode === "Focus" ? "Break" : "Focus");
-        //       console.log("changed mode");
-        if (currMode == "Break" || currMode == "Long Break") {
-            // we want to change to focus mode
-            setDuration(10);
-            setInitDeadline(new Date(Date.now() + initDuration));
-            setFocusCounter(focusCounter + 1);
-            setCurrMode("Focus");
-        }
-        else if (currMode == "Focus" && focusCounter == 3) {
-            // we want to change to long break
-            setDuration(10);
-            setInitDeadline(new Date(Date.now() + initDuration));
-            setCurrMode("Long Break");
-            setFocusCounter(0);
-        }
-        else {
-            // we want to change to break
-            setDuration(5);
-            setInitDeadline(new Date(Date.now() + initDuration));
-            setCurrMode("Break");
-        }
-    };
     (0,react.useEffect)(function () {
-        setDuration(10);
+        setDuration(25);
         setInitDeadline(new Date(Date.now() + initDuration));
         setCurrMode("Focus");
         chrome.storage.sync.set({ health: health }, function () {
             console.log("health created");
         });
     }, []);
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), (0,jsx_runtime.jsx)(timer, { initialDeadline: null, initDuration: 0, paused: null, initMode: null }), (0,jsx_runtime.jsx)(modeDisplay, { isFocus: false }), (0,jsx_runtime.jsx)(healthDisplay, { health: 3 }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: 30 }), (0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: 100 }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: 100 })] }) })));
+    // calculate incomplete productivity minutes
+    var getDeficit = function () {
+        chrome.storage.sync.get(["taskList"], function (result) {
+            if (result.taskList && result.taskList.length > 0) {
+                var taskList = result.taskList;
+                // Calculate the sum of all (dailyGoal - dailyProgress)
+                var totalDeficit = taskList.reduce(function (acc, task) {
+                    var deficit = task.dailyGoal - task.dailyProgress;
+                    return acc + (deficit > 0 ? deficit : 0);
+                }, 0);
+                console.log("Total Health Deficit:", totalDeficit);
+            }
+        });
+    };
+    // decrement health
+    var decreaseHealth = function (deficit) {
+        chrome.storage.sync.get("health", function (result) {
+            if (result.health) {
+                var newHealth_1 = Math.max(result.health - deficit, 0);
+                var overflow = result.health - deficit - newHealth_1;
+                chrome.storage.sync.set({ health: newHealth_1 }, function () {
+                    setHealth(newHealth_1);
+                    console.log("Health updated to ".concat(health));
+                });
+                return overflow; // Return the new health value
+            }
+            else {
+                var newHealth_2 = health - deficit;
+                var overflow = health - deficit - newHealth_2;
+                chrome.storage.sync.set({ health: newHealth_2 }, function () {
+                    console.log("Health initialized to ".concat(newHealth_2));
+                });
+                return overflow;
+            }
+        });
+        return 0;
+    };
+    // decrease xp from health decrement overflow
+    var decreaseXP = function (deficit) {
+        chrome.storage.sync.get("xp", function (result) {
+            if (result.xp) {
+                var newXP_1 = Math.max(result.xp - deficit, 0);
+                chrome.storage.sync.set({ xp: newXP_1 }, function () {
+                    setXP(newXP_1);
+                    console.log("XP updated to ".concat(xp));
+                });
+            }
+            else {
+                var newXP_2 = Math.max(xp - deficit, 0);
+                chrome.storage.sync.set({ xp: newXP_2 }, function () {
+                    setXP(newXP_2);
+                    console.log("Health initialized to ".concat(xp));
+                });
+            }
+        });
+    };
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

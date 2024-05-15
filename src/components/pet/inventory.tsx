@@ -11,7 +11,7 @@ const Inventory = () => {
   const [tomatoes, setTomatoes] = useState<Food>({
     type: FoodType.Tomato,
     points: 5,
-    count: 2,
+    count: 0,
     image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
   });
   const [cakeSlices, setCakeSlices] = useState<Food>({
@@ -44,7 +44,7 @@ const Inventory = () => {
     chrome.storage.sync.get("iTomato", (result) => {
       if (result.iTomato == null) {
         chrome.storage.sync.set({ iTomato: 2 }, () => {
-          // console.log("made new tomato counter");
+          console.log("made new tomato counter");
         });
       } else {
         setTomatoes({ ...tomatoes, count: parseInt(result.iTomato) });
@@ -56,7 +56,8 @@ const Inventory = () => {
     chrome.storage.sync.set({ iTomato: tomatoes.count }, () => {
       console.log("Updated tomato count: " + tomatoes.count);
     });
-  });
+    chrome.storage.sync.get(null, function (Items) {console.log(Items)});
+  }, [tomatoes]);
 
   // SLICES: retrieve stored value at init + track changes/update chrome storage
 
@@ -113,6 +114,15 @@ const Inventory = () => {
           if (currentTime >= deadlineTime) {
             console.log("Deadline has passed.");
             updateFood();
+            //first check that a new deadline hasnt been made
+            //if so, set deadline to null
+            chrome.storage.sync.get(["deadline"], (result2) => {
+              if (result2.deadline) {
+                if (result2.deadline === result.deadline) {
+                  chrome.storage.sync.set({"deadline": null});
+                }
+              }
+            });
           } else {
             const deadlineDate = new Date(result.deadline);
             // console.log("Deadline is in the future: " + deadlineTime);
@@ -128,7 +138,7 @@ const Inventory = () => {
     checkDeadline();
 
     // Run the function every 5 seconds to check for deadline completion
-    const intervalId = setInterval(checkDeadline, 5000);
+    const intervalId = setInterval(checkDeadline, 1000);
 
     // Clean up interval when component unmounts
     return () => clearInterval(intervalId);
@@ -139,10 +149,12 @@ const Inventory = () => {
 
   // handle tomato count
   const increaseTomatoes = () => {
-    setTomatoes({
-      ...tomatoes,
-      count: tomatoes.count + 1,
-    });
+    console.log("increaseTomatoes", tomatoes.count);
+    setTomatoes(prevTomatoes => ({
+      ...prevTomatoes,
+      count: prevTomatoes.count + 1
+    }));
+    console.log("increaseTomatoes2", tomatoes.count);
   };
   const decreaseTomatoes = () => {
     if (tomatoes.count != 0) {
@@ -157,10 +169,10 @@ const Inventory = () => {
 
   // handle cake slice count
   const increaseCakeSlice = () => {
-    setCakeSlices({
-      ...cakeSlices,
-      count: cakeSlices.count + 1,
-    });
+    setCakeSlices(prevSlices => ({
+      ...prevSlices,
+      count: prevSlices.count + 1
+    }));
   };
   const decreaseCakeSlice = () => {
     if (cakeSlices.count != 0) {
@@ -175,10 +187,10 @@ const Inventory = () => {
 
   // handle cake count
   const increaseCake = () => {
-    setCake({
-      ...cake,
-      count: cake.count + 1,
-    });
+    setCake(prevCake => ({
+      ...prevCake,
+      count: prevCake.count + 1
+    }));
   };
   const decreaseCake = () => {
     if (cake.count != 0) {

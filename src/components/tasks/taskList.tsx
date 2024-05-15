@@ -57,6 +57,15 @@ const TaskList = () => {
           if (currentTime >= deadlineTime) {
             console.log("Deadline has passed.");
             timerComplete();
+            //first check that a new deadline hasnt been made
+            //if so, set deadline to null
+            chrome.storage.sync.get(["deadline"], (result2) => {
+              if (result2.deadline) {
+                if (result2.deadline === result.deadline) {
+                  chrome.storage.sync.set({"deadline": null});
+                }
+              }
+            });
           } else {
             const deadlineDate = new Date(result.deadline);
             // console.log("Deadline is in the future: " + deadlineTime);
@@ -68,13 +77,11 @@ const TaskList = () => {
         }
       });
     };
-
     // Run checkDeadline function
     checkDeadline();
 
     // Run the function every 5 seconds to check for deadline completion
-    const intervalId = setInterval(checkDeadline, 5000);
-    console.log("exiting?");
+    const intervalId = setInterval(checkDeadline, 1000);
 
     // Clean up interval when component unmounts
     return () => clearInterval(intervalId);
@@ -133,7 +140,9 @@ const TaskList = () => {
     console.log("timerComplete");
     chrome.storage.sync.get(["duration"], (result) => {
       if (result.duration) {
+        console.log("result.duration is good?");
         if (selectedTask && taskList != null) {
+          console.log("second condition");
           const updatedTaskList = taskList.map((task) => {
             if (task.name === selectedTask.name) {
               console.log("first return in timercomplete");

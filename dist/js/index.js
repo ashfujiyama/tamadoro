@@ -13496,10 +13496,17 @@ var Inventory = function () {
                 console.log('Retrieved health data:', result.health);
                 // Use the retrieved health data here
                 var currentHealth = result.health || 0;
-                var newHealth_1 = Math.max(currentHealth + hp, 100);
-                var xp = Math.max(newHealth_1 - 100, 0);
-                if (xp > 0) {
-                    increaseXP(xp);
+                // const newHealth = Math.max(currentHealth + hp, 100);
+                var newHealth_1 = currentHealth + hp;
+                if (newHealth_1 > 100) {
+                    var xp = Math.max(newHealth_1 - 100, 0);
+                    console.log("hp", hp);
+                    console.log("newhealth", newHealth_1);
+                    if (xp > 0) {
+                        console.log("called increase xp");
+                        increaseXP(xp);
+                    }
+                    newHealth_1 = 100;
                 }
                 chrome.storage.sync.set({ "health": newHealth_1 }, function () {
                     console.log("Health increased to", newHealth_1);
@@ -13839,6 +13846,26 @@ var Tamadoro = function () {
             }
         });
     };
+    // updates XP when it is changed in chrome storage
+    (0,react.useEffect)(function () {
+        var handleXPChange = function (changes, namespace) {
+            if (changes["xp"]) {
+                chrome.storage.sync.get("xp", function (result) {
+                    var storedXP = result.xp;
+                    if (storedXP) {
+                        setXP(storedXP);
+                        console.log("Updated XP:", storedXP);
+                    }
+                });
+            }
+        };
+        // Add event listener for changes in XP Chrome storage
+        chrome.storage.onChanged.addListener(handleXPChange);
+        // Clean up event listener when component unmounts
+        return function () {
+            chrome.storage.onChanged.removeListener(handleXPChange);
+        };
+    }, []);
     return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);

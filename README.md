@@ -1,4 +1,4 @@
-# Tamatimer
+# Tamadoro
 Tamatimer is a time management chrome extension which enhances user productivity based on the pomodoro study method. Users are encouraged to develop good productivity habits by having to choose and take care of their Tamagotchi inspired pet. Each focus session rewards users with they can use to feed their pet to keep them happy and healthy.
 
 # Landing Page

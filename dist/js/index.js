@@ -7302,7 +7302,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 /***/ }),
 
-/***/ 800:
+/***/ 8800:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -13311,7 +13311,7 @@ var Timer = function (_a) {
 /* harmony default export */ const timer = (Timer);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/inventory.css
-var inventory = __webpack_require__(800);
+var inventory = __webpack_require__(8800);
 ;// CONCATENATED MODULE: ./src/components/pet/inventory.css
 
       
@@ -13492,6 +13492,24 @@ var Inventory = function () {
             return true;
         }
         return false;
+    };
+    var updateFood = function () {
+        chrome.storage.sync.get(["duration"], function (result) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving duration data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved duration data:', result.duration);
+                // Use the retrieved duration data here
+                var currentDuration = result.duration || 0;
+                if (currentDuration >= 15 && currentDuration < 45) {
+                    increaseTomatoes();
+                }
+                else if (currentDuration >= 45 && currentDuration <= 90) {
+                    increaseCakeSlice();
+                }
+            }
+        });
     };
     var increaseHealth = function (hp) {
         chrome.storage.sync.get(["health"], function (result) {
@@ -13881,7 +13899,7 @@ var Tamadoro = function () {
                 chrome.storage.sync.get("health", function (result) {
                     var storedHP = result.health;
                     if (storedHP) {
-                        setXP(storedHP);
+                        setHealth(storedHP);
                         console.log("Updated HP:", storedHP);
                     }
                 });

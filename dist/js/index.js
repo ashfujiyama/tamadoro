@@ -11589,7 +11589,7 @@ var TaskList = function () {
             // chrome.storage.sync.set({ deadline: new Date() }, () => {
             //   console.log("set deadline to: ", new Date());
             // });
-            chrome.storage.sync.get("deadline", function (result) {
+            chrome.storage.sync.get(["deadline"], function (result) {
                 if (result.deadline) {
                     var currentTime = new Date();
                     var deadlineTime = new Date(result.deadline);
@@ -11599,7 +11599,7 @@ var TaskList = function () {
                     }
                     else {
                         var deadlineDate = new Date(result.deadline);
-                        console.log("Deadline is in the future: " + isNaN(result.deadline));
+                        console.log("Deadline is in the future: " + deadlineTime);
                         console.log("curr time = " + currentTime);
                     }
                 }
@@ -13278,32 +13278,12 @@ var Timer = function (_a) {
 /* harmony default export */ const timer = (Timer);
 
 ;// CONCATENATED MODULE: ./src/components/types/foodType.ts
-var foodType_assign = (undefined && undefined.__assign) || function () {
-    foodType_assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return foodType_assign.apply(this, arguments);
-};
 var FoodType;
 (function (FoodType) {
     FoodType["Tomato"] = "Tomato";
     FoodType["CakeSlice"] = "Cake Slice";
     FoodType["Cake"] = "Cake";
 })(FoodType || (FoodType = {}));
-var increaseFoodCount = function (food) {
-    return foodType_assign(foodType_assign({}, food), { count: food.count + 1 });
-};
-var decreaseFoodCount = function (food) {
-    if (food.count > 0) { // only decrease if food count > 0
-        return foodType_assign(foodType_assign({}, food), { count: food.count - 1 });
-    }
-    return food;
-};
 
 ;// CONCATENATED MODULE: ./src/components/pet/food.tsx
 
@@ -13326,7 +13306,6 @@ var inventory_assign = (undefined && undefined.__assign) || function () {
     return inventory_assign.apply(this, arguments);
 };
 
-// to dos: feed function needs to increase hp, change feed to decrcease
 
 
 
@@ -13335,35 +13314,35 @@ var Inventory = function () {
     var _a = (0,react.useState)({
         type: FoodType.Tomato,
         points: 5,
-        count: 0,
+        count: 2,
         image: "../images/cake.png",
     }), tomatoes = _a[0], setTomatoes = _a[1];
     var _b = (0,react.useState)({
         type: FoodType.CakeSlice,
         points: 15,
-        count: 0,
+        count: 2,
         image: "../images/cake.png",
     }), cakeSlices = _b[0], setCakeSlices = _b[1];
     var _c = (0,react.useState)({
         type: FoodType.Cake,
         points: 100,
-        count: 0,
+        count: 2,
         image: "../images/cake.png",
     }), cake = _c[0], setCake = _c[1];
     // uncomment to clear things for testing
-    // chrome.storage.local.clear(function() {
-    //   var error = chrome.runtime.lastError;
-    //   if (error) {
-    //       console.error(error);
-    //   }
-    //   // do something more
-    // });
-    // chrome.storage.sync.clear();
+    chrome.storage.local.clear(function () {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            console.error(error);
+        }
+        // do something more
+    });
+    chrome.storage.sync.clear();
     // TOMATOES: retrieve stored value at init + track changes/update chrome storage
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iTomato", function (result) {
             if (result.iTomato == null) {
-                chrome.storage.sync.set({ "iTomato": 0 }, function () {
+                chrome.storage.sync.set({ iTomato: 2 }, function () {
                     // console.log("made new tomato counter");
                 });
             }
@@ -13373,15 +13352,15 @@ var Inventory = function () {
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ "iTomato": tomatoes.count }, function () {
-            // console.log('Updated tomato count: ' + tomatoes.count);
+        chrome.storage.sync.set({ iTomato: tomatoes.count }, function () {
+            console.log("Updated tomato count: " + tomatoes.count);
         });
     });
     // SLICES: retrieve stored value at init + track changes/update chrome storage
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iSlice", function (result) {
             if (result.iSlice == null) {
-                chrome.storage.sync.set({ "iSlice": 0 }, function () {
+                chrome.storage.sync.set({ iSlice: 2 }, function () {
                     // console.log("made new slice counter");
                 });
             }
@@ -13391,7 +13370,7 @@ var Inventory = function () {
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ "iSlice": cakeSlices.count }, function () {
+        chrome.storage.sync.set({ iSlice: cakeSlices.count }, function () {
             // console.log('Updated slice count: ' + cakeSlices.count);
         });
     });
@@ -13399,7 +13378,7 @@ var Inventory = function () {
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iCake", function (result) {
             if (result.iCake == null) {
-                chrome.storage.sync.set({ "iCake": 0 }, function () {
+                chrome.storage.sync.set({ iCake: 2 }, function () {
                     // console.log("made new cake counter");
                 });
             }
@@ -13409,7 +13388,7 @@ var Inventory = function () {
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ "iCake": cake.count }, function () {
+        chrome.storage.sync.set({ iCake: cake.count }, function () {
             // console.log('Updated cake count: ' + cake.count);
         });
     });
@@ -13442,20 +13421,36 @@ var Inventory = function () {
             setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count - 1 }));
         }
     };
+    var increaseHealth = function (hp) {
+        chrome.storage.sync.get(["health"], function (result) {
+            console.log("increase health" + result.health);
+            if (result.health) {
+                console.log(result.health);
+                var currentHealth = result.health || 0;
+                var newHealth_1 = currentHealth + hp;
+                chrome.storage.sync.set({ health: newHealth_1 }, function () {
+                    console.log("Health increased to", newHealth_1);
+                });
+            }
+        });
+    };
     // decrease count of current chosen food
     var feed = function () {
         switch (chooseFood.type) {
             case "Tomato":
                 // increaseTomatoes();
                 decreaseTomatoes();
+                increaseHealth(5);
                 break;
             case "Cake Slice":
                 // increaseCakeSlice();
                 decreaseCakeSlice();
+                increaseHealth(15);
                 break;
             case "Cake":
                 // increaseCake();
                 decreaseCake();
+                increaseHealth(100);
                 break;
             default:
                 break;
@@ -13616,7 +13611,7 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
-    var _d = (0,react.useState)(100), health = _d[0], setHealth = _d[1];
+    var _d = (0,react.useState)(50), health = _d[0], setHealth = _d[1];
     var _e = (0,react.useState)(0), xp = _e[0], setXP = _e[1];
     // initialize CURR MODE with chrome storage and update when it changes
     (0,react.useEffect)(function () {
@@ -13655,6 +13650,9 @@ var Tamadoro = function () {
         setDuration(25);
         setInitDeadline(new Date(Date.now() + initDuration));
         setCurrMode("Focus");
+        chrome.storage.sync.set({ health: health }, function () {
+            console.log("health created");
+        });
     }, []);
     // calculate incomplete productivity minutes
     var getDeficit = function () {

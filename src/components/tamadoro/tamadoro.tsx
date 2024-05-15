@@ -13,7 +13,7 @@ const Tamadoro: React.FC = () => {
   const [initDuration, setDuration] = useState(0);
   const [currMode, setCurrMode] = useState<string | null>(null);
 
-  const [health, setHealth] = useState(100);
+  const [health, setHealth] = useState(50);
   const [xp, setXP] = useState(0);
 
   // initialize CURR MODE with chrome storage and update when it changes
@@ -55,6 +55,9 @@ const Tamadoro: React.FC = () => {
     setDuration(25);
     setInitDeadline(new Date(Date.now() + initDuration));
     setCurrMode("Focus");
+    chrome.storage.sync.set({ health: health }, () => {
+      console.log("health created");
+    });
   }, []);
 
   // calculate incomplete productivity minutes

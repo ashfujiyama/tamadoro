@@ -64,9 +64,9 @@ const Tamadoro: React.FC = () => {
     useEffect(() => {
       const checkStorageAtMidnight = () => {
         const now = new Date();
-        // if (now.getHours() === 0 && now.getMinutes() === 0) {
+        if (now.getHours() === 0 && now.getMinutes() === 0) {
           getDeficit();
-          // }
+          }
         };
   
       //Run the function every minute to check for midnight

@@ -7302,7 +7302,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 /***/ }),
 
-/***/ 8800:
+/***/ 800:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -11646,7 +11646,7 @@ var TaskList = function () {
             }
         };
         // Run the function every minute to check for midnight
-        var intervalId = setInterval(checkStorageAtMidnight, 60000);
+        var intervalId = setInterval(checkStorageAtMidnight, 10000);
         // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
         // Clean up interval when component unmounts
         return function () { return clearInterval(intervalId); };
@@ -13311,7 +13311,7 @@ var Timer = function (_a) {
 /* harmony default export */ const timer = (Timer);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/inventory.css
-var inventory = __webpack_require__(8800);
+var inventory = __webpack_require__(800);
 ;// CONCATENATED MODULE: ./src/components/pet/inventory.css
 
       
@@ -13799,9 +13799,9 @@ var Tamadoro = function () {
     (0,react.useEffect)(function () {
         var checkStorageAtMidnight = function () {
             var now = new Date();
-            // if (now.getHours() === 0 && now.getMinutes() === 0) {
-            getDeficit();
-            // }
+            if (now.getHours() === 0 && now.getMinutes() === 0) {
+                getDeficit();
+            }
         };
         //Run the function every minute to check for midnight
         // const intervalId = setInterval(checkStorageAtMidnight, 3600000);

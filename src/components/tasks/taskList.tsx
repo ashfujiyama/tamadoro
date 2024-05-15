@@ -88,7 +88,7 @@ const TaskList = () => {
     };
 
     // Run the function every minute to check for midnight
-    const intervalId = setInterval(checkStorageAtMidnight, 60000);
+    const intervalId = setInterval(checkStorageAtMidnight, 10000);
     // const intervalId = setInterval(checkStorageAtMidnight, 3600000);
 
     // Clean up interval when component unmounts

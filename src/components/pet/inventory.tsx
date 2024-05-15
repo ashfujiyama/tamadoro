@@ -157,7 +157,11 @@ const Inventory = () => {
         console.log('Retrieved health data:', result.health);
         // Use the retrieved health data here
         const currentHealth = result.health || 0;
-        const newHealth = currentHealth + hp;
+        const newHealth = Math.max(currentHealth + hp, 100);
+        const xp = Math.max(newHealth - 100, 0)
+        if (xp > 0) {
+          increaseXP(xp)
+        }
 
         chrome.storage.sync.set({ "health": newHealth }, () => {
           console.log("Health increased to", newHealth);
@@ -165,7 +169,23 @@ const Inventory = () => {
       }
     });
   };
-  
+
+  const increaseXP = (xp: number) => {
+    chrome.storage.sync.get(["xp"], (result) => {
+      if (chrome.runtime.lastError) {
+        console.error('Error retrieving XP data:', chrome.runtime.lastError);
+      } else {
+        console.log('Retrieved XP data:', result.xp);
+        // Use the retrieved health data here
+        const currXP = result.xp || 0;
+        const newXP = currXP + xp;
+
+        chrome.storage.sync.set({ "xp": newXP }, () => {
+          console.log("XP increased to", newXP);
+        });
+      }
+    });
+  }
   // decrease count of current chosen food
   const feed = () => {
     switch (chooseFood.type) {

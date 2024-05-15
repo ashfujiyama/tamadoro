@@ -1,6 +1,9 @@
 # Tamadoro
 Tamatimer is a time management chrome extension which enhances user productivity based on the pomodoro study method. Users are encouraged to develop good productivity habits by having to choose and take care of their Tamagotchi inspired pet. Each focus session rewards users with they can use to feed their pet to keep them happy and healthy.
 
+# Team Members 
+Amanda Lee, Sydney Simon, Ash Fujiyama, Gabby Gu
+
 # Landing Page
 https://gabby-gu.github.io/tamadoro-landing-page/
 
@@ -54,4 +57,9 @@ npm run build
 * Add more pet options
 * Notification when a timer ends
 * Option to switch betweeen stopwatch and pomodoro
-  
+
+# Blog Posts
+Please find our project blog post in the BLOGPOST.md file in the root directory/
+
+# Report Issues
+Please report any problems you may encounter in the issues section of this repository.   

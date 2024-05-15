@@ -7302,7 +7302,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 /***/ }),
 
-/***/ 800:
+/***/ 8800:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -13311,7 +13311,7 @@ var Timer = function (_a) {
 /* harmony default export */ const timer = (Timer);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/inventory.css
-var inventory = __webpack_require__(800);
+var inventory = __webpack_require__(8800);
 ;// CONCATENATED MODULE: ./src/components/pet/inventory.css
 
       

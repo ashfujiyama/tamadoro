@@ -7302,6 +7302,29 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 /***/ }),
 
+/***/ 800:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8081);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3645);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".foodbutton {\n    margin-top: 0px;\n    background-color: rgba(255, 0, 0, 0);\n    border: 0px;\n    font-family: '8bit';\n    font-size: 16pt;\n}\n.button {\n    margin-top:0px;\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ 492:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
@@ -7364,7 +7387,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".image {\n    width: 30%; \n    height
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".screen {\n    margin-right: 1.5rem;\n    margin-left: 1.5em;\n    margin-top: -.5rem;\n    padding-top: 4rem;\n    background-color:#C0C8BB;\n    border-radius: 20px; \n    padding-right: 1rem;\n    padding-left: 1rem;\n    padding-bottom: 1rem;\n    border: 5px solid #A2DBFF; \n    background-clip: padding-box;\n    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.27); \n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".screen {\n    margin-right: 1.5rem;\n    margin-left: 1.5em;\n    margin-top: -.5rem;\n    padding-top: 1rem;\n    background-color:#C0C8BB;\n    border-radius: 20px; \n    padding-right: 1rem;\n    padding-left: 1rem;\n    padding-bottom: 1rem;\n    border: 5px solid #A2DBFF; \n    background-clip: padding-box;\n    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.27); \n}\n.mode {\n    padding: .5rem;\n    font-size: 10pt;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7410,7 +7433,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".taskForm {\n    background-color: #A2
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".timeLeft {\n    font-size: 28pt;\n}\n.arrowContainer {\n    display: flex;\n    flex-direction: column;\n}\n\n.up, .down {\n  padding: 0; \n  background-color: transparent !important; \n}\n\n.up:hover, .down:hover {\n  background-color: transparent !important;\n}\n\n.up .MuiIconButton-label, .down .MuiIconButton-label {\n  font-size: 100px !important; \n  margin: 0px;\n  color: black !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".timeLeft {\n    font-size: 28pt;\n}\n.arrowContainer {\n    display: flex;\n    flex-direction: column;\n}\n\n.up, .down {\n  padding: 0; \n  background-color: transparent !important; \n}\n\n.up:hover, .down:hover {\n  background-color: transparent !important;\n}\n\n.up .MuiIconButton-label, .down .MuiIconButton-label {\n  font-size: 100px !important; \n  margin: 0px;\n  color: black !important;\n}\n\n.timerContainer {\n  display: flex;\n  align-items: center; /* Center items vertically */\n  justify-content: center; /* Center items horizontally */\n}\n\n.timerDisplay {\n  margin-right: 10px; /* Adjust margin as needed */\n}\n\n.arrowContainer {\n  display: flex;\n  flex-direction: column; /* Align arrows vertically */\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11589,7 +11612,7 @@ var TaskList = function () {
             // chrome.storage.sync.set({ deadline: new Date() }, () => {
             //   console.log("set deadline to: ", new Date());
             // });
-            chrome.storage.sync.get("deadline", function (result) {
+            chrome.storage.sync.get(["deadline"], function (result) {
                 if (result.deadline) {
                     var currentTime = new Date();
                     var deadlineTime = new Date(result.deadline);
@@ -11599,7 +11622,7 @@ var TaskList = function () {
                     }
                     else {
                         var deadlineDate = new Date(result.deadline);
-                        console.log("Deadline is in the future: " + isNaN(result.deadline));
+                        console.log("Deadline is in the future: " + deadlineTime);
                         console.log("curr time = " + currentTime);
                     }
                 }
@@ -13264,52 +13287,65 @@ var Timer = function (_a) {
         }
         onClickReset();
     };
-    return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
-                            margin: "0px",
-                            color: "black",
-                            backgroundColor: "transparent",
-                        }, onClick: onClickInc }, { children: (0,jsx_runtime.jsx)(ArrowDropUp/* default */.Z, {}) })), (0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
-                            margin: "0px",
-                            fontSize: "10px",
-                            color: "black",
-                            backgroundColor: "transparent",
-                        }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused() ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused() && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] }), (0,jsx_runtime.jsx)("h2", timer_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", timer_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" }))] })));
+    return ((0,jsx_runtime.jsxs)("div", timer_assign({ style: { textAlign: "center" } }, { children: [(0,jsx_runtime.jsxs)("div", timer_assign({ className: "timerContainer" }, { children: [(0,jsx_runtime.jsx)("div", timer_assign({ className: "timerDisplay" }, { children: (0,jsx_runtime.jsx)("h2", timer_assign({ className: "timeLeft" }, { children: timerDisplay })) })), (0,jsx_runtime.jsxs)("div", timer_assign({ className: "arrowContainer" }, { children: [(0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
+                                    padding: "0",
+                                    margin: "0",
+                                    color: "black",
+                                    backgroundColor: "transparent",
+                                }, onClick: onClickInc }, { children: (0,jsx_runtime.jsx)(ArrowDropUp/* default */.Z, {}) })), (0,jsx_runtime.jsx)(IconButton_IconButton, timer_assign({ style: {
+                                    padding: "0",
+                                    margin: "0",
+                                    fontSize: "10px",
+                                    color: "black",
+                                    backgroundColor: "transparent",
+                                }, onClick: onClickDec }, { children: (0,jsx_runtime.jsx)(ArrowDropDown/* default */.Z, {}) }))] }))] })), (0,jsx_runtime.jsxs)("div", { children: [!isPaused() ? ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickStart }, { children: "Start" }))) : ((0,jsx_runtime.jsx)("button", timer_assign({ onClick: onClickResume }, { children: "Resume" }))), (0,jsx_runtime.jsx)("button", timer_assign({ className: "reset", onClick: onClickReset }, { children: "Reset" })), !isPaused() && ((0,jsx_runtime.jsx)("button", timer_assign({ className: "pause", onClick: onClickPause }, { children: "Pause" })))] }), (0,jsx_runtime.jsx)("h2", timer_assign({ className: "mode" }, { children: currMode })), (0,jsx_runtime.jsx)("button", timer_assign({ className: "Update_Mode", onClick: updateMode }, { children: "Update Mode" }))] })));
 };
 /* harmony default export */ const timer = (Timer);
 
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/inventory.css
+var inventory = __webpack_require__(800);
+;// CONCATENATED MODULE: ./src/components/pet/inventory.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var inventory_options = {};
+
+inventory_options.styleTagTransform = (styleTagTransform_default());
+inventory_options.setAttributes = (setAttributesWithoutAttributes_default());
+
+      inventory_options.insert = insertBySelector_default().bind(null, "head");
+    
+inventory_options.domAPI = (styleDomAPI_default());
+inventory_options.insertStyleElement = (insertStyleElement_default());
+
+var inventory_update = injectStylesIntoStyleTag_default()(inventory/* default */.Z, inventory_options);
+
+
+
+
+       /* harmony default export */ const pet_inventory = (inventory/* default */.Z && inventory/* default.locals */.Z.locals ? inventory/* default.locals */.Z.locals : undefined);
+
 ;// CONCATENATED MODULE: ./src/components/types/foodType.ts
-var foodType_assign = (undefined && undefined.__assign) || function () {
-    foodType_assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return foodType_assign.apply(this, arguments);
-};
 var FoodType;
 (function (FoodType) {
     FoodType["Tomato"] = "Tomato";
     FoodType["CakeSlice"] = "Cake Slice";
     FoodType["Cake"] = "Cake";
 })(FoodType || (FoodType = {}));
-var increaseFoodCount = function (food) {
-    return foodType_assign(foodType_assign({}, food), { count: food.count + 1 });
-};
-var decreaseFoodCount = function (food) {
-    if (food.count > 0) { // only decrease if food count > 0
-        return foodType_assign(foodType_assign({}, food), { count: food.count - 1 });
-    }
-    return food;
-};
 
 ;// CONCATENATED MODULE: ./src/components/pet/food.tsx
 
 var FoodComponent = function (_a) {
     var food = _a.food, selected = _a.selected;
-    return ((0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsxs)("p", { children: [(0,jsx_runtime.jsx)("img", { src: food.image, alt: food.type, width: "30px", height: "30px" }), ":", " ", food.count] }), food.type === selected.type && (0,jsx_runtime.jsx)("p", { children: selected.type })] }));
+    return ((0,jsx_runtime.jsx)("div", { children: (0,jsx_runtime.jsxs)("p", { children: [food.count, (0,jsx_runtime.jsx)("img", { src: food.image, alt: food.type, width: "20pt", height: "20pt" })] }) }));
 };
 /* harmony default export */ const food = (FoodComponent);
 
@@ -13326,6 +13362,7 @@ var inventory_assign = (undefined && undefined.__assign) || function () {
     return inventory_assign.apply(this, arguments);
 };
 
+
 // to dos: feed function needs to increase hp, change feed to decrcease
 
 
@@ -13336,34 +13373,34 @@ var Inventory = function () {
         type: FoodType.Tomato,
         points: 5,
         count: 0,
-        image: "../images/cake.png",
+        image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
     }), tomatoes = _a[0], setTomatoes = _a[1];
     var _b = (0,react.useState)({
         type: FoodType.CakeSlice,
         points: 15,
-        count: 0,
-        image: "../images/cake.png",
+        count: 2,
+        image: "https://i.ibb.co/bgryPmB/cake.png",
     }), cakeSlices = _b[0], setCakeSlices = _b[1];
     var _c = (0,react.useState)({
         type: FoodType.Cake,
         points: 100,
-        count: 0,
-        image: "../images/cake.png",
+        count: 2,
+        image: "https://i.ibb.co/gmZZMDB/fullcake.png",
     }), cake = _c[0], setCake = _c[1];
     // uncomment to clear things for testing
-    // chrome.storage.local.clear(function() {
-    //   var error = chrome.runtime.lastError;
-    //   if (error) {
-    //       console.error(error);
-    //   }
-    //   // do something more
-    // });
-    // chrome.storage.sync.clear();
+    chrome.storage.local.clear(function () {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            console.error(error);
+        }
+        // do something more
+    });
+    chrome.storage.sync.clear();
     // TOMATOES: retrieve stored value at init + track changes/update chrome storage
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iTomato", function (result) {
             if (result.iTomato == null) {
-                chrome.storage.sync.set({ "iTomato": 0 }, function () {
+                chrome.storage.sync.set({ iTomato: 2 }, function () {
                     // console.log("made new tomato counter");
                 });
             }
@@ -13373,15 +13410,15 @@ var Inventory = function () {
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ "iTomato": tomatoes.count }, function () {
-            // console.log('Updated tomato count: ' + tomatoes.count);
+        chrome.storage.sync.set({ iTomato: tomatoes.count }, function () {
+            console.log("Updated tomato count: " + tomatoes.count);
         });
     });
     // SLICES: retrieve stored value at init + track changes/update chrome storage
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iSlice", function (result) {
             if (result.iSlice == null) {
-                chrome.storage.sync.set({ "iSlice": 0 }, function () {
+                chrome.storage.sync.set({ iSlice: 2 }, function () {
                     // console.log("made new slice counter");
                 });
             }
@@ -13391,7 +13428,7 @@ var Inventory = function () {
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ "iSlice": cakeSlices.count }, function () {
+        chrome.storage.sync.set({ iSlice: cakeSlices.count }, function () {
             // console.log('Updated slice count: ' + cakeSlices.count);
         });
     });
@@ -13399,7 +13436,7 @@ var Inventory = function () {
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iCake", function (result) {
             if (result.iCake == null) {
-                chrome.storage.sync.set({ "iCake": 0 }, function () {
+                chrome.storage.sync.set({ iCake: 2 }, function () {
                     // console.log("made new cake counter");
                 });
             }
@@ -13409,7 +13446,7 @@ var Inventory = function () {
         });
     }, []);
     (0,react.useEffect)(function () {
-        chrome.storage.sync.set({ "iCake": cake.count }, function () {
+        chrome.storage.sync.set({ iCake: cake.count }, function () {
             // console.log('Updated cake count: ' + cake.count);
         });
     });
@@ -13442,28 +13479,44 @@ var Inventory = function () {
             setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count - 1 }));
         }
     };
+    var increaseHealth = function (hp) {
+        chrome.storage.sync.get(["health"], function (result) {
+            console.log("increase health" + result.health);
+            if (result.health) {
+                console.log(result.health);
+                var currentHealth = result.health || 0;
+                var newHealth_1 = currentHealth + hp;
+                chrome.storage.sync.set({ health: newHealth_1 }, function () {
+                    console.log("Health increased to", newHealth_1);
+                });
+            }
+        });
+    };
     // decrease count of current chosen food
     var feed = function () {
         switch (chooseFood.type) {
             case "Tomato":
                 // increaseTomatoes();
                 decreaseTomatoes();
+                increaseHealth(5);
                 break;
             case "Cake Slice":
                 // increaseCakeSlice();
                 decreaseCakeSlice();
+                increaseHealth(15);
                 break;
             case "Cake":
                 // increaseCake();
                 decreaseCake();
+                increaseHealth(100);
                 break;
             default:
                 break;
         }
     };
-    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(tomatoes); } }, { children: (0,jsx_runtime.jsx)(food, { food: tomatoes, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(cakeSlices); } }, { children: (0,jsx_runtime.jsx)(food, { food: cakeSlices, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return setChooseFood(cake); } }, { children: (0,jsx_runtime.jsx)(food, { food: cake, selected: chooseFood }) }))] }), (0,jsx_runtime.jsx)("div", { children: (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return feed(); } }, { children: "Feed!" })) })] }));
+    return ((0,jsx_runtime.jsxs)(jsx_runtime.Fragment, { children: [(0,jsx_runtime.jsxs)("div", inventory_assign({ className: "buttongroup" }, { children: [(0,jsx_runtime.jsx)("button", inventory_assign({ className: "foodbutton", onClick: function () { return setChooseFood(tomatoes); } }, { children: (0,jsx_runtime.jsx)(food, { food: tomatoes, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ className: "foodbutton", onClick: function () { return setChooseFood(cakeSlices); } }, { children: (0,jsx_runtime.jsx)(food, { food: cakeSlices, selected: chooseFood }) })), (0,jsx_runtime.jsx)("button", inventory_assign({ className: "foodbutton", onClick: function () { return setChooseFood(cake); } }, { children: (0,jsx_runtime.jsx)(food, { food: cake, selected: chooseFood }) }))] })), (0,jsx_runtime.jsx)("div", { children: (0,jsx_runtime.jsx)("button", inventory_assign({ onClick: function () { return feed(); } }, { children: "Feed!" })) })] }));
 };
-/* harmony default export */ const inventory = (Inventory);
+/* harmony default export */ const components_pet_inventory = (Inventory);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/levelBar.css
 var levelBar = __webpack_require__(492);
@@ -13616,7 +13669,7 @@ var Tamadoro = function () {
     var _a = (0,react.useState)(null), initDeadline = _a[0], setInitDeadline = _a[1];
     var _b = (0,react.useState)(0), initDuration = _b[0], setDuration = _b[1];
     var _c = (0,react.useState)(null), currMode = _c[0], setCurrMode = _c[1];
-    var _d = (0,react.useState)(100), health = _d[0], setHealth = _d[1];
+    var _d = (0,react.useState)(50), health = _d[0], setHealth = _d[1];
     var _e = (0,react.useState)(0), xp = _e[0], setXP = _e[1];
     // initialize CURR MODE with chrome storage and update when it changes
     (0,react.useEffect)(function () {
@@ -13655,6 +13708,9 @@ var Tamadoro = function () {
         setDuration(25);
         setInitDeadline(new Date(Date.now() + initDuration));
         setCurrMode("Focus");
+        chrome.storage.sync.set({ health: health }, function () {
+            console.log("health created");
+        });
     }, []);
     // calculate incomplete productivity minutes
     var getDeficit = function () {
@@ -13712,7 +13768,7 @@ var Tamadoro = function () {
             }
         });
     };
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s9.gifyu.com/images/SZoHU.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

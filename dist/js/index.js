@@ -13496,9 +13496,29 @@ var Inventory = function () {
                 console.log('Retrieved health data:', result.health);
                 // Use the retrieved health data here
                 var currentHealth = result.health || 0;
-                var newHealth_1 = currentHealth + hp;
+                var newHealth_1 = Math.max(currentHealth + hp, 100);
+                var xp = Math.max(newHealth_1 - 100, 0);
+                if (xp > 0) {
+                    increaseXP(xp);
+                }
                 chrome.storage.sync.set({ "health": newHealth_1 }, function () {
                     console.log("Health increased to", newHealth_1);
+                });
+            }
+        });
+    };
+    var increaseXP = function (xp) {
+        chrome.storage.sync.get(["xp"], function (result) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving XP data:', chrome.runtime.lastError);
+            }
+            else {
+                console.log('Retrieved XP data:', result.xp);
+                // Use the retrieved health data here
+                var currXP = result.xp || 0;
+                var newXP_1 = currXP + xp;
+                chrome.storage.sync.set({ "xp": newXP_1 }, function () {
+                    console.log("XP increased to", newXP_1);
                 });
             }
         });

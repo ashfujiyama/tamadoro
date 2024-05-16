@@ -11619,6 +11619,15 @@ var TaskList = function () {
                     if (currentTime >= deadlineTime) {
                         console.log("Deadline has passed.");
                         timerComplete();
+                        //first check that a new deadline hasnt been made
+                        //if so, set deadline to null
+                        chrome.storage.sync.get(["deadline"], function (result2) {
+                            if (result2.deadline) {
+                                if (result2.deadline === result.deadline) {
+                                    chrome.storage.sync.set({ "deadline": null });
+                                }
+                            }
+                        });
                     }
                     else {
                         var deadlineDate = new Date(result.deadline);
@@ -11634,7 +11643,7 @@ var TaskList = function () {
         // Run checkDeadline function
         checkDeadline();
         // Run the function every 5 seconds to check for deadline completion
-        var intervalId = setInterval(checkDeadline, 5000);
+        var intervalId = setInterval(checkDeadline, 1000);
         // Clean up interval when component unmounts
         return function () { return clearInterval(intervalId); };
     }, []);
@@ -11676,15 +11685,21 @@ var TaskList = function () {
     };
     // when a timer is complete, add progress
     var timerComplete = function () {
+        console.log("timerComplete");
         chrome.storage.sync.get(["duration"], function (result) {
             if (result.duration) {
+                console.log("result.duration is good?");
                 if (selectedTask && taskList != null) {
+                    console.log("second condition");
                     var updatedTaskList = taskList.map(function (task) {
                         if (task.name === selectedTask.name) {
+                            console.log("first return in timercomplete");
                             return taskList_assign(taskList_assign({}, task), { dailyProgress: task.dailyProgress + result.duration });
                         }
+                        console.log("second return in timercomplete");
                         return task;
                     });
+                    console.log("settasklist in timercomplete");
                     setTaskList(updatedTaskList);
                     chrome.storage.sync.set({ taskList: updatedTaskList });
                 }
@@ -13380,7 +13395,7 @@ var Inventory = function () {
     var _a = (0,react.useState)({
         type: FoodType.Tomato,
         points: 5,
-        count: 2,
+        count: 0,
         image: "https://i.ibb.co/WyksYrk/tomato-clear.png",
     }), tomatoes = _a[0], setTomatoes = _a[1];
     var _b = (0,react.useState)({
@@ -13409,7 +13424,7 @@ var Inventory = function () {
         chrome.storage.sync.get("iTomato", function (result) {
             if (result.iTomato == null) {
                 chrome.storage.sync.set({ iTomato: 2 }, function () {
-                    // console.log("made new tomato counter");
+                    console.log("made new tomato counter");
                 });
             }
             else {
@@ -13421,7 +13436,8 @@ var Inventory = function () {
         chrome.storage.sync.set({ iTomato: tomatoes.count }, function () {
             console.log("Updated tomato count: " + tomatoes.count);
         });
-    });
+        chrome.storage.sync.get(null, function (Items) { console.log(Items); });
+    }, [tomatoes]);
     // SLICES: retrieve stored value at init + track changes/update chrome storage
     (0,react.useEffect)(function () {
         chrome.storage.sync.get("iSlice", function (result) {
@@ -13458,11 +13474,55 @@ var Inventory = function () {
             // console.log('Updated cake count: ' + cake.count);
         });
     });
+    //copied from tasklist.tsx
+    (0,react.useEffect)(function () {
+        // Function to compare deadline with current time
+        var checkDeadline = function () {
+            // chrome.storage.sync.set({ deadline: new Date() }, () => {
+            //   console.log("set deadline to: ", new Date());
+            // });
+            chrome.storage.sync.get(["deadline"], function (result) {
+                if (result.deadline) {
+                    var currentTime = new Date();
+                    var deadlineTime = new Date(result.deadline);
+                    if (currentTime >= deadlineTime) {
+                        console.log("Deadline has passed.");
+                        updateFood();
+                        //first check that a new deadline hasnt been made
+                        //if so, set deadline to null
+                        chrome.storage.sync.get(["deadline"], function (result2) {
+                            if (result2.deadline) {
+                                if (result2.deadline === result.deadline) {
+                                    chrome.storage.sync.set({ "deadline": null });
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        var deadlineDate = new Date(result.deadline);
+                        // console.log("Deadline is in the future: " + deadlineTime);
+                        // console.log("curr time = " + currentTime);
+                    }
+                }
+                else {
+                    console.log("No deadline found in Chrome storage.");
+                }
+            });
+        };
+        // Run checkDeadline function
+        checkDeadline();
+        // Run the function every 5 seconds to check for deadline completion
+        var intervalId = setInterval(checkDeadline, 1000);
+        // Clean up interval when component unmounts
+        return function () { return clearInterval(intervalId); };
+    }, []);
     // make state for current chosen food
     var _d = (0,react.useState)(tomatoes), chooseFood = _d[0], setChooseFood = _d[1];
     // handle tomato count
     var increaseTomatoes = function () {
-        setTomatoes(inventory_assign(inventory_assign({}, tomatoes), { count: tomatoes.count + 1 }));
+        console.log("increaseTomatoes", tomatoes.count);
+        setTomatoes(function (prevTomatoes) { return (inventory_assign(inventory_assign({}, prevTomatoes), { count: prevTomatoes.count + 1 })); });
+        console.log("increaseTomatoes2", tomatoes.count);
     };
     var decreaseTomatoes = function () {
         if (tomatoes.count != 0) {
@@ -13473,7 +13533,7 @@ var Inventory = function () {
     };
     // handle cake slice count
     var increaseCakeSlice = function () {
-        setCakeSlices(inventory_assign(inventory_assign({}, cakeSlices), { count: cakeSlices.count + 1 }));
+        setCakeSlices(function (prevSlices) { return (inventory_assign(inventory_assign({}, prevSlices), { count: prevSlices.count + 1 })); });
     };
     var decreaseCakeSlice = function () {
         if (cakeSlices.count != 0) {
@@ -13484,7 +13544,7 @@ var Inventory = function () {
     };
     // handle cake count
     var increaseCake = function () {
-        setCake(inventory_assign(inventory_assign({}, cake), { count: cake.count + 1 }));
+        setCake(function (prevCake) { return (inventory_assign(inventory_assign({}, prevCake), { count: prevCake.count + 1 })); });
     };
     var decreaseCake = function () {
         if (cake.count != 0) {
@@ -13508,6 +13568,9 @@ var Inventory = function () {
                 else if (currentDuration >= 45 && currentDuration <= 90) {
                     increaseCakeSlice();
                 }
+                else if (currentDuration > 90) {
+                    increaseCake();
+                }
             }
         });
     };
@@ -13517,6 +13580,11 @@ var Inventory = function () {
                 console.error('Error retrieving health data:', chrome.runtime.lastError);
             }
             else {
+                console.log("increaseHealth: trying to increase health now");
+                if (!result.health) {
+                    console.log("unable to find a health value to increment, must initialize");
+                    chrome.storage.sync.set({ "health": 100 });
+                }
                 console.log('Retrieved health data:', result.health);
                 // Use the retrieved health data here
                 var currentHealth = result.health || 0;
@@ -13558,16 +13626,34 @@ var Inventory = function () {
     var feed = function (foodType) {
         switch (foodType) {
             case FoodType.Tomato:
-                decreaseTomatoes();
-                increaseHealth(5);
+                chrome.storage.sync.get(["iTomato"], function (result) {
+                    if (result.iTomato) {
+                        if (result.iTomato > 0) {
+                            decreaseTomatoes();
+                            increaseHealth(5);
+                        }
+                    }
+                });
                 break;
             case FoodType.CakeSlice:
-                decreaseCakeSlice();
-                increaseHealth(15);
+                chrome.storage.sync.get("iSlice", function (result) {
+                    if (result.iSlice) {
+                        if (result.iSlice > 0) {
+                            decreaseCakeSlice();
+                            increaseHealth(15);
+                        }
+                    }
+                });
                 break;
             case FoodType.Cake:
-                decreaseCake();
-                increaseHealth(100);
+                chrome.storage.sync.get(["iCake"], function (result) {
+                    if (result.iCake) {
+                        if (result.iCake > 0) {
+                            decreaseCake();
+                            increaseHealth(100);
+                        }
+                    }
+                });
                 break;
             default:
                 break;

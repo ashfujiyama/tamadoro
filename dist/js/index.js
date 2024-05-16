@@ -7302,7 +7302,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "body {\n    background-color: #ffe3e7;
 
 /***/ }),
 
-/***/ 800:
+/***/ 8800:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -13326,7 +13326,7 @@ var Timer = function (_a) {
 /* harmony default export */ const timer = (Timer);
 
 // EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/components/pet/inventory.css
-var inventory = __webpack_require__(800);
+var inventory = __webpack_require__(8800);
 ;// CONCATENATED MODULE: ./src/components/pet/inventory.css
 
       
@@ -13992,7 +13992,7 @@ var Tamadoro = function () {
             chrome.storage.onChanged.removeListener(handleHPChange);
         };
     }, []);
-    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s12.gifyu.com/images/SfbkQ.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp }), (0,jsx_runtime.jsx)("button", tamadoro_assign({ onClick: function () { return setXP(xp + 10); } }, { children: "Increment XP" }))] }) })));
+    return ((0,jsx_runtime.jsx)("div", tamadoro_assign({ className: "screen" }, { children: (0,jsx_runtime.jsxs)("div", { children: [(0,jsx_runtime.jsx)(components_pet_inventory, {}), (0,jsx_runtime.jsx)(components_pet_petDisplay, { src: "https://s12.gifyu.com/images/SfbkQ.gif", alt: "TamaPet" }), initDeadline && ((0,jsx_runtime.jsx)(timer, { initialDeadline: initDeadline, initDuration: initDuration, paused: null, initMode: currMode })), (0,jsx_runtime.jsx)(healthDisplay, { health: health }), (0,jsx_runtime.jsx)(components_pet_levelBar, { fullXP: xp })] }) })));
 };
 /* harmony default export */ const components_tamadoro_tamadoro = (Tamadoro);
 

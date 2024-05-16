@@ -202,7 +202,6 @@ const Tamadoro: React.FC = () => {
         )}
         <HealthDisplay health={health} />
         <LevelBar fullXP={xp} />
-        <button onClick={() => setXP(xp + 10)}>Increment XP</button>
       </div>
     </div>
   );
